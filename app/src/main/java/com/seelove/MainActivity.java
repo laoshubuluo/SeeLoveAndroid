@@ -13,6 +13,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // todo shisheng.zhao
+		// todo by L.jinzhu for test
     }
 
     @Override
