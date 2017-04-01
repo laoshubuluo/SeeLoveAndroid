@@ -3,7 +3,6 @@ package com.tianyu.seelove.ui.activity.base;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,15 +18,11 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
  * @date 2017-03-28 16:27
  */
 public class BaseActivity extends Activity implements View.OnClickListener {
-    public String currentColor = "#000000";
+    public String currentColor = "#f5537a";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        getWindow().setFormat(PixelFormat.RGBA_8888);
     }
 
     @Override
@@ -71,8 +66,4 @@ public class BaseActivity extends Activity implements View.OnClickListener {
         this.currentColor = currentColor;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

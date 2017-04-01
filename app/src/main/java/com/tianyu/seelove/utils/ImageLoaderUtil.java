@@ -7,8 +7,10 @@ import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.tianyu.seelove.R;
 import java.io.File;
 
 /**
@@ -36,5 +38,12 @@ public class ImageLoaderUtil {
                 .imageDownloader(new BaseImageDownloader(context, 5 * 1000, 30 * 1000)) // connectTimeout 5s readTimeout 30s
                 .build();// 开始构建
         ImageLoader.getInstance().init(config);
+    }
+
+    // 获取图片信息-小
+    public static DisplayImageOptions getSmallImageOptions() {
+        DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.mipmap.ic_launcher).showImageOnLoading(R.mipmap.ic_launcher)
+                .imageScaleType(ImageScaleType.EXACTLY).showImageOnFail(R.mipmap.ic_launcher).cacheInMemory(true).cacheOnDisk(true).build();
+        return options;
     }
 }

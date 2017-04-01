@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tianyu.seelove">
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
     <application
+        android:name=".application.SeeLoveApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,8 +28,29 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".ui.activity.user.MyInfoActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".ui.activity.video.VideoListActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.activity.video.VideoPlayActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"></activity>
+
+        <!-- 融云SDK begin 测试环境：cpj2xarlj5z4n 生产环境：pgyu6atqyr7fu-->
+        <meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="cpj2xarlj5z4n" />
+        <receiver
+            android:name="io.rong.imlib.HeartbeatReceiver"
+            android:process=":ipc" />
+
+        <service
+            android:name="io.rong.imlib.ipc.RongService"
+            android:process=":ipc" />
+        <!-- 融云SDK end -->
     </application>
 </manifest>

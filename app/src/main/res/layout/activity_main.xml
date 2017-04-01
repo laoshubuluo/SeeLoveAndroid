@@ -52,6 +52,18 @@
                 android:textSize="@dimen/font_13sp" />
 
             <RadioButton
+                android:id="@+id/tab_follow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:button="@null"
+                android:drawableTop="@mipmap/ic_launcher"
+                android:gravity="center"
+                android:text="@string/follow"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_13sp" />
+
+            <RadioButton
                 android:id="@+id/tab_manager"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

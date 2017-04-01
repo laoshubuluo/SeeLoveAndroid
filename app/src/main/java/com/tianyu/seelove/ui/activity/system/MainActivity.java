@@ -11,13 +11,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
-
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FragmentTabAdapter;
 import com.tianyu.seelove.ui.fragment.FindFragment;
+import com.tianyu.seelove.ui.fragment.FollowFragment;
 import com.tianyu.seelove.ui.fragment.ManageFragment;
 import com.tianyu.seelove.ui.fragment.MessageFragment;
+import com.tianyu.seelove.utils.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,13 +38,14 @@ public class MainActivity extends FragmentActivity {
         showFullScreen();
         fragments.add(new FindFragment());
         fragments.add(new MessageFragment());
+        fragments.add(new FollowFragment());
         fragments.add(new ManageFragment());
         radioGroup = (RadioGroup) findViewById(R.id.tabs_radioGroup);
         FragmentTabAdapter tabAdapter = new FragmentTabAdapter(this, fragments, R.id.tab_content, radioGroup);
         tabAdapter.setOnRgsExtraCheckedChangedListener(new FragmentTabAdapter.OnRgsExtraCheckedChangedListener(){
             @Override
             public void OnRgsExtraCheckedChanged(RadioGroup radioGroup, int checkedId, int index) {
-                System.out.println("Extra---- " + index + " checked!!! ");
+                LogUtil.d("index = " + index);
             }
         });
     }

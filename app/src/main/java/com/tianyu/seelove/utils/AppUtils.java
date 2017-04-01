@@ -71,4 +71,40 @@ public class AppUtils {
     public int getCurrentVersion() {
         return packageInfo.versionCode;
     }
+
+    /**
+     * 保存用户的ID
+     * @param userId
+     */
+    public void setUserId(String userId) {
+        sharedPreferences.edit().putString("userId", userId).commit();
+    }
+
+    /**
+     * 获取用户手机号
+     *
+     * @return
+     */
+    public String getUserId() {
+        return sharedPreferences.getString("userId", "0");
+    }
+
+    /**
+     * 保存用户的token
+     *
+     * @param token
+     */
+    public void setUserToken(String token) {
+        sharedPreferences.edit().putString("userToken", token).commit();
+    }
+
+    /**
+     * 获取用户token
+     *
+     * @return
+     */
+    public String getUserToken() {
+        return sharedPreferences.getString("userToken", "");
+    }
+
 }

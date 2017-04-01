@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.utils.LogUtil;
 
 /**
  * Fragmengt(交流)
@@ -20,18 +20,18 @@ public class MessageFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        System.out.println("CCCCCCCCCC___onAttach");
+        LogUtil.d("MessageFragment____onAttach");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("CCCCCCCCCC____onCreate");
+        LogUtil.d("MessageFragment____onCreate");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("CCCCCCCCCC____onCreateView");
+        LogUtil.d("MessageFragment____onCreateView");
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         TextView titleView = (TextView) view.findViewById(R.id.titleView);
         titleView.setText(R.string.message);
@@ -41,48 +41,48 @@ public class MessageFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        System.out.println("CCCCCCCCCC____onActivityCreated");
+        LogUtil.d("MessageFragment____onActivityCreated");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        System.out.println("CCCCCCCCCC____onStart");
+        LogUtil.d("MessageFragment____onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("CCCCCCCCCC____onResume");
+        LogUtil.d("MessageFragment____onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        System.out.println("CCCCCCCCCC____onPause");
+        LogUtil.d("MessageFragment____onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        System.out.println("CCCCCCCCCC____onStop");
+        LogUtil.d("MessageFragment____onStop");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        System.out.println("CCCCCCCCCC____onDestroyView");
+        LogUtil.d("MessageFragment____onDestroyView");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.out.println("CCCCCCCCCC____onDestroy");
+        LogUtil.d("MessageFragment____onDestroy");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        System.out.println("CCCCCCCCCC____onDetach");
+        LogUtil.d("MessageFragment____onDetach");
     }
 }
