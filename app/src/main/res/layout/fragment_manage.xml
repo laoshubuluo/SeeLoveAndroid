@@ -133,11 +133,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/videoLayout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:layout_marginTop="10dp"
             android:background="@color/white"
-            android:id="@+id/videoLayout"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -161,11 +161,32 @@
                     android:background="@mipmap/ic_launcher" />
             </RelativeLayout>
 
-            <GridView
-                android:id="@+id/videoGridView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"></GridView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
+
+                        <GridView
+                            android:id="@+id/videoGridView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:horizontalSpacing="10dp"
+                            android:numColumns="auto_fit"
+                            android:verticalSpacing="10dp"></GridView>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout
