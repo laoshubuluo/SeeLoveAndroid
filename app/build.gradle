@@ -34,4 +34,5 @@ dependencies {
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/systembartint-1.0.4.jar')
     compile files('libs/Rong_IMLib_v2_4_5.jar')
+    compile files('libs/BaiduLBS_Android.jar')
 }
