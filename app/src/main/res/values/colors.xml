@@ -3,4 +3,39 @@
     <color name="white">#ffffff</color>
     <color name="gray_e5">#e5e5e5</color>
     <color name="black">#000000</color>
+    <!--公共颜色值：字体-->
+    <color name="font_black">#0a0a0a</color>//字体黑色
+    <color name="font_black_49">#494949</color>//字体黑色
+    <color name="font_grey">#666666</color>//字体灰色
+    <color name="font_grey_ad">#adadad</color>//字体淡灰色
+    <color name="font_grey_light">#999999</color>//字体淡灰色
+    <color name="font_green">#71aa00</color>//字体绿色
+    <color name="font_green_43c">#a0c43c</color>//字体绿色
+    <color name="font_green_57">#57bd77</color>//字体绿色
+    <color name="font_white">#ffffff</color>//字体白色
+    <color name="font_white_f9">#f9ffed</color>//字体白色
+    <color name="font_blue_62">#62c6f2</color>//字体蓝色
+    <color name="font_blue_96">#616e96</color>//字体蓝色
+    <color name="font_orange_ff">#ffae21</color>//字体橘黄色
+
+    <!--颜色值-【9种颜色，禁止增加其他颜色】-->
+    <color name="bg_white_f9">#f9f9f9</color>//所有页面top
+    <color name="bg_white_f4">#f4f4f4</color>//所有页面主区域背景色
+    <color name="bg_white_ff">#ffffff</color>//所有条目背景色
+    <color name="bg_white_ed">#ededed</color>//导航栏背景色
+    <color name="bg_green">#71aa00</color>
+    <color name="bg_green_b6">#b6d973</color>
+    <color name="bg_green_4b">#4bdf5e</color>
+    <color name="bg_grey_da">#dadada</color>
+    <color name="bg_black">#000000</color>//背景黑色
+    <color name="bg_blue_ec">#009fec</color>
+    <color name="bg_blue_4d">#4dbf5e</color>
+    <color name="bg_grey_d6">#d6d6d6</color>
+
+    <color name="translate">#00000000</color>//透明
+    <color name="translate_b6">#b6b6b6</color>//30%透明
+    <color name="translate_half">#a0000000</color>//半透明
+    <color name="bg_red_e0">#ffdfe0</color>
+    <color name="province_line_border">#C7C7C7</color>
+    <!--颜色值-【9种颜色，禁止增加其他颜色】-->
 </resources>

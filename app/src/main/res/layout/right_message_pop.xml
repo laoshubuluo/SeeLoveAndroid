@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="60dp"
+        android:background="@mipmap/right_pop_bg"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_pop_copy"
+            style="@style/popTheme"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:text="@string/message_pop_copy" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/bg_white_ff"></View>
+
+        <Button
+            android:id="@+id/btn_pop_repeat"
+            style="@style/popTheme"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:text="@string/message_pop_repeat" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/bg_white_ff"></View>
+
+        <Button
+            android:id="@+id/btn_pop_delete"
+            style="@style/popTheme"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:text="@string/message_pop_delete" />
+    </LinearLayout>
+</RelativeLayout>

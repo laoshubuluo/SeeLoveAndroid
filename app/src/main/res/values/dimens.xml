@@ -2,6 +2,17 @@
     <!--字体-->
     <dimen name="font_13sp">13sp</dimen>
     <dimen name="font_15sp">15sp</dimen>
+    <!--字体尺寸-【6种尺寸，禁止增加其他尺寸】-->
+    <dimen name="font_8sp">8sp</dimen>
+    <dimen name="font_9sp">9sp</dimen>
+    <dimen name="font_12sp">12sp</dimen>
+    <dimen name="font_14sp">14sp</dimen>
+    <dimen name="font_16sp">16sp</dimen>
+    <dimen name="font_17sp">17sp</dimen>
+    <dimen name="font_18sp">18sp</dimen>
+    <dimen name="font_20sp">20sp</dimen>
+    <dimen name="font_26sp">26sp</dimen>
+    <!--字体尺寸-【6种尺寸，禁止增加其他尺寸】-->
     <!--布局layout-->
     <dimen name="layout_5dp">5dp</dimen>
     <dimen name="layout_45dp">45dp</dimen>

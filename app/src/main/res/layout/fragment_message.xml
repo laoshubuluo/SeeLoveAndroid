@@ -6,4 +6,37 @@
 
     <include layout="@layout/public_top_view"></include>
 
+    <LinearLayout
+        android:id="@+id/network_connect_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="8dp"
+            android:background="@mipmap/message_status_fail" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="30dp"
+            android:singleLine="true"
+            android:text="@string/network_connect_fail"
+            android:textSize="@dimen/font_13sp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/messageList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="1px"
+        android:scrollbars="none"></ListView>
+
 </LinearLayout>

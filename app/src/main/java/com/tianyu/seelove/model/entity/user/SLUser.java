@@ -1,18 +1,22 @@
 package com.tianyu.seelove.model.entity.user;
 
+import com.tianyu.seelove.model.enums.SexType;
+
+import java.io.Serializable;
+
 /**
  * 用户实体类
  * @author shisheng.zhao
  * @date 2017-03-31 18:07
  */
-public class UserInfo {
+public class SLUser implements Serializable{
     // 用户基本信息
     private long userId; // 用户id,唯一标示
-    private String userIcon; // 用户头像
+    private String headUrl; // 用户头像
     private String nickName; // 用户昵称
     private int accountType = 0; // 0:未知;1:微信;2:QQ
     private int age = 0; // 用户年龄
-    private int sex = 0; // 0:未知;1男;2女
+    private String sex = SexType.SEX_UNKNOW.getResultCode();//性别 0:未知;1男;2女
     private String bgImg; // 用户信息默认大图
     private int cityCode; // 城市编号
     private String cityName; // 城市名称
@@ -48,12 +52,12 @@ public class UserInfo {
         this.userId = userId;
     }
 
-    public String getUserIcon() {
-        return userIcon;
+    public String getHeadUrl() {
+        return headUrl;
     }
 
-    public void setUserIcon(String userIcon) {
-        this.userIcon = userIcon;
+    public void setHeadUrl(String headUrl) {
+        this.headUrl = headUrl;
     }
 
     public String getNickName() {
@@ -80,11 +84,15 @@ public class UserInfo {
         this.age = age;
     }
 
-    public int getSex() {
-        return sex;
+    public String getSex() {
+        SexType sexType = SexType.parse(sex);
+        if (null == sexType)
+            return SexType.parse("0").getResultMsg();
+        else
+            return sexType.getResultMsg();
     }
 
-    public void setSex(int sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
@@ -210,9 +218,9 @@ public class UserInfo {
 
     @Override
     public String toString() {
-        return "UserInfo{" +
+        return "SLUser{" +
                 "userId=" + userId +
-                ", userIcon='" + userIcon + '\'' +
+                ", headUrl='" + headUrl + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", accountType=" + accountType +
                 ", age=" + age +

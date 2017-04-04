@@ -19,6 +19,8 @@ import java.io.File;
  * @date 2017-03-28 16:19
  */
 public class ImageLoaderUtil {
+    private static DisplayImageOptions options = new DisplayImageOptions.Builder()
+            .cacheInMemory(true).cacheOnDisk(true).build();
 
     // 初始化imageLoader
     public static void initImageLoader(Context context) {
@@ -46,4 +48,29 @@ public class ImageLoaderUtil {
                 .imageScaleType(ImageScaleType.EXACTLY).showImageOnFail(R.mipmap.ic_launcher).cacheInMemory(true).cacheOnDisk(true).build();
         return options;
     }
+
+
+    public static String getAcceptableUri(String file) {
+        if (StringUtils.isNullOrBlank(file)) {
+            return "";
+        }
+        if (file.startsWith("http")) {
+            return file;
+        }
+        return "file://" + file;
+    }
+
+    public static String getSmallPic(String pic) {
+        return "file://" + pic;
+    }
+
+
+    public static String getSmallPic2(String pic) {
+        return pic;
+    }
+
+    public static DisplayImageOptions getDefaultDisplayOptions() {
+        return options;
+    }
+
 }
