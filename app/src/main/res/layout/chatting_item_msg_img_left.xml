@@ -84,7 +84,7 @@
             android:layout_below="@+id/mc_tv_username"
             android:layout_toRightOf="@+id/mc_iv_userhead">
 
-            <com.wmgj.amen.view.image.BubbleImageView
+            <com.tianyu.seelove.view.image.BubbleImageView
                 android:id="@+id/mc_tv_chatcontent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,9 +1,18 @@
 <resources>
+
+
     <string name="app_name">SeeLoveAndroid</string>
     <string name="find">发现</string>
     <string name="message">消息</string>
     <string name="follow">关注</string>
     <string name="manager">我的</string>
+
+    <!--系统提示-->
+    <string name="server_error">系统忙，请稍后重试</string>
+    <string name="network_error">网络不通，请检查后重试</string>
+    <string name="network_timeout_error">网络连接超时，请稍后重试</string>
+    <string name="unknown_error">系统异常，请稍后重试</string>
+
     <!--消息-->
     <string name="message_no_connect">消息(未连接)</string>
     <string name="message_connecting">正在连接...</string>
@@ -50,4 +59,8 @@
     <string name="location_information">位置信息</string>
     <string name="pre">张</string>
     <string name="select_photos">选择照片</string>
+
+    <string name="friend_search_sucess">好友搜索成功</string>
+    <string name="friend_search_failure">好友搜索失败</string>
+    <string name="friend_search_error">好友搜索异常</string>
 </resources>

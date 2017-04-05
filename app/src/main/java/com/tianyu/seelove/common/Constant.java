@@ -11,7 +11,7 @@ public class Constant {
 
     //数据库[圣经]常量
     public final static String DB_NAME = "bible.db"; // 数据库名称
-    public final static String DB_PATH = "/data/data/com.wmgj.amen/databases/";// 数据库存储路径
+    public final static String DB_PATH = "/data/data/com.tianyu.seelove/databases/";// 数据库存储路径
     public final static int DB_BIBLE_VERSION = 5;// 数据库版本号
 
     public static int screenWidth;

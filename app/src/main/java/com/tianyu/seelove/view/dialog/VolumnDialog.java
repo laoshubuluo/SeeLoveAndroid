@@ -2,7 +2,6 @@ package com.tianyu.seelove.view.dialog;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tianyu.seelove.R;
+
 
 /**
  * @author shisheng.zhao

@@ -60,7 +60,7 @@
                 android:layout_width="203dp"
                 android:layout_height="135dp">
 
-                <com.wmgj.amen.view.image.BubbleImageView
+                <com.tianyu.seelove.view.image.BubbleImageView
                     android:id="@+id/mc_tv_chatcontent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

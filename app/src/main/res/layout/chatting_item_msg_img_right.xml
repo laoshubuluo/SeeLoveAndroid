@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/mc_iv_userhead">
 
-            <com.wmgj.amen.view.image.BubbleImageView
+            <com.tianyu.seelove.view.image.BubbleImageView
                 android:id="@+id/mc_tv_chatcontent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
