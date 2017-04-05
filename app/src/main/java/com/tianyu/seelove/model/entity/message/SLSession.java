@@ -1,17 +1,13 @@
 package com.tianyu.seelove.model.entity.message;
 
-import com.tianyu.seelove.dao.MessageDao;
-import com.tianyu.seelove.dao.impl.MessageDaoImpl;
 import com.tianyu.seelove.model.enums.MessageType;
 import com.tianyu.seelove.model.enums.SessionType;
-import com.tianyu.seelove.utils.StringUtils;
-
 import java.io.Serializable;
 
 /**
  * @author shisheng.zhao
  * @Description: Session实体类
- * @date 2015-09-01 下午18:30:52
+ * @date 2017-04-05 08:43
  */
 public class SLSession implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,15 +16,13 @@ public class SLSession implements Serializable {
     private String lastMessageId;// 最后一次消息id
     private long priority;// 权重，权重越高，越靠前
     private String sessionIcon; // imageIcon
-    private MessageType messageType;
+    private MessageType messageType; // 消息类型
     private String sessionName; // 会话名称
-    private String sessionIsRead;
-    private String sessionContent;
-    private String prayId; // 代祷Id
-    private String praySubject; // 代祷主题
+    private int sessionIsRead; // 会话已读未读; 0 未读,1 已读
+    private String sessionContent; // 会话内容
 
     public String getTargetId() {
-        return StringUtils.isNullOrBlank(targetId) ? "" : targetId;
+        return targetId;
     }
 
     public void setTargetId(String targetId) {
@@ -44,7 +38,7 @@ public class SLSession implements Serializable {
     }
 
     public String getLastMessageId() {
-        return StringUtils.isNullOrBlank(lastMessageId) ? "" : lastMessageId;
+        return lastMessageId;
     }
 
     public void setLastMessageId(String lastMessageId) {
@@ -60,7 +54,7 @@ public class SLSession implements Serializable {
     }
 
     public String getSessionIcon() {
-        return StringUtils.isNullOrBlank(sessionIcon) ? "" : sessionIcon;
+        return sessionIcon;
     }
 
     public void setSessionIcon(String sessionIcon) {
@@ -76,60 +70,32 @@ public class SLSession implements Serializable {
     }
 
     public String getSessionName() {
-        return StringUtils.isNullOrBlank(sessionName) ? "" : sessionName;
+        return sessionName;
     }
 
     public void setSessionName(String sessionName) {
         this.sessionName = sessionName;
     }
 
-    public String getSessionIsRead() {
-        return StringUtils.isNullOrBlank(sessionIsRead) ? "" : sessionIsRead;
-    }
-
-    public void setSessionIsRead(String sessionIsRead) {
+    public void setSessionIsRead(int sessionIsRead) {
         this.sessionIsRead = sessionIsRead;
     }
 
+    public int getSessionIsRead() {
+        return sessionIsRead;
+    }
+
     public String getSessionContent() {
-        return StringUtils.isNullOrBlank(sessionContent) ? "" : sessionContent;
+        return sessionContent;
     }
 
     public void setSessionContent(String sessionContent) {
         this.sessionContent = sessionContent;
     }
 
-    public void setPrayId(String prayId) {
-        this.prayId = prayId;
-    }
-
-    public String getPrayId() {
-        return StringUtils.isNullOrBlank(prayId) ? "" : prayId;
-    }
-
-    public void setPraySubject(String praySubject) {
-        this.praySubject = praySubject;
-    }
-
-    public String getPraySubject() {
-        return StringUtils.isNullOrBlank(praySubject) ? "" : praySubject;
-    }
-
-    public int getUnreadCount() {
-        MessageDao dao = new MessageDaoImpl();
-        if (sessionType.equals(SessionType.CHAT)) {
-            try {
-                return dao.getUnReadMessageCount(targetId);
-            } catch (Exception e) {
-                return 0;
-            }
-        }
-        return 0;
-    }
-
     @Override
     public String toString() {
-        return "Session{" +
+        return "SLSession{" +
                 "targetId='" + targetId + '\'' +
                 ", sessionType=" + sessionType +
                 ", lastMessageId='" + lastMessageId + '\'' +

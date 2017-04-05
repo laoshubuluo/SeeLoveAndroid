@@ -17,7 +17,7 @@ public class SLUser implements Serializable{
     private int accountType = 0; // 0:未知;1:微信;2:QQ
     private int age = 0; // 用户年龄
     private String sex = SexType.SEX_UNKNOW.getResultCode();//性别 0:未知;1男;2女
-    private String bgImg; // 用户信息默认大图
+    private String bigImg; // 用户信息默认大图
     private int cityCode; // 城市编号
     private String cityName; // 城市名称
     private int workCode; // 职业编号
@@ -96,12 +96,12 @@ public class SLUser implements Serializable{
         this.sex = sex;
     }
 
-    public String getBgImg() {
-        return bgImg;
+    public String getBigImg() {
+        return bigImg;
     }
 
-    public void setBgImg(String bgImg) {
-        this.bgImg = bgImg;
+    public void setBigImg(String bigImg) {
+        this.bigImg = bigImg;
     }
 
     public int getCityCode() {
@@ -225,7 +225,7 @@ public class SLUser implements Serializable{
                 ", accountType=" + accountType +
                 ", age=" + age +
                 ", sex=" + sex +
-                ", bgImg='" + bgImg + '\'' +
+                ", bigImg='" + bigImg + '\'' +
                 ", cityCode=" + cityCode +
                 ", cityName='" + cityName + '\'' +
                 ", workCode=" + workCode +

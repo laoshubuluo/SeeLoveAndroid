@@ -8,7 +8,7 @@ import com.tianyu.seelove.utils.LogUtil;
 /**
  * 数据库连接管理 负责监听和管理数据库连接
  * @author shisheng.zhao
- * @date 2015-09-07 18:56:43
+ * @date 2017-04-05 07:51
  */
 public class DbConnectionManager {
     private static DbConnectionManager dbConnectionManager = new DbConnectionManager();

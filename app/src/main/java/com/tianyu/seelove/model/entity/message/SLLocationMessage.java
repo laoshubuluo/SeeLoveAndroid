@@ -14,7 +14,7 @@ public class SLLocationMessage extends SLMessage {
 
     private double lng; // 经度
     private double lat; // 维度
-    private String address; // 位置信息
+    private String address; // 位置详细信息
 
     @Override
     public MessageType getMessageType() {
