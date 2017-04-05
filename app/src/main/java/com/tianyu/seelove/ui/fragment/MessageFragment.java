@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.dao.SessionDao;
 import com.tianyu.seelove.dao.UserDao;
@@ -22,13 +21,11 @@ import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.SessionType;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
 import com.tianyu.seelove.utils.LogUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Fragmengt(交流)
- *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
@@ -93,7 +90,6 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
             }
             sessionList.add(slSession);
         }
-
     }
 
     @Override

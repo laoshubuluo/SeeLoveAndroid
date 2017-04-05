@@ -2,6 +2,7 @@ package com.tianyu.seelove.application;
 
 import android.app.Application;
 import com.tianyu.seelove.manager.CrashHandlerManager;
+import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.manager.RongCloudManager;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
@@ -24,6 +25,9 @@ public class SeeLoveApplication extends Application {
         CrashHandlerManager crashHandler = CrashHandlerManager.getInstance();
         crashHandler.init(getApplicationContext());
         Thread.setDefaultUncaughtExceptionHandler(crashHandler);
+        // 初始化本地数据库连接管理
+        DbConnectionManager.init(this);
+        DbConnectionManager.getInstance().getConnection();
         // 初始化融云SDK
         RongIMClient.init(this);
         RongCloudManager.getInstance().init(this);

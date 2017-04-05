@@ -14,7 +14,7 @@ public class SLImageMessage extends SLMessage {
     }
 
     private String thumUrl; // 缩略图地址
-    private String processCount; // 图片消息的上传进度
+    private String sendProcess; // 图片消息的上传进度
 
     @Override
     public MessageType getMessageType() {
@@ -29,11 +29,11 @@ public class SLImageMessage extends SLMessage {
         this.thumUrl = thumUrl;
     }
 
-    public void setProcessCount(String processCount) {
-        this.processCount = processCount;
+    public void setSendProcess(String sendProcess) {
+        this.sendProcess = sendProcess;
     }
 
-    public String getProcessCount() {
-        return processCount;
+    public String getSendProcess() {
+        return sendProcess;
     }
 }

@@ -12,7 +12,7 @@ public class SLAudioMessage extends SLMessage {
     public SLAudioMessage() {
     }
 
-    private int audioLength;
+    private int audioLength; // 语音时常
 
     @Override
     public MessageType getMessageType() {
