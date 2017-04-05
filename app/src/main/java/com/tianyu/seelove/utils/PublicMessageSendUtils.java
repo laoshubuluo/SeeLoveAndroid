@@ -3,8 +3,6 @@ package com.tianyu.seelove.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-
 import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.dao.SessionDao;
 import com.tianyu.seelove.dao.impl.SessionDaoImpl;
@@ -14,18 +12,16 @@ import com.tianyu.seelove.model.entity.message.SLLocationMessage;
 import com.tianyu.seelove.model.entity.message.SLMessage;
 import com.tianyu.seelove.model.entity.message.SLSession;
 import com.tianyu.seelove.model.entity.message.SLTextMessage;
-import com.tianyu.seelove.model.enums.MessageType;
 import com.tianyu.seelove.model.enums.SessionType;
 import com.tianyu.seelove.task.InsertMessageTask;
 import com.tianyu.seelove.task.base.BaseTask;
-
 import java.util.Date;
 import java.util.List;
 
 /**
  * @author shisheng.zhao
  * @Description: 发送消息工具类--封装一些发送消息的公共方法,后期抽象
- * @date 2015-12-05 下午16:27:24
+ * @date 2017-04-05 18:04
  */
 public class PublicMessageSendUtils {
     private Context context;
@@ -34,7 +30,6 @@ public class PublicMessageSendUtils {
     public PublicMessageSendUtils(Context context) {
         this.context = context;
     }
-
 
     public PublicMessageSendUtils(Context context, SLMessage amMessage) {
         this.context = context;
@@ -142,10 +137,8 @@ public class PublicMessageSendUtils {
         }
     }
 
-
     /**
      * 发送消息广播(包括本地消息和融云消息)
-     *
      * @param isGroup
      */
     public static void sendMessageBroadcast(Context context, String messageId, boolean isGroup) {
@@ -162,7 +155,6 @@ public class PublicMessageSendUtils {
 
     /**
      * 根据时间差,判断是否显示聊天界面消息时间
-     *
      * @param lastTime
      * @param nextTime
      * @return

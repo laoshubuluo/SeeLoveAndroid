@@ -319,43 +319,43 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
             }
             /** 刷新消息状态 */
             if (intent.getAction().equals(Actions.ACTION_UPDATE_MESSAGE_STATUE)) {
-                SLMessage amMessage = null;
+                SLMessage slMessage = null;
                 MessageDao messageDao = new MessageDaoImpl();
                 String messageID = intent.getStringExtra("MessageID");
                 int messageStatus = intent.getIntExtra("MessageStatus", SLMessage.MessagePropertie.MSG_SENDING);
-                amMessage = new MessageDaoImpl().getMessageById(messageID);
-                amMessage.setSendStatue(messageStatus);
-                slMessageList.add(amMessage);
-                if (null != amMessage) {
+                slMessage = new MessageDaoImpl().getMessageById(messageID);
+                slMessage.setSendStatue(messageStatus);
+                slMessageList.add(slMessage);
+                if (null != slMessage) {
                     if (slMessageList.size() == 1) {
-                        amMessage.setIsShowTime(true);
+                        slMessage.setIsShowTime(true);
                     } else {
                         long tempTime = slMessageList.get(slMessageList.size() - 2).getTimestamp();
-                        long currentTime = amMessage.getTimestamp();
+                        long currentTime = slMessage.getTimestamp();
                         long currentTemp = ((currentTime - tempTime) / 1000) / 60;
                         if (currentTemp > 5) {
-                            amMessage.setIsShowTime(true);
+                            slMessage.setIsShowTime(true);
                         } else {
-                            amMessage.setIsShowTime(false);
+                            slMessage.setIsShowTime(false);
                         }
                     }
                 }
                 if (messageStatus == SLMessage.MessagePropertie.MSG_SENDSUS) {
                     messageDao.markAsSusMsg(messageID);
-                    amMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
-                    if (!amMessage.getMessageType().equals(MessageType.IMAGE)) {
-                        mAdapter.cleanData(amMessage.getMessageId(),
+                    slMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
+                    if (!slMessage.getMessageType().equals(MessageType.IMAGE)) {
+                        mAdapter.cleanData(slMessage.getMessageId(),
                                 MessageEntityFactory
-                                        .getMessageEntity(amMessage));
+                                        .getMessageEntity(slMessage));
                         mAdapter.notifyDataSetChanged();
                     }
                     listView.setSelection(listView.getCount() - 1);
                 } else if (messageStatus == SLMessage.MessagePropertie.MSG_FAIL) {
                     messageDao.markAsFailedMsg(messageID);
-                    amMessage.setSendStatue(SLMessage.MessagePropertie.MSG_FAIL);
-                    mAdapter.cleanData(amMessage.getMessageId(),
+                    slMessage.setSendStatue(SLMessage.MessagePropertie.MSG_FAIL);
+                    mAdapter.cleanData(slMessage.getMessageId(),
                             MessageEntityFactory
-                                    .getMessageEntity(amMessage));
+                                    .getMessageEntity(slMessage));
                     mAdapter.notifyDataSetChanged();
                     listView.setSelection(listView.getCount() - 1);
                 } else if (messageStatus == SLMessage.MessagePropertie.MSG_SENDING) {
@@ -363,12 +363,12 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
             }
             /** 更新图片消息的上传进度*/
             if (intent.getAction().equals(Actions.ACTION_UPDATE_IMGMESSAGE_PROCESS)) {
-                SLMessage amMessage = null;
+                SLMessage slMessage = null;
                 String messageID = intent.getStringExtra("MessageID");
                 String ProcessCount = intent.getStringExtra("ProcessCount");
                 SLImageMessage slImageMessage = (SLImageMessage) new MessageDaoImpl().getMessageById(messageID);
                 slImageMessage.setSendProcess(ProcessCount);
-                mAdapter.cleanData(amMessage.getMessageId(),
+                mAdapter.cleanData(slMessage.getMessageId(),
                         MessageEntityFactory
                                 .getMessageEntity(slImageMessage));
                 mAdapter.notifyDataSetChanged();
@@ -395,8 +395,8 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
                 SessionDao sessionDao = new SessionDaoImpl();
                 List<SLMessage> list = messageDao.getMessageByPage(AppUtils.getInstance().getUserId(),
                         String.valueOf(user.getUserId()), 0, 1);
-                SLMessage amMessage = list.get(0);
-                sessionDao.updateSessionContent(amMessage.getMessageContent(), userId);
+                SLMessage slMessage = list.get(0);
+                sessionDao.updateSessionContent(slMessage.getMessageContent(), userId);
                 Intent session_intent = new Intent(Actions.ACTION_SESSION);
                 Bundle bundle = new Bundle();
                 bundle.putString("targetId", userId);

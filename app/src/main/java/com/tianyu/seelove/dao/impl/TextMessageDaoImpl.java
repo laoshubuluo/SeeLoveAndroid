@@ -11,29 +11,29 @@ import com.tianyu.seelove.model.entity.message.SLTextMessage;
  * @date 2017-04-01 10:33
  */
 public class TextMessageDaoImpl extends MessageDaoImpl {
+    private static final String sqlAddMessage = "INSERT INTO MESSAGEINFO(MessageId,UserFrom,UserTo,MessageContent," +
+            "TimeStamp,IsRead,IsVisable,IsDelay,SendStatue,MessageType) " +
+            "VALUES(?,?,?,?,?,?,?,?,?,?)";
 
     public void addMessage(SLMessage message) {
-        DbConnectionManager.getInstance().getConnection().execSQL(
-                "insert into messageinfo(messageId,userFrom,userTo,content,timestamp,groupId,isRead,isVisible,isDelay,state,type,prayId,userTemp) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                new Object[]{message.getMessageId(),
-                        message.getUserFrom(), message.getUserTo(),
+        DbConnectionManager.getInstance().getConnection().execSQL(sqlAddMessage,
+                new Object[]{message.getMessageId(), message.getUserFrom(), message.getUserTo(),
                         message.getMessageContent(), message.getTimestamp(), message.getIsRead(),
-                        message.getIsVisible(), message.getIsDelay(),
-                        message.getSendStatue(),
+                        message.getIsVisible(), message.getIsDelay(), message.getSendStatue(),
                         message.getMessageType().toString()});
     }
 
     public SLMessage getMessageByCursor(Cursor cursor) {
         SLTextMessage message = new SLTextMessage();
-        message.setMessageId(cursor.getString(cursor.getColumnIndexOrThrow("messageId")));
-        message.setUserFrom(cursor.getString(cursor.getColumnIndexOrThrow("userFrom")));
-        message.setUserTo(cursor.getString(cursor.getColumnIndexOrThrow("userTo")));
-        message.setMessageContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
-        message.setTimestamp(cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")));
-        message.setIsRead(cursor.getInt(cursor.getColumnIndexOrThrow("isRead")));
-        message.setIsVisible(cursor.getInt(cursor.getColumnIndexOrThrow("isVisible")));
-        message.setIsDelay(cursor.getInt(cursor.getColumnIndexOrThrow("isDelay")));
-        message.setSendStatue(cursor.getInt(cursor.getColumnIndexOrThrow("state")));
+        message.setMessageId(cursor.getString(cursor.getColumnIndexOrThrow("MessageId")));
+        message.setUserFrom(cursor.getString(cursor.getColumnIndexOrThrow("UserFrom")));
+        message.setUserTo(cursor.getString(cursor.getColumnIndexOrThrow("UserTo")));
+        message.setMessageContent(cursor.getString(cursor.getColumnIndexOrThrow("MessageContent")));
+        message.setTimestamp(cursor.getLong(cursor.getColumnIndexOrThrow("TimeStamp")));
+        message.setIsRead(cursor.getInt(cursor.getColumnIndexOrThrow("IsRead")));
+        message.setIsVisible(cursor.getInt(cursor.getColumnIndexOrThrow("IsVisable")));
+        message.setIsDelay(cursor.getInt(cursor.getColumnIndexOrThrow("IsDelay")));
+        message.setSendStatue(cursor.getInt(cursor.getColumnIndexOrThrow("SendStatue")));
         return message;
     }
 }

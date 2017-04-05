@@ -42,8 +42,7 @@ public class MessageDaoImpl implements MessageDao {
             "articleId,title,imageUrl,url,articleType,userId,userName,headUrl,userTemp) " +
             "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-    private HashMap<MessageType, MessageDaoImpl> map =
-            new HashMap<MessageType, MessageDaoImpl>();
+    private HashMap<MessageType, MessageDaoImpl> map = new HashMap<MessageType, MessageDaoImpl>();
 
     public MessageDaoImpl() {
         if (getClass().toString().equals(MessageDaoImpl.class.toString())) {

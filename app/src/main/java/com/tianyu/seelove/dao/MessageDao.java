@@ -64,7 +64,6 @@ public interface MessageDao {
 
     /**
      * 把某人的消息全部置成已读 点对点
-     *
      * @param from
      */
     public void setAllRead(String from, String to);
@@ -75,12 +74,17 @@ public interface MessageDao {
      */
     public int getUnreadCount();
 
-
     /**
      * 根据MessageId 更新消息状态为已读
      * @param messageId
      */
     public void updateMessageIsReadByMessageId(String messageId);
+
+    /**
+     * 更新消息缩略图
+     * @param messageId
+     * @param thumUrl
+     */
     public void updateMessageThumUrlByMessageId(String messageId, String thumUrl);
 
     /**
