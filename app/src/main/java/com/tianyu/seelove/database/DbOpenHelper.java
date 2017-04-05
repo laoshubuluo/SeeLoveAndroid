@@ -31,7 +31,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     // 消息表
     private final static String sqlCreateMessageInfo = "CREATE TABLE MESSAGEINFO(_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             "MessageId,UserFrom,UserTo,MessageContent,TimeStamp,IsRead DEFAULT '0',IsVisable DEFAULT '0',IsDelay DEFALUT '1'," +
-            "SendStatue DEFAULT '0',MessageType,ThumUrl,SendProcess,AudioLength,Lng,Lat,Address)";
+            "SendStatue DEFAULT '0',MessageType,ThumUrl,AudioLength,Lng,Lat,Address)";
     private final static String sqlDropMessageInfo = "DROP TABLE IF EXISTS MESSAGEINFO";
     // 会话表
     private final static String sqlCreateSessionInfo = "CREATE TABLE SESSIONINFO(_ID INTEGER PRIMARY KEY AUTOINCREMENT," +

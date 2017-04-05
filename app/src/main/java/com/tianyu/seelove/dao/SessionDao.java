@@ -30,32 +30,31 @@ public interface SessionDao {
     public List<SLSession> getLatestSessions(int count);
 
     /**
-     * 获取代祷会话列表
-     * @param count
+     * 根据sessionId获取session详情
+     * @param targetId
      * @return
      */
-    public List<SLSession> getPraySessions(int count);
-
-    /**
-     * 获取聚会互动信息会话列表
-     * @param count
-     * @return
-     */
-    public List<SLSession> getMeetingInteractSessions(int count);
-    public List<SLSession> getMeetSessions(int count);
-
     public SLSession getSessionByTargetId(String targetId);
 
+    /**
+     * 根据sessionId更新sessionName
+     * @param sessionName
+     * @param targetId
+     */
     public void updateSessionName(String sessionName, String targetId);
 
+    /**
+     * 根据sessionId更新sessionContent
+     * @param sessionContent
+     * @param targetId
+     */
     public void updateSessionContent(String sessionContent, String targetId);
 
     /**
-     * 更新会话状态--目前主要是针对系统文章
-     * @param sessionStatus: 0代表未读,1代表已读
+     * 根据sessionId更新sessionName和sessionIcon
+     * @param sessionName
+     * @param sessionIcon
      * @param targetId
      */
-    public void updateSessionStatus(String sessionStatus, String targetId);
-
     public void updateSessionIconAndSessionName(String sessionName, String sessionIcon, String targetId);
 }
