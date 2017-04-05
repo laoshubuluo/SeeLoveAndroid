@@ -175,25 +175,25 @@ public class AudioMessageEntity extends MessageEntity {
                     ivuser.setVisibility(View.VISIBLE);
                     AnimationDrawable aduser = (AnimationDrawable) ivuser.getBackground();
 //                    aduser.start();
-                    MediaPlayerManager.getInstance().playVoice(audioMessage.getContent(), aduser);
+                    MediaPlayerManager.getInstance().playVoice(audioMessage.getMessageContent(), aduser);
                 } else {
                     ImageView ivfriend = viewHolder.getFrameFriend();
                     ivfriend.setBackgroundResource(R.drawable.audio_list_l);
                     ivfriend.setVisibility(View.VISIBLE);
                     AnimationDrawable adfriend = (AnimationDrawable) ivfriend.getBackground();
                     adfriend.start();
-                    MediaPlayerManager.getInstance().playVoice(audioMessage.getContent(), adfriend);
+                    MediaPlayerManager.getInstance().playVoice(audioMessage.getMessageContent(), adfriend);
                 }
             }
         });
         if (audioMessage.getUserFrom().equals(
                 AppUtils.getInstance().getUserId())) {
             viewHolder.getSendFail().setTag(audioMessage.getMessageId());
-            if (audioMessage.getState() == SLMessage.MessagePropertie.MSG_SENDSUS) {
+            if (audioMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDSUS) {
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
                 viewHolder.getProgress().setVisibility(View.INVISIBLE);
             }
-            if (audioMessage.getState() == SLMessage.MessagePropertie.MSG_FAIL) {
+            if (audioMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_FAIL) {
                 viewHolder.getSendFail().setVisibility(View.VISIBLE);
                 viewHolder.getProgress().setVisibility(View.INVISIBLE);
                 viewHolder.getSendFail().setBackgroundResource(R.mipmap.message_status_fail);
@@ -219,7 +219,7 @@ public class AudioMessageEntity extends MessageEntity {
                     }
                 });
             }
-            if (audioMessage.getState() == SLMessage.MessagePropertie.MSG_SENDING) {
+            if (audioMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDING) {
                 viewHolder.getProgress().setVisibility(View.VISIBLE);
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
             }
@@ -249,11 +249,11 @@ public class AudioMessageEntity extends MessageEntity {
         amAudioMessage.setMessageId(String.valueOf(lastId));
         amAudioMessage.setUserFrom(AppUtils.getInstance().getUserId());
         amAudioMessage.setUserTo(amMessage.getUserTo());
-        amAudioMessage.setContent(amMessage.getContent());
+        amAudioMessage.setMessageContent(amMessage.getMessageContent());
         amAudioMessage.setAudioLength(amMessage.getAudioLength());
         amAudioMessage.setTimestamp(new Date().getTime());
-        amAudioMessage.setIsRead(SLMessage.msg_read);
-        amAudioMessage.setState(SLMessage.MessagePropertie.MSG_SENDING);
+        amAudioMessage.setIsRead(SLMessage.msgRead);
+        amAudioMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
         InsertMessageTask insertMessageTask = new InsertMessageTask();
         insertMessageTask.setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
             @Override
@@ -276,7 +276,7 @@ public class AudioMessageEntity extends MessageEntity {
         session.setPriority(amAudioMessage.getTimestamp());
         session.setTargetId(amMessage.getUserTo());
         session.setMessageType(amAudioMessage.getMessageType());
-        session.setSessionContent(amAudioMessage.getContent());
+        session.setSessionContent(amAudioMessage.getMessageContent());
         SLUser user = new UserDaoImpl().getUserByUid(amAudioMessage.getUserTo());
         session.setSessionIcon(user.getHeadUrl());
         session.setSessionType(SessionType.CHAT);

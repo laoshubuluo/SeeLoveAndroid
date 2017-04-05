@@ -307,12 +307,12 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
                             final long lastId = System.nanoTime();
                             SLImageMessage imageMessage = new SLImageMessage();
                             imageMessage.setMessageId(String.valueOf(lastId));
-                            imageMessage.setContent(pathString);
+                            imageMessage.setMessageContent(pathString);
                             imageMessage.setUserFrom(AppUtils.getInstance().getUserId());
                             imageMessage.setUserTo(target);
-                            imageMessage.setIsRead(SLMessage.msg_read);
+                            imageMessage.setIsRead(SLMessage.msgRead);
                             imageMessage.setTimestamp(new Date().getTime());
-                            imageMessage.setState(SLMessage.MessagePropertie.MSG_SENDING);
+                            imageMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
                             InsertMessageTask insertMessageTask = new InsertMessageTask();
                             insertMessageTask
                                     .setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
@@ -342,7 +342,7 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
                             session.setLastMessageId(String.valueOf(lastId));
                             session.setPriority(imageMessage.getTimestamp());
                             session.setTargetId(target);
-                            session.setSessionContent(imageMessage.getContent());
+                            session.setSessionContent(imageMessage.getMessageContent());
                             session.setMessageType(imageMessage.getMessageType());
                             session.setSessionType(SessionType.CHAT);
                             session.setSessionName(user.getNickName());

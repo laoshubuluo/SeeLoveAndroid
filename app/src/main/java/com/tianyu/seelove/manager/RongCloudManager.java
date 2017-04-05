@@ -121,10 +121,10 @@ public class RongCloudManager {
                 amTextMessage.setMessageId(String.valueOf(lastId));
                 amTextMessage.setUserFrom(message.getSenderUserId());
                 amTextMessage.setUserTo(AppUtils.getInstance().getUserId());
-                amTextMessage.setContent(msg.getContent());
+                amTextMessage.setMessageContent(msg.getContent());
                 amTextMessage.setTimestamp(new Date().getTime());
-                amTextMessage.setIsRead(SLMessage.msg_unread);
-                amTextMessage.setState(SLMessage.MessagePropertie.MSG_SENDSUS);
+                amTextMessage.setIsRead(SLMessage.msgUnread);
+                amTextMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
                 // 保存本地数据库记录
                 MessageDaoImpl messageDao = new MessageDaoImpl();
                 messageDao.addMessage(amTextMessage);
@@ -141,7 +141,7 @@ public class RongCloudManager {
                 session.setLastMessageId(amTextMessage.getMessageId());
                 session.setPriority(amTextMessage.getTimestamp());
                 session.setMessageType(MessageType.TEXT);
-                session.setSessionContent(amTextMessage.getContent());
+                session.setSessionContent(amTextMessage.getMessageContent());
                 if (message.getConversationType().getName().equals("private")) {
                     session.setSessionType(SessionType.CHAT);
                     session.setTargetId(amTextMessage.getUserFrom());
@@ -170,17 +170,17 @@ public class RongCloudManager {
                     String[] srts = msg.getExtra().split("amen");
                     String imageBase64 = srts[1];
                     String address = srts[0];
-                    amLocationMessage.setContent(imageBase64);
+                    amLocationMessage.setMessageContent(imageBase64);
                     amLocationMessage.setAddress(address);
                 } catch (Exception e) {
                     amLocationMessage.setAddress(msg.getExtra());
-                    amLocationMessage.setContent(msg.getImgUri().toString());
+                    amLocationMessage.setMessageContent(msg.getImgUri().toString());
                 }
                 amLocationMessage.setTimestamp(new Date().getTime());
                 amLocationMessage.setLat(msg.getLat());
                 amLocationMessage.setLng(msg.getLng());
-                amLocationMessage.setIsRead(SLMessage.msg_unread);
-                amLocationMessage.setState(SLMessage.MessagePropertie.MSG_SENDSUS);
+                amLocationMessage.setIsRead(SLMessage.msgUnread);
+                amLocationMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
                 // 保存本地数据库记录
                 MessageDaoImpl messageDao = new MessageDaoImpl();
                 messageDao.addMessage(amLocationMessage);
@@ -196,7 +196,7 @@ public class RongCloudManager {
                 session.setLastMessageId(amLocationMessage.getMessageId());
                 session.setPriority(amLocationMessage.getTimestamp());
                 session.setMessageType(MessageType.LOCATION);
-                session.setSessionContent(amLocationMessage.getContent());
+                session.setSessionContent(amLocationMessage.getMessageContent());
                 if (message.getConversationType().getName().equals("private")) {
                     session.setSessionType(SessionType.CHAT);
                     session.setTargetId(amLocationMessage.getUserFrom());
@@ -219,13 +219,13 @@ public class RongCloudManager {
                 long lastId = System.currentTimeMillis();
                 audioMessage = new SLAudioMessage();
                 audioMessage.setMessageId(String.valueOf(lastId));
-                audioMessage.setContent(msg.getUri().toString());
+                audioMessage.setMessageContent(msg.getUri().toString());
                 audioMessage.setAudioLength(msg.getDuration());
                 audioMessage.setUserFrom(message.getSenderUserId());
                 audioMessage.setUserTo(AppUtils.getInstance().getUserId());
                 audioMessage.setTimestamp(new Date().getTime());
-                audioMessage.setIsRead(SLMessage.msg_unread);
-                audioMessage.setState(SLMessage.MessagePropertie.MSG_SENDSUS);
+                audioMessage.setIsRead(SLMessage.msgUnread);
+                audioMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
                 // 保存本地数据库记录
                 MessageDaoImpl messageDao = new MessageDaoImpl();
                 messageDao.addMessage(audioMessage);
@@ -238,7 +238,7 @@ public class RongCloudManager {
                 session.setLastMessageId(audioMessage.getMessageId());
                 session.setPriority(audioMessage.getTimestamp());
                 session.setMessageType(MessageType.AUDIO);
-                session.setSessionContent(audioMessage.getContent());
+                session.setSessionContent(audioMessage.getMessageContent());
                 if (message.getConversationType().getName().equals("private")) {
                     session.setSessionType(SessionType.CHAT);
                     session.setTargetId(audioMessage.getUserFrom());
@@ -261,12 +261,12 @@ public class RongCloudManager {
                 long lastId = System.currentTimeMillis();
                 amImageMessage = new SLImageMessage();
                 amImageMessage.setMessageId(String.valueOf(lastId));
-                amImageMessage.setContent(msg.getRemoteUri().toString());
+                amImageMessage.setMessageContent(msg.getRemoteUri().toString());
                 amImageMessage.setThumUrl(msg.getThumUri().toString());
                 amImageMessage.setUserFrom(message.getSenderUserId());
                 amImageMessage.setUserTo(AppUtils.getInstance().getUserId());
-                amImageMessage.setIsRead(SLMessage.msg_unread);
-                amImageMessage.setState(SLMessage.MessagePropertie.MSG_SENDSUS);
+                amImageMessage.setIsRead(SLMessage.msgUnread);
+                amImageMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
                 amImageMessage.setTimestamp(new Date().getTime());
                 // 保存本地数据库记录
                 MessageDaoImpl messageDao = new MessageDaoImpl();
@@ -280,7 +280,7 @@ public class RongCloudManager {
                 session.setLastMessageId(amImageMessage.getMessageId());
                 session.setPriority(amImageMessage.getTimestamp());
                 session.setMessageType(MessageType.IMAGE);
-                session.setSessionContent(amImageMessage.getContent());
+                session.setSessionContent(amImageMessage.getMessageContent());
                 if (message.getConversationType().getName().equals("private")) {
                     session.setSessionType(SessionType.CHAT);
                     session.setTargetId(amImageMessage.getUserFrom());

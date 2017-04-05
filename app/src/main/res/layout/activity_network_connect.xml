@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_white_ff"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/top_layout"
+        layout="@layout/public_top_view"></include>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/network_connect"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/network_connect_tip0"
+        android:textColor="@color/font_grey"
+        android:textSize="@dimen/font_17sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/network_connect_tip1"
+        android:textColor="@color/font_grey"
+        android:textSize="@dimen/font_17sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/network_connect_tip2"
+        android:textColor="@color/font_grey"
+        android:textSize="@dimen/font_17sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/network_connect_tip3"
+        android:textColor="@color/font_grey"
+        android:textSize="@dimen/font_17sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/network_connect_tip4"
+        android:textColor="@color/font_grey"
+        android:textSize="@dimen/font_17sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/network_connect_tip5"
+        android:textColor="@color/font_grey"
+        android:textSize="@dimen/font_17sp" />
+</LinearLayout>

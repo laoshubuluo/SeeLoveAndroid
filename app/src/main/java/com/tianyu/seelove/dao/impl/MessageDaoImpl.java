@@ -230,25 +230,24 @@ public class MessageDaoImpl implements MessageDao {
             stat.bindString(1, message.getMessageId());
             stat.bindString(2, message.getUserFrom());
             stat.bindString(3, message.getUserTo());
-            stat.bindString(4, message.getContent());
+            stat.bindString(4, message.getMessageContent());
             stat.bindString(5, String.valueOf(message.getTimestamp()));
             stat.bindString(7, String.valueOf(message.getIsRead()));
             stat.bindString(8, String.valueOf(message.getIsVisible()));
             stat.bindString(9, String.valueOf(message.getIsDelay()));
-            stat.bindString(10, String.valueOf(message.getState()));
+            stat.bindString(10, String.valueOf(message.getSendStatue()));
             stat.bindString(11, message.getMessageType().toString());
-            stat.bindString(29, message.getUserTemp());
         } else if (MessageType.AUDIO.equals(amMessage.getMessageType())) {
             SLAudioMessage message = (SLAudioMessage) amMessage;
             stat.bindString(1, message.getMessageId());
             stat.bindString(2, message.getUserFrom());
             stat.bindString(3, message.getUserTo());
-            stat.bindString(4, message.getContent());
+            stat.bindString(4, message.getMessageContent());
             stat.bindString(5, String.valueOf(message.getTimestamp()));
             stat.bindString(7, String.valueOf(message.getIsRead()));
             stat.bindString(8, String.valueOf(message.getIsVisible()));
             stat.bindString(9, String.valueOf(message.getIsDelay()));
-            stat.bindString(10, String.valueOf(message.getState()));
+            stat.bindString(10, String.valueOf(message.getSendStatue()));
             stat.bindString(11, message.getMessageType().toString());
             stat.bindString(12, String.valueOf(message.getAudioLength()));
         } else if (MessageType.IMAGE.equals(amMessage.getMessageType())) {
@@ -256,12 +255,12 @@ public class MessageDaoImpl implements MessageDao {
             stat.bindString(1, message.getMessageId());
             stat.bindString(2, message.getUserFrom());
             stat.bindString(3, message.getUserTo());
-            stat.bindString(4, message.getContent());
+            stat.bindString(4, message.getMessageContent());
             stat.bindString(5, String.valueOf(message.getTimestamp()));
             stat.bindString(7, String.valueOf(message.getIsRead()));
             stat.bindString(8, String.valueOf(message.getIsVisible()));
             stat.bindString(9, String.valueOf(message.getIsDelay()));
-            stat.bindString(10, String.valueOf(message.getState()));
+            stat.bindString(10, String.valueOf(message.getSendStatue()));
             stat.bindString(11, message.getMessageType().toString());
             stat.bindString(20, message.getThumUrl());
         } else if (MessageType.LOCATION.equals(amMessage.getMessageType())) {
@@ -269,12 +268,12 @@ public class MessageDaoImpl implements MessageDao {
             stat.bindString(1, message.getMessageId());
             stat.bindString(2, message.getUserFrom());
             stat.bindString(3, message.getUserTo());
-            stat.bindString(4, message.getContent());
+            stat.bindString(4, message.getMessageContent());
             stat.bindString(5, String.valueOf(message.getTimestamp()));
             stat.bindString(7, String.valueOf(message.getIsRead()));
             stat.bindString(8, String.valueOf(message.getIsVisible()));
             stat.bindString(9, String.valueOf(message.getIsDelay()));
-            stat.bindString(10, String.valueOf(message.getState()));
+            stat.bindString(10, String.valueOf(message.getSendStatue()));
             stat.bindString(11, message.getMessageType().toString());
             stat.bindString(13, String.valueOf(message.getLng()));
             stat.bindString(14, String.valueOf(message.getLat()));

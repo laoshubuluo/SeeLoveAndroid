@@ -136,9 +136,9 @@ public class ImageMessageEntity extends MessageEntity {
             viewHolder.getCreateTime().setVisibility(View.GONE);
         }
         if (imageMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
-            imagePath = ImageLoaderUtil.getSmallPic(imageMessage.getContent());
+            imagePath = ImageLoaderUtil.getSmallPic(imageMessage.getMessageContent());
         } else {
-            imagePath = imageMessage.getContent();
+            imagePath = imageMessage.getMessageContent();
         }
         ImageLoader.getInstance().displayImage(imagePath, viewHolder.getBubbleImageView(), ImageLoaderUtil.getDefaultDisplayOptions(), new SimpleImageLoadingListener() {
             @Override
@@ -146,8 +146,8 @@ public class ImageMessageEntity extends MessageEntity {
                                           View view, Bitmap loadedImage) {
                 if (imageMessage.getUserFrom().equals(
                         AppUtils.getInstance().getUserId())) {
-                    if (StringUtils.isNotBlank(imageMessage.getProcessCount())) {
-                        if (Integer.parseInt(imageMessage.getProcessCount()) >= 98) {
+                    if (StringUtils.isNotBlank(imageMessage.getSendProcess())) {
+                        if (Integer.parseInt(imageMessage.getSendProcess()) >= 98) {
                             viewHolder.getImgProcessCount().setVisibility(View.GONE);
                         } else {
                             viewHolder.getImgProcessCount().setVisibility(View.VISIBLE);
@@ -156,7 +156,7 @@ public class ImageMessageEntity extends MessageEntity {
                             viewHolder.getImgProcessCount().setWidth(width - 22);
                             viewHolder.getImgProcessCount().setHeight(height);
                             viewHolder.getImgProcessCount().setBackgroundResource(R.drawable.shape_trans_bg);
-                            viewHolder.getImgProcessCount().setText(imageMessage.getProcessCount() + "%");
+                            viewHolder.getImgProcessCount().setText(imageMessage.getSendProcess() + "%");
                         }
                     }
                 }
@@ -165,11 +165,11 @@ public class ImageMessageEntity extends MessageEntity {
         if (imageMessage.getUserFrom().equals(
                 AppUtils.getInstance().getUserId())) {
             viewHolder.getSendFail().setTag(imageMessage.getMessageId());
-            if (imageMessage.getState() == SLMessage.MessagePropertie.MSG_SENDSUS) {
+            if (imageMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDSUS) {
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
                 viewHolder.getProgress().setVisibility(View.INVISIBLE);
             }
-            if (imageMessage.getState() == SLMessage.MessagePropertie.MSG_FAIL) {
+            if (imageMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_FAIL) {
                 viewHolder.getSendFail().setVisibility(View.VISIBLE);
                 viewHolder.getProgress().setVisibility(View.INVISIBLE);
                 viewHolder.getSendFail().setBackgroundResource(R.mipmap.message_status_fail);
@@ -195,7 +195,7 @@ public class ImageMessageEntity extends MessageEntity {
                     }
                 });
             }
-            if (imageMessage.getState() == SLMessage.MessagePropertie.MSG_SENDING) {
+            if (imageMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDING) {
                 viewHolder.getProgress().setVisibility(View.INVISIBLE);
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
             }
@@ -295,9 +295,9 @@ public class ImageMessageEntity extends MessageEntity {
         for (SLMessage amMessage : list) {
             SLImageMessage message = (SLImageMessage) amMessage;
             if (message.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
-                imagePath = ImageLoaderUtil.getSmallPic(message.getContent());
+                imagePath = ImageLoaderUtil.getSmallPic(message.getMessageContent());
             } else {
-                imagePath = message.getContent();
+                imagePath = message.getMessageContent();
             }
             ViewPageImage viewPageImage = new ViewPageImage();
             viewPageImage.setImageUrl(imagePath);
@@ -310,9 +310,9 @@ public class ImageMessageEntity extends MessageEntity {
     private String getSelectImage(SLMessage amMessage) {
         SLImageMessage message = (SLImageMessage) amMessage;
         if (message.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
-            return ImageLoaderUtil.getSmallPic(message.getContent());
+            return ImageLoaderUtil.getSmallPic(message.getMessageContent());
         } else {
-            return message.getContent();
+            return message.getMessageContent();
         }
     }
 
@@ -323,10 +323,10 @@ public class ImageMessageEntity extends MessageEntity {
         amImageMessage.setMessageId(String.valueOf(lastId));
         amImageMessage.setUserFrom(AppUtils.getInstance().getUserId());
         amImageMessage.setUserTo(amMessage.getUserTo());
-        amImageMessage.setContent(amMessage.getContent());
+        amImageMessage.setMessageContent(amMessage.getMessageContent());
         amImageMessage.setTimestamp(new Date().getTime());
-        amImageMessage.setIsRead(SLMessage.msg_read);
-        amImageMessage.setState(SLMessage.MessagePropertie.MSG_SENDING);
+        amImageMessage.setIsRead(SLMessage.msgUnread);
+        amImageMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
         InsertMessageTask insertMessageTask = new InsertMessageTask();
         insertMessageTask.setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
             @Override
@@ -355,7 +355,7 @@ public class ImageMessageEntity extends MessageEntity {
         session.setPriority(amImageMessage.getTimestamp());
         session.setTargetId(amImageMessage.getUserTo());
         session.setMessageType(amImageMessage.getMessageType());
-        session.setSessionContent(amImageMessage.getContent());
+        session.setSessionContent(amImageMessage.getMessageContent());
         SLUser user = new UserDaoImpl().getUserByUid(amImageMessage.getUserTo());
         session.setSessionIcon(user.getHeadUrl());
         session.setSessionType(SessionType.CHAT);

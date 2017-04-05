@@ -22,9 +22,9 @@ public class LocationMessageDaoImpl extends MessageDaoImpl {
                 addSql,
                 new Object[]{locationMessage.getMessageId(),
                         locationMessage.getUserFrom(), locationMessage.getUserTo(),
-                        locationMessage.getContent(), locationMessage.getTimestamp(), locationMessage.getIsRead(),
+                        locationMessage.getMessageContent(), locationMessage.getTimestamp(), locationMessage.getIsRead(),
                         locationMessage.getIsVisible(), locationMessage.getIsDelay(),
-                        locationMessage.getState(),
+                        locationMessage.getSendStatue(),
                         locationMessage.getMessageType().toString(),
                         locationMessage.getLng(), locationMessage.getLat(),locationMessage.getAddress()});
     }
@@ -34,12 +34,12 @@ public class LocationMessageDaoImpl extends MessageDaoImpl {
         message.setMessageId(cursor.getString(cursor.getColumnIndexOrThrow("messageId")));
         message.setUserFrom(cursor.getString(cursor.getColumnIndexOrThrow("userFrom")));
         message.setUserTo(cursor.getString(cursor.getColumnIndexOrThrow("userTo")));
-        message.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
+        message.setMessageContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
         message.setTimestamp(cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")));
         message.setIsRead(cursor.getInt(cursor.getColumnIndexOrThrow("isRead")));
         message.setIsVisible(cursor.getInt(cursor.getColumnIndexOrThrow("isVisible")));
         message.setIsDelay(cursor.getInt(cursor.getColumnIndexOrThrow("isDelay")));
-        message.setState(cursor.getInt(cursor.getColumnIndexOrThrow("state")));
+        message.setSendStatue(cursor.getInt(cursor.getColumnIndexOrThrow("state")));
         message.setLng(Double.parseDouble(cursor.getString(cursor
                 .getColumnIndex("lng"))));
         message.setLat(Double.parseDouble(cursor.getString(cursor

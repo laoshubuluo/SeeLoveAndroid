@@ -17,10 +17,10 @@ public class TextMessageDaoImpl extends MessageDaoImpl {
                 "insert into messageinfo(messageId,userFrom,userTo,content,timestamp,groupId,isRead,isVisible,isDelay,state,type,prayId,userTemp) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 new Object[]{message.getMessageId(),
                         message.getUserFrom(), message.getUserTo(),
-                        message.getContent(), message.getTimestamp(), message.getIsRead(),
+                        message.getMessageContent(), message.getTimestamp(), message.getIsRead(),
                         message.getIsVisible(), message.getIsDelay(),
-                        message.getState(),
-                        message.getMessageType().toString(), message.getUserTemp()});
+                        message.getSendStatue(),
+                        message.getMessageType().toString()});
     }
 
     public SLMessage getMessageByCursor(Cursor cursor) {
@@ -28,13 +28,12 @@ public class TextMessageDaoImpl extends MessageDaoImpl {
         message.setMessageId(cursor.getString(cursor.getColumnIndexOrThrow("messageId")));
         message.setUserFrom(cursor.getString(cursor.getColumnIndexOrThrow("userFrom")));
         message.setUserTo(cursor.getString(cursor.getColumnIndexOrThrow("userTo")));
-        message.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
+        message.setMessageContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
         message.setTimestamp(cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")));
         message.setIsRead(cursor.getInt(cursor.getColumnIndexOrThrow("isRead")));
         message.setIsVisible(cursor.getInt(cursor.getColumnIndexOrThrow("isVisible")));
         message.setIsDelay(cursor.getInt(cursor.getColumnIndexOrThrow("isDelay")));
-        message.setState(cursor.getInt(cursor.getColumnIndexOrThrow("state")));
-        message.setUserTemp(cursor.getString(cursor.getColumnIndexOrThrow("userTemp")));
+        message.setSendStatue(cursor.getInt(cursor.getColumnIndexOrThrow("state")));
         return message;
     }
 }

@@ -46,7 +46,7 @@ public class SessionAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addDataSession(SLSession session,boolean isAdd) {
+    public void addDataSession(SLSession session,boolean isNewAdd) {
         if (null == session) {
             return;
         }
@@ -61,13 +61,13 @@ public class SessionAdapter extends BaseAdapter {
                 sess.setSessionName(session.getSessionName());
                 sess.setSessionType(session.getSessionType());
                 sess.setTargetId(session.getTargetId());
-                isAdd = false;
+                isNewAdd = false;
                 break;
             } else {
-                isAdd = true;
+                isNewAdd = true;
             }
         }
-        if (isAdd) {
+        if (isNewAdd) {
             sessions.add(session);
         }
         ListSortUtil<SLSession> listSortUtil = new ListSortUtil<SLSession>();
@@ -127,7 +127,6 @@ public class SessionAdapter extends BaseAdapter {
                     viewHoder.message_img_photo,
                     ImageLoaderUtil.getSmallImageOptions());
         }
-        int unreadCount = sessions.get(position).getUnreadCount();
         viewHoder.message_tv_time.setText(DateUtils.getFriendlyDate(sessions
                 .get(position).getPriority()));
         if (sessions.get(position).getMessageType()

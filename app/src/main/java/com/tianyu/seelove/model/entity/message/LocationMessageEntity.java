@@ -137,7 +137,7 @@ public class LocationMessageEntity extends MessageEntity {
         try {
             String imagePath = "";
             if (locationMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
-                imagePath = ImageLoaderUtil.getSmallPic(locationMessage.getContent());
+                imagePath = ImageLoaderUtil.getSmallPic(locationMessage.getMessageContent());
                 ImageLoader.getInstance().loadImage(imagePath,
                         ImageLoaderUtil.getDefaultDisplayOptions(),
                         new SimpleImageLoadingListener() {
@@ -158,7 +158,7 @@ public class LocationMessageEntity extends MessageEntity {
 
                         });
             } else {
-                Bitmap bitmap = stringtoBitmap(locationMessage.getContent());
+                Bitmap bitmap = stringtoBitmap(locationMessage.getMessageContent());
                 if (null != bitmap) {
                     final int w = DimensionUtils.convertDipToPixels(
                             context.getResources(), 203);
@@ -171,7 +171,7 @@ public class LocationMessageEntity extends MessageEntity {
                     viewHolder.getAddress().setVisibility(View.VISIBLE);
                     viewHolder.getAddress().setText("  " + locationMessage.getAddress());
                 } else {
-                    imagePath = ImageLoaderUtil.getSmallPic2(locationMessage.getContent());
+                    imagePath = ImageLoaderUtil.getSmallPic2(locationMessage.getMessageContent());
                     ImageLoader.getInstance().loadImage(imagePath,
                             ImageLoaderUtil.getDefaultDisplayOptions(),
                             new SimpleImageLoadingListener() {
@@ -199,11 +199,11 @@ public class LocationMessageEntity extends MessageEntity {
         if (locationMessage.getUserFrom().equals(
                 AppUtils.getInstance().getUserId())) {
             viewHolder.getSendFail().setTag(locationMessage.getMessageId());
-            if (locationMessage.getState() == SLMessage.MessagePropertie.MSG_SENDSUS) {
+            if (locationMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDSUS) {
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
                 viewHolder.getProgress().setVisibility(View.INVISIBLE);
             }
-            if (locationMessage.getState() == SLMessage.MessagePropertie.MSG_FAIL) {
+            if (locationMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_FAIL) {
                 viewHolder.getSendFail().setVisibility(View.VISIBLE);
                 viewHolder.getProgress().setVisibility(View.INVISIBLE);
                 viewHolder.getSendFail().setBackgroundResource(R.mipmap.message_status_fail);
@@ -229,7 +229,7 @@ public class LocationMessageEntity extends MessageEntity {
                     }
                 });
             }
-            if (locationMessage.getState() == SLMessage.MessagePropertie.MSG_SENDING) {
+            if (locationMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDING) {
                 viewHolder.getProgress().setVisibility(View.VISIBLE);
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
             }
@@ -283,10 +283,10 @@ public class LocationMessageEntity extends MessageEntity {
         amLocationMessage.setMessageId(String.valueOf(lastId));
         amLocationMessage.setUserFrom(AppUtils.getInstance().getUserId());
         amLocationMessage.setUserTo(amMessage.getUserTo());
-        amLocationMessage.setContent(amMessage.getContent());
+        amLocationMessage.setMessageContent(amMessage.getMessageContent());
         amLocationMessage.setTimestamp(new Date().getTime());
-        amLocationMessage.setIsRead(SLMessage.msg_read);
-        amLocationMessage.setState(SLMessage.MessagePropertie.MSG_SENDING);
+        amLocationMessage.setIsRead(SLMessage.msgRead);
+        amLocationMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
         amLocationMessage.setLat(amMessage.getLat());
         amLocationMessage.setLng(amMessage.getLng());
         amLocationMessage.setAddress(amMessage.getAddress());
@@ -312,7 +312,7 @@ public class LocationMessageEntity extends MessageEntity {
         session.setPriority(amLocationMessage.getTimestamp());
         session.setTargetId(amMessage.getUserTo());
         session.setMessageType(amLocationMessage.getMessageType());
-        session.setSessionContent(amLocationMessage.getContent());
+        session.setSessionContent(amLocationMessage.getMessageContent());
         SLUser user = new UserDaoImpl().getUserByUid(amLocationMessage.getUserTo());
         session.setSessionIcon(user.getHeadUrl());
         session.setSessionType(SessionType.CHAT);

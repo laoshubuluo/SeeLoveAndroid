@@ -123,16 +123,16 @@ public class TextMessageEntity extends MessageEntity {
         viewHolder.getContent().setMovementMethod(
                 LinkMovementMethod.getInstance());
         SpannableString spannableString = FaceConversionUtils.getInstace()
-                .getExpressionString(context, TextUtils.StringFilter(textMessage.getContent()), false);
+                .getExpressionString(context, TextUtils.StringFilter(textMessage.getMessageContent()), false);
         viewHolder.getContent().setText(spannableString);
         if (textMessage.getUserFrom().equals(
                 AppUtils.getInstance().getUserId())) {
             viewHolder.getSendFail().setTag(textMessage.getMessageId());
-            if (textMessage.getState() == SLMessage.MessagePropertie.MSG_SENDSUS) {
+            if (textMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDSUS) {
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
                 viewHolder.getProgress().setVisibility(View.INVISIBLE);
             }
-            if (textMessage.getState() == SLMessage.MessagePropertie.MSG_FAIL) {
+            if (textMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_FAIL) {
                 viewHolder.getSendFail().setVisibility(View.VISIBLE);
                 viewHolder.getProgress().setVisibility(View.INVISIBLE);
                 viewHolder.getSendFail().setBackgroundResource(R.mipmap.message_status_fail);
@@ -158,7 +158,7 @@ public class TextMessageEntity extends MessageEntity {
                     }
                 });
             }
-            if (textMessage.getState() == SLMessage.MessagePropertie.MSG_SENDING) {
+            if (textMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDING) {
                 viewHolder.getProgress().setVisibility(View.VISIBLE);
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
             }
@@ -208,7 +208,7 @@ public class TextMessageEntity extends MessageEntity {
                     @Override
                     public void onClick(View view) {
                         ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                        clipboardManager.setText(textMessage.getContent());
+                        clipboardManager.setText(textMessage.getMessageContent());
                         rPopupWindow.dismiss();
                         Toast.makeText(context, context.getResources().getString(R.string.message_copy_sucess), Toast.LENGTH_SHORT).show();
                     }
@@ -266,10 +266,10 @@ public class TextMessageEntity extends MessageEntity {
         amTextMessage.setMessageId(String.valueOf(lastId));
         amTextMessage.setUserFrom(AppUtils.getInstance().getUserId());
         amTextMessage.setUserTo(amMessage.getUserTo());
-        amTextMessage.setContent(amMessage.getContent());
+        amTextMessage.setMessageContent(amMessage.getMessageContent());
         amTextMessage.setTimestamp(new Date().getTime());
-        amTextMessage.setIsRead(SLMessage.msg_read);
-        amTextMessage.setState(SLMessage.MessagePropertie.MSG_SENDING);
+        amTextMessage.setIsRead(SLMessage.msgRead);
+        amTextMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
         InsertMessageTask insertMessageTask = new InsertMessageTask();
         insertMessageTask.setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
             @Override
@@ -292,7 +292,7 @@ public class TextMessageEntity extends MessageEntity {
         session.setPriority(amTextMessage.getTimestamp());
         session.setTargetId(amMessage.getUserTo());
         session.setMessageType(amTextMessage.getMessageType());
-        session.setSessionContent(amTextMessage.getContent());
+        session.setSessionContent(amTextMessage.getMessageContent());
         SLUser user = new UserDaoImpl().getUserByUid(amTextMessage.getUserTo());
         session.setSessionIcon(user.getHeadUrl());
         session.setSessionType(SessionType.CHAT);

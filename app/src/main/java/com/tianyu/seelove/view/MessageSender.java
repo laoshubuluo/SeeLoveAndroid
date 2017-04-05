@@ -3,10 +3,8 @@ package com.tianyu.seelove.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioManager;
-import android.media.MediaRecorder;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,8 +21,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.dao.SessionDao;
@@ -48,19 +44,26 @@ import com.tianyu.seelove.view.dialog.VolumnDialog;
 import com.tianyu.seelove.view.messageplugin.ImojiMessagePlugin;
 import com.tianyu.seelove.view.messageplugin.MessagePlugin;
 import com.tianyu.seelove.view.messageplugin.PluginManager;
-
 import java.util.Date;
 
 /**
  * @author shisheng.zhao
  * @Description: 自定义Message Sender View
- * @date 2015-09-01 下午14:34:26
+ * @date 2017-04-05 16:42
  */
 public class MessageSender extends RelativeLayout implements OnClickListener {
     private static final int POLL_INTERVAL = 300;// 音量获取时间间隔
     private String target; // 聊天对象
     private String targetName; // 聊天对象名称
-    private String targetGroup;
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+        pluginManager.setTarget(target);
+    }
 
     public String getTargetName() {
         return targetName;
@@ -80,8 +83,8 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
     /**
      * 输入框
      */
-    public EditText messageET;
-    public ImageView toggle_emoji_btn, btn_media;
+    public EditText inputMessage;
+    public ImageView btn_emoji, btn_box;
     /**
      * 是否正在录音状态
      */
@@ -91,47 +94,8 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
     PluginManager pluginManager = null;
     RelativeLayout pluginbox;
 
-    public boolean signalChat = false; // 单聊
-    public boolean groupChat = false; // 群聊
-
-    private double tempAmp = 0.0;
-    private double totleAmp = 0.0;
     private float touchDownY = 0;
     private float touchUpY = 0;
-
-    public boolean isSignalChat() {
-        return signalChat;
-    }
-
-    public void setSignalChat(boolean signalChat) {
-        this.signalChat = signalChat;
-    }
-
-    public boolean isGroupChat() {
-        return groupChat;
-    }
-
-    public void setGroupChat(boolean groupChat) {
-        this.groupChat = groupChat;
-    }
-
-    public String getTargetGroup() {
-        return targetGroup;
-    }
-
-    public void setTargetGroup(String targetGroup) {
-        this.targetGroup = targetGroup;
-        pluginManager.setTargetGroup(targetGroup);
-    }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
-        pluginManager.setTarget(target);
-    }
 
     public void reset() {
         ViewUtils.shutView(pluginbox);
@@ -165,7 +129,7 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.et_sendmessage1:
+            case R.id.inputMessage:
                 // 表情按钮点击的时候，展开或者关闭下部的扩展框，然后模拟点击表情按钮，使表情显示出来
                 ViewUtils.shutView(pluginbox);
                 break;
@@ -192,9 +156,9 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
      * 切换到文字
      */
     private void switchToText() {
-        RelativeLayout voiceSender = (RelativeLayout) findViewById(R.id.rl_voiceAndBtn);
+        RelativeLayout voiceSender = (RelativeLayout) findViewById(R.id.voiceSender);
         voiceSender.setVisibility(View.GONE);
-        RelativeLayout textSender = (RelativeLayout) findViewById(R.id.rl_edAndbtn);
+        RelativeLayout textSender = (RelativeLayout) findViewById(R.id.textSender);
         textSender.setVisibility(View.VISIBLE);
         recordingMode = false;
     }
@@ -204,9 +168,9 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
      */
     private void switchToVoice() {
         recordingMode = true;
-        RelativeLayout voiceSender = (RelativeLayout) findViewById(R.id.rl_voiceAndBtn);
+        RelativeLayout voiceSender = (RelativeLayout) findViewById(R.id.voiceSender);
         voiceSender.setVisibility(View.VISIBLE);
-        RelativeLayout textSender = (RelativeLayout) findViewById(R.id.rl_edAndbtn);
+        RelativeLayout textSender = (RelativeLayout) findViewById(R.id.textSender);
         textSender.setVisibility(View.GONE);
         if (pluginbox.getVisibility() == View.VISIBLE) {
             ViewUtils.toggleView(pluginbox);
@@ -217,22 +181,21 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
      * 发送消息
      */
     private void send() {
-        String content = messageET.getText().toString();
+        String content = inputMessage.getText().toString();
         if (content.length() > 0) {
             final long lastId = System.currentTimeMillis();
             SLTextMessage message = new SLTextMessage();
             message.setMessageId(String.valueOf(lastId));
             message.setUserFrom(AppUtils.getInstance().getUserId());
             message.setUserTo(target);
-            message.setContent(content);
+            message.setMessageContent(content);
             message.setTimestamp(new Date().getTime());
-            message.setIsRead(SLMessage.msg_read);
-            message.setState(SLMessage.MessagePropertie.MSG_SENDING);
+            message.setIsRead(SLMessage.msgRead);
+            message.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
             InsertMessageTask insertMessageTask = new InsertMessageTask();
             insertMessageTask.setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
                 @Override
                 public void handle(Boolean result) {
-                    LogUtil.i(result + " " + lastId + " " + getTargetGroup());
                     // 发送融云广播
                     Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
                     send_Intent.putExtra("MessageID", String.valueOf(lastId));
@@ -242,24 +205,23 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
                     Intent intent = new Intent(Actions.SINGLEMESSAGE_ADD_ACTION);
                     intent.putExtra("messageID", String.valueOf(lastId));
                     context.sendOrderedBroadcast(intent, null);
-                    messageET.getText().clear();
+                    inputMessage.getText().clear();
                 }
             });
             AsyncTaskUtils.execute(insertMessageTask, message);
-            messageET.getText().clear();
+            inputMessage.getText().clear();
             // 保存一条Session记录
             SLSession session = new SLSession();
             session.setLastMessageId(String.valueOf(lastId));
             session.setPriority(message.getTimestamp());
             session.setTargetId(target);
             session.setMessageType(message.getMessageType());
-            session.setSessionContent(message.getContent());
+            session.setSessionContent(message.getMessageContent());
             SLUser user = new UserDaoImpl().getUserByUid(target);
             session.setSessionIcon(user.getHeadUrl());
             session.setSessionType(SessionType.CHAT);
             session.setSessionName(getTargetName());
-            SessionDao sessionDao = new SessionDaoImpl();
-            sessionDao.addSession(session);
+            new SessionDaoImpl().addSession(session);
             Intent session_intent = new Intent(Actions.ACTION_SESSION);
             Bundle bundle = new Bundle();
             bundle.putString("targetId", session.getTargetId());
@@ -272,20 +234,20 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
      * 初始化控件
      */
     private void initView() {
-        view = View.inflate(context, R.layout.doc_custom_facerelativelayout,
+        view = View.inflate(context, R.layout.message_sender_view,
                 this);
         pluginbox = (RelativeLayout) view.findViewById(R.id.message_plugin_box);
-        messageET = (EditText) view.findViewById(R.id.et_sendmessage1);
-        messageET.setSingleLine(false);
-        messageET.setMaxLines(5);
-        messageET.setOnFocusChangeListener(new OnFocusChangeListener() {
+        inputMessage = (EditText) view.findViewById(R.id.inputMessage);
+        inputMessage.setSingleLine(false);
+        inputMessage.setMaxLines(5);
+        inputMessage.setOnFocusChangeListener(new OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 ViewUtils.shutView(pluginbox);
             }
         });
-        messageET.addTextChangedListener(new TextWatcher() {
+        inputMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
@@ -313,8 +275,8 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
 
             }
         });
-        pluginManager = new PluginManager(context, pluginbox, messageET, target, getTargetGroup());
-        messageET.setOnClickListener(this);
+        pluginManager = new PluginManager(context, pluginbox, inputMessage, target);
+        inputMessage.setOnClickListener(this);
         // 语音切换按钮
         Button switchToVoiceButton = ((Button) view
                 .findViewById(R.id.btn_switch_to_voice));
@@ -326,13 +288,10 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
         // 语音切换按钮
         Button sendBtn = ((Button) view.findViewById(R.id.btn_send));
         sendBtn.setOnClickListener(this);
-        final RelativeLayout rl_edAndbtn = (RelativeLayout) findViewById(R.id.rl_edAndbtn);
-
         sp = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);// 第一个参数为同时播放数据流的最大个数，第二数据流类型，第三为声音质量
         music = sp.load(context, R.raw.play_completed, 1); // 把声音素材放到res/raw里，第2个参数即为资源文件，第3个为音乐的优先级
-
         /** 录音按键 */
-        final TextView recordBtn = (TextView) this.findViewById(R.id.mBtnRcd);
+        final TextView recordBtn = (TextView) this.findViewById(R.id.btn_voice);
         recordBtn.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -342,9 +301,9 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
             }
         });
         // 表情按钮
-        toggle_emoji_btn = (ImageView) this
-                .findViewById(R.id.mc_chatting_mode);
-        toggle_emoji_btn.setOnClickListener(new OnClickListener() {
+        btn_emoji = (ImageView) this
+                .findViewById(R.id.btn_emoji);
+        btn_emoji.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 当点击表情按钮时,应该将输入框显示出来
@@ -367,15 +326,15 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
                 emojiPlugin.onEntranceClick();
             }
         });
-        btn_media = (ImageView) view.findViewById(R.id.btn_face);
-        btn_media.setOnClickListener(new OnClickListener() {
+        btn_box = (ImageView) view.findViewById(R.id.btn_box);
+        btn_box.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 InputMethodManager imm;
                 imm = (InputMethodManager) context
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(messageET.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(inputMessage.getWindowToken(), 0);
                 if (pluginbox.getVisibility() == View.VISIBLE) {
 
                 } else {
@@ -396,8 +355,6 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
         Runnable mPollTask = new Runnable() {
             public void run() {
                 double amp = mSensor.getAmplitude();
-                LogUtil.i("amp" + amp);
-                tempAmp = amp;
                 dialog.setVolumn(amp);
                 mHandler.postDelayed(this, POLL_INTERVAL);
             }
@@ -410,7 +367,6 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
                     startVoiceT = System.currentTimeMillis();
                     String voiceName = startVoiceT + ".amr";
                     mSensor.start(voiceName);
-                    totleAmp = 0.0;
                     dialog = new VolumnDialog(context);
                     // 点击其他地方,关闭Dialog
                     dialog.setCancelable(false);
@@ -456,16 +412,9 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
                     }, 500);
                     return false;
                 }
-//                totleAmp = totleAmp + tempAmp;
-//                LogUtil.i("tempAmp" + tempAmp);
-//                LogUtil.i("totleAmp" + totleAmp);
-//                if (totleAmp <= 0) {
-//                    return false;
-//                }
                 touchUpY = event.getY();
                 LogUtil.i("MessageSend:" + touchDownY + "up:" + touchUpY);
                 if (touchDownY <= touchUpY) { // 代表向下移动
-
                 } else if (touchDownY > touchUpY) { // 代表向上移动
                     if ((touchDownY - touchUpY) >= 250) { // 如果向上滑动距离超过300,视作取消发送
                         return false;
@@ -475,13 +424,13 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
                 final long lastId = System.currentTimeMillis();
                 SLAudioMessage audioMessage = new SLAudioMessage();
                 audioMessage.setMessageId(String.valueOf(lastId));
-                audioMessage.setContent(voicefilepath);
+                audioMessage.setMessageContent(voicefilepath);
                 audioMessage.setAudioLength(time);
                 audioMessage.setUserFrom(AppUtils.getInstance().getUserId());
                 audioMessage.setUserTo(target);
                 audioMessage.setTimestamp(new Date().getTime());
-                audioMessage.setIsRead(SLMessage.msg_read);
-                audioMessage.setState(SLMessage.MessagePropertie.MSG_SENDING);
+                audioMessage.setIsRead(SLMessage.msgRead);
+                audioMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
                 InsertMessageTask insertMessageTask = new InsertMessageTask();
                 insertMessageTask.setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
                     @Override
@@ -497,7 +446,7 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
                         intent.putExtra("messageID",
                                 String.valueOf(lastId));
                         context.sendOrderedBroadcast(intent, null);
-                        messageET.getText().clear();
+                        inputMessage.getText().clear();
                     }
                 });
                 AsyncTaskUtils.execute(insertMessageTask, audioMessage);
@@ -507,7 +456,7 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
                 session.setPriority(audioMessage.getTimestamp());
                 session.setTargetId(target);
                 session.setMessageType(audioMessage.getMessageType());
-                session.setSessionContent(audioMessage.getContent());
+                session.setSessionContent(audioMessage.getMessageContent());
                 session.setSessionType(SessionType.CHAT);
                 session.setSessionName(targetName);
                 SessionDao sessionDao = new SessionDaoImpl();
@@ -529,27 +478,27 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
         ViewUtils.shutView(pluginbox);
     }
 
-    public EditText getMessageET() {
-        return messageET;
+    public void setInputMessage(EditText inputMessage) {
+        this.inputMessage = inputMessage;
     }
 
-    public void setMessageET(EditText messageET) {
-        this.messageET = messageET;
+    public EditText getInputMessage() {
+        return inputMessage;
     }
 
-    public ImageView getToggle_emoji_btn() {
-        return toggle_emoji_btn;
+    public void setBtn_emoji(ImageView btn_emoji) {
+        this.btn_emoji = btn_emoji;
     }
 
-    public void setToggle_emoji_btn(ImageView toggle_emoji_btn) {
-        this.toggle_emoji_btn = toggle_emoji_btn;
+    public ImageView getBtn_emoji() {
+        return btn_emoji;
     }
 
-    public ImageView getBtn_media() {
-        return btn_media;
+    public void setBtn_box(ImageView btn_box) {
+        this.btn_box = btn_box;
     }
 
-    public void setBtn_media(ImageView btn_media) {
-        this.btn_media = btn_media;
+    public ImageView getBtn_box() {
+        return btn_box;
     }
 }
