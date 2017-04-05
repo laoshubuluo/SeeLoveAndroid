@@ -48,8 +48,6 @@ public class SessionDaoImpl implements SessionDao {
         cv.put("sessionName", session.getSessionName());
         cv.put("sessionContent", session.getSessionContent());
         cv.put("sessionIsRead", session.getSessionIsRead());
-        cv.put("prayId", session.getPrayId());
-        cv.put("praySubject", session.getPraySubject());
         DbConnectionManager.getInstance().getConnection().beginTransaction();
         try {
             DbConnectionManager.getInstance().getConnection()
@@ -184,9 +182,7 @@ public class SessionDaoImpl implements SessionDao {
         stat.bindString(6, session.getMessageType().toString());
         stat.bindString(7, session.getSessionName());
         stat.bindString(8, session.getSessionContent());
-        stat.bindString(9, session.getSessionIsRead());
-        stat.bindString(10, session.getPrayId());
-        stat.bindString(11, session.getPraySubject());
+        stat.bindString(9, session.getSessionIsRead()+"");
         return stat;
     }
 
@@ -204,12 +200,8 @@ public class SessionDaoImpl implements SessionDao {
                 .getColumnIndexOrThrow("sessionName")));
         session.setSessionContent(cursor.getString(cursor
                 .getColumnIndex("sessionContent")));
-        session.setSessionIsRead(cursor.getString(cursor
+        session.setSessionIsRead(cursor.getInt(cursor
                 .getColumnIndex("sessionIsRead")));
-        session.setPrayId(cursor.getString(cursor
-                .getColumnIndex("prayId")));
-        session.setPraySubject(cursor.getString(cursor
-                .getColumnIndex("praySubject")));
         try {
             session.setMessageType(MessageType.valueOf(cursor
                     .getString(cursor.getColumnIndex("messageType"))));

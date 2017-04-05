@@ -18,9 +18,9 @@ public class ImageMessageDaoImpl extends MessageDaoImpl {
                 "insert into messageinfo(messageId,userFrom,userTo,content,timestamp,groupId,isRead,isVisible,isDelay,state,type,thumUrl) values(?,?,?,?,?,?,?,?,?,?,?,?)",
                 new Object[]{amImageMessage.getMessageId(),
                         amImageMessage.getUserFrom(), amImageMessage.getUserTo(),
-                        amImageMessage.getContent(), amImageMessage.getTimestamp(), amImageMessage.getIsRead(),
+                        amImageMessage.getMessageContent(), amImageMessage.getTimestamp(), amImageMessage.getIsRead(),
                         amImageMessage.getIsVisible(), amImageMessage.getIsDelay(),
-                        amImageMessage.getState(),
+                        amImageMessage.getSendStatue(),
                         amImageMessage.getMessageType().toString(), amImageMessage.getThumUrl()});
     }
 
@@ -29,12 +29,12 @@ public class ImageMessageDaoImpl extends MessageDaoImpl {
         message.setMessageId(cursor.getString(cursor.getColumnIndexOrThrow("messageId")));
         message.setUserFrom(cursor.getString(cursor.getColumnIndexOrThrow("userFrom")));
         message.setUserTo(cursor.getString(cursor.getColumnIndexOrThrow("userTo")));
-        message.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
+        message.setMessageContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
         message.setTimestamp(cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")));
         message.setIsRead(cursor.getInt(cursor.getColumnIndexOrThrow("isRead")));
         message.setIsVisible(cursor.getInt(cursor.getColumnIndexOrThrow("isVisible")));
         message.setIsDelay(cursor.getInt(cursor.getColumnIndexOrThrow("isDelay")));
-        message.setState(cursor.getInt(cursor.getColumnIndexOrThrow("state")));
+        message.setSendStatue(cursor.getInt(cursor.getColumnIndexOrThrow("state")));
         message.setThumUrl(cursor.getString(cursor.getColumnIndexOrThrow("thumUrl")));
         return message;
     }

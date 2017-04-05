@@ -21,10 +21,10 @@ public class AudioMessageDaoImpl extends MessageDaoImpl {
                 addSql,
                 new Object[]{audioMessage.getMessageId(),
                         audioMessage.getUserFrom(), audioMessage.getUserTo(),
-                        audioMessage.getContent(), audioMessage.getTimestamp(),
+                        audioMessage.getMessageContent(), audioMessage.getTimestamp(),
                         audioMessage.getIsRead(),
                         audioMessage.getIsVisible(), audioMessage.getIsDelay(),
-                        audioMessage.getState(),
+                        audioMessage.getSendStatue(),
                         audioMessage.getMessageType().toString(),
                         audioMessage.getAudioLength()});
     }
@@ -34,12 +34,12 @@ public class AudioMessageDaoImpl extends MessageDaoImpl {
         message.setMessageId(cursor.getString(cursor.getColumnIndexOrThrow("messageId")));
         message.setUserFrom(cursor.getString(cursor.getColumnIndexOrThrow("userFrom")));
         message.setUserTo(cursor.getString(cursor.getColumnIndexOrThrow("userTo")));
-        message.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
+        message.setMessageContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
         message.setTimestamp(cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")));
         message.setIsRead(cursor.getInt(cursor.getColumnIndexOrThrow("isRead")));
         message.setIsVisible(cursor.getInt(cursor.getColumnIndexOrThrow("isVisible")));
         message.setIsDelay(cursor.getInt(cursor.getColumnIndexOrThrow("isDelay")));
-        message.setState(cursor.getInt(cursor.getColumnIndexOrThrow("state")));
+        message.setSendStatue(cursor.getInt(cursor.getColumnIndexOrThrow("state")));
         message.setAudioLength(Integer.parseInt(cursor.getString(cursor
                 .getColumnIndex("audiolength"))));
         return message;

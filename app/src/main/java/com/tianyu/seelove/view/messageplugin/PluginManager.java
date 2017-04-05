@@ -80,7 +80,7 @@ public class PluginManager {
     }
 
     public PluginManager(Context context, ViewGroup pluginbox,
-                         EditText editText, String target, String targetGroup) {
+                         EditText editText, String target) {
         this(context, pluginbox, editText);
     }
 

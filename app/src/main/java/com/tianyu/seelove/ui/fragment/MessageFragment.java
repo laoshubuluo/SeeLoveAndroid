@@ -1,7 +1,11 @@
 package com.tianyu.seelove.ui.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,15 +16,24 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.adapter.SessionAdapter;
+import com.tianyu.seelove.common.Actions;
+import com.tianyu.seelove.dao.MessageDao;
 import com.tianyu.seelove.dao.SessionDao;
 import com.tianyu.seelove.dao.UserDao;
+import com.tianyu.seelove.dao.impl.MessageDaoImpl;
 import com.tianyu.seelove.dao.impl.SessionDaoImpl;
 import com.tianyu.seelove.dao.impl.UserDaoImpl;
+import com.tianyu.seelove.manager.IntentManager;
+import com.tianyu.seelove.model.entity.message.SLMessage;
 import com.tianyu.seelove.model.entity.message.SLSession;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.SessionType;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
+import com.tianyu.seelove.ui.activity.system.NetworkConnectActivity;
+import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
+import com.tianyu.seelove.view.dialog.SureDialog;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +42,19 @@ import java.util.List;
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
-public class MessageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MessageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+    private TextView titleView;
     private SessionDao sessionDao;
+    private SessionReciver reciver;
+    private SessionAdapter sessionAdapter;
     private UserDao userDao;
+    private MessageDao messageDao;
     private List<SLSession> sessionList;
     private List<SLSession> tempSessionList;
     private View view = null;
     private ListView messageList;
     private LinearLayout connectLayout;
+    private boolean isNewAdd = true;
 
     @Override
     public void onAttach(Activity activity) {
@@ -50,6 +68,9 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
         LogUtil.d("MessageFragment____onCreate");
         sessionDao = new SessionDaoImpl();
         userDao = new UserDaoImpl();
+        messageDao = new MessageDaoImpl();
+        reciver = new SessionReciver();
+        initIntent();
     }
 
     @Override
@@ -69,7 +90,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
     }
 
     private void initView(View view) {
-        TextView titleView = (TextView) view.findViewById(R.id.titleView);
+        titleView = (TextView) view.findViewById(R.id.titleView);
         messageList = (ListView) view.findViewById(R.id.messageList);
         connectLayout = (LinearLayout) view.findViewById(R.id.network_connect_layout);
         titleView.setText(R.string.message);
@@ -90,11 +111,31 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
             }
             sessionList.add(slSession);
         }
+        sessionAdapter = new SessionAdapter(getActivity(), sessionList);
+    }
+
+    private void initIntent() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.setPriority(1100);
+        intentFilter.addAction(Actions.ACTION_SESSION);
+        intentFilter.addAction(Actions.ACTION_CLEAN_USER_SESSION);
+        intentFilter.addAction(Actions.CONNECTION_FAILED);
+        intentFilter.addAction(Actions.CONNECTION_SUCCESS);
+        intentFilter.addAction(Actions.CONNECTION_LINKING);
+        intentFilter.addAction(Actions.CONNECTION_UNAVAILABLE);
+        getActivity().registerReceiver(reciver, intentFilter);
     }
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()) {
+            case R.id.network_connect_layout:
+                Intent intent = IntentManager.createIntent(getActivity(), NetworkConnectActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -104,12 +145,90 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
                 .equals(SessionType.CHAT)) {
             Intent intent = new Intent();
             intent.setClass(getActivity(), SingleChatActivity.class);
-            intent.putExtra("user_id", session
-                    .getTargetId());
+            intent.putExtra("userId", session.getTargetId());
             startActivity(intent);
-            getActivity().overridePendingTransition(
-                    R.anim.in_from_right, R.anim.out_to_left);
+            getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+        final SLSession slSession = (SLSession) adapterView.getAdapter().getItem(position);
+        final SureDialog sureDialog = new SureDialog(getActivity());
+        sureDialog.initData("", getString(R.string.sure_delete_message));
+        sureDialog.getSureTV().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SessionType.CHAT.equals(slSession.getSessionType())) {
+                    messageDao.cleanSingalChatMessage(AppUtils.getInstance().getUserId(), slSession.getTargetId());
+                    sessionDao.deleteSession(slSession.getTargetId());
+                    sessionAdapter.deleteData(slSession);
+                    // 发送广播通知MainActivity重新设置tab数字标签
+                    getActivity().sendBroadcast(new Intent(Actions.MESSAGE_READ_CHANGE));
+                    sureDialog.dismiss();
+                }
+            }
+        });
+        return true;
+    }
+
+    private class SessionReciver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Actions.ACTION_SESSION)) {
+                String targetId = intent.getStringExtra("targetId");
+                updateLastSession(targetId);
+            } else if (intent.getAction().equals(Actions.ACTION_CLEAN_USER_SESSION)) {
+                String targetId = intent.getStringExtra("userId");
+                SLSession slSession = sessionDao.getSessionByTargetId(targetId);
+                // 删除session会话
+                sessionDao.deleteSession(targetId);
+                if (null != slSession) {
+                    sessionAdapter.deleteData(slSession);
+                    sessionAdapter.notifyDataSetChanged();
+                }
+            }
+            if (null != titleView) {
+                if (intent.getAction().equals(Actions.CONNECTION_SUCCESS)) {
+                    titleView.setTextColor(getResources().getColor(R.color.font_black));
+                    titleView.setText(R.string.message);
+                    connectLayout.setVisibility(View.GONE);
+                } else if (intent.getAction().equals(Actions.CONNECTION_FAILED)) {
+                    titleView.setTextColor(getResources().getColor(R.color.font_black));
+                    titleView.setText(R.string.message_no_connect);
+                    connectLayout.setVisibility(View.VISIBLE);
+                } else if (intent.getAction().equals(Actions.CONNECTION_LINKING)) {
+                    titleView.setTextColor(getResources().getColor(R.color.font_black));
+                    titleView.setText(R.string.message_connecting);
+                    connectLayout.setVisibility(View.GONE);
+                } else if (intent.getAction().equals(Actions.CONNECTION_UNAVAILABLE)) {
+                    titleView.setTextColor(Color.RED);
+                    titleView.setText(R.string.message_failed_connect);
+                    connectLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+    private void updateLastSession(String targetId) {
+        SLSession slSession = sessionDao.getSessionByTargetId(targetId);
+        if (null == slSession) {
+            return;
+        }
+        SLMessage slMessage = messageDao.getMessageById(slSession.getLastMessageId());
+        if (null == slMessage) {
+            return;
+        }
+        if (SessionType.CHAT.equals(slSession.getSessionType())) {
+            slSession.setSessionContent(slMessage.getMessageContent());
+            SLUser slUser = userDao.getUserByUid(slSession.getTargetId());
+            if (null != slUser) {
+                slSession.setSessionIcon(slUser.getHeadUrl());
+                slSession.setSessionName(slUser.getNickName());
+                sessionDao.updateSessionName(slUser.getNickName(), String.valueOf(slUser.getUserId()));
+            }
+        }
+        sessionAdapter.addDataSession(slSession, isNewAdd);
     }
 
     @Override
@@ -128,6 +247,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
     public void onResume() {
         super.onResume();
         LogUtil.d("MessageFragment____onResume");
+        sessionAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -152,6 +272,9 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
     public void onDestroy() {
         super.onDestroy();
         LogUtil.d("MessageFragment____onDestroy");
+        if (null != reciver) {
+            getActivity().unregisterReceiver(reciver);
+        }
     }
 
     @Override

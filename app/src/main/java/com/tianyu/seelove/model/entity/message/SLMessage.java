@@ -9,6 +9,19 @@ import java.io.Serializable;
  * @date 2017-03-31 21:43
  */
 public abstract class SLMessage implements Serializable {
+
+    public interface MessagePropertie {
+        int MSG_SENDING = 0;
+        /**
+         * 发送中,默认为初始状态
+         */
+        int MSG_SENDSUS = 1;
+        /**
+         * 发送成功
+         */
+        int MSG_FAIL = 2;
+        /** 发送失败 */
+    }
     private String messageId;// 消息ID
     private String userFrom; // 消息来源Uid
     private String userTo; // 消息目标Uid
@@ -18,6 +31,9 @@ public abstract class SLMessage implements Serializable {
     private int isVisible; // 0可见 1不可见删除其实更新标志
     private int isDelay; // 0历史消息 1非历史消息
     private int sendStatue; // 消息发送状态;0:发送中(默认状态),1:发送成功;2:发送失败;
+    private Boolean isShowTime = false;
+    public static final int msgUnread = 0;
+    public static final int msgRead = 1;
 
     public abstract MessageType getMessageType();
 
@@ -91,6 +107,14 @@ public abstract class SLMessage implements Serializable {
 
     public String getMessageContent() {
         return messageContent;
+    }
+
+    public Boolean getIsShowTime() {
+        return isShowTime;
+    }
+
+    public void setIsShowTime(Boolean isShowTime) {
+        this.isShowTime = isShowTime;
     }
 
     @Override

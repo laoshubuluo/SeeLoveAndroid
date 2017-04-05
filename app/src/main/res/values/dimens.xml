@@ -14,7 +14,14 @@
     <dimen name="font_26sp">26sp</dimen>
     <!--字体尺寸-【6种尺寸，禁止增加其他尺寸】-->
     <!--布局layout-->
+    <dimen name="layout_2dp">2dp</dimen>
     <dimen name="layout_5dp">5dp</dimen>
+    <dimen name="layout_8dp">8dp</dimen>
+    <dimen name="layout_10dp">10dp</dimen>
+    <dimen name="layout_30dp">30dp</dimen>
+    <dimen name="layout_40dp">40dp</dimen>
     <dimen name="layout_45dp">45dp</dimen>
+    <dimen name="layout_55dp">55dp</dimen>
     <dimen name="layout_60dp">60dp</dimen>
+    <dimen name="layout_150dp">150dp</dimen>
 </resources>

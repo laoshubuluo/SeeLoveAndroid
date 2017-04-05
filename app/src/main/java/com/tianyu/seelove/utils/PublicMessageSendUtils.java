@@ -43,12 +43,11 @@ public class PublicMessageSendUtils {
 
     /**
      * 用于处理消息发送过程出现的异常情况--将所有发送中状态重置为发送失败
-     *
-     * @param amMessage
+     * @param slMessage
      */
-    public static void updateMessageSendStatus(SLMessage amMessage) {
-        if (SLMessage.MessagePropertie.MSG_SENDING == amMessage.getState()) {
-            amMessage.setState(SLMessage.MessagePropertie.MSG_FAIL);
+    public static void updateMessageSendStatus(SLMessage slMessage) {
+        if (SLMessage.MessagePropertie.MSG_SENDING == slMessage.getSendStatue()) {
+            slMessage.setSendStatue(SLMessage.MessagePropertie.MSG_FAIL);
         }
     }
 
@@ -76,8 +75,8 @@ public class PublicMessageSendUtils {
             amTextMessage.setUserFrom(AppUtils.getInstance().getUserId());
             amTextMessage.setUserTo(targetId);
             amTextMessage.setTimestamp(new Date().getTime());
-            amTextMessage.setIsRead(SLMessage.msg_read);
-            amTextMessage.setState(SLMessage.MessagePropertie.MSG_SENDING);
+            amTextMessage.setIsRead(SLMessage.msgRead);
+            amTextMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
             InsertMessageTask insertMessageTask = new InsertMessageTask();
             insertMessageTask.setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
                 @Override
@@ -92,7 +91,7 @@ public class PublicMessageSendUtils {
             session.setPriority(amTextMessage.getTimestamp());
             session.setTargetId(targetId);
             session.setMessageType(amTextMessage.getMessageType());
-            session.setSessionContent(amTextMessage.getContent());
+            session.setSessionContent(amTextMessage.getMessageContent());
             session.setSessionType(SessionType.CHAT);
             session.setSessionName(targetId);
             SessionDao sessionDao = new SessionDaoImpl();
@@ -108,8 +107,8 @@ public class PublicMessageSendUtils {
             amImageMessage.setUserFrom(AppUtils.getInstance().getUserId());
             amImageMessage.setUserTo(targetId);
             amImageMessage.setTimestamp(new Date().getTime());
-            amImageMessage.setIsRead(SLMessage.msg_read);
-            amImageMessage.setState(SLMessage.MessagePropertie.MSG_SENDING);
+            amImageMessage.setIsRead(SLMessage.msgRead);
+            amImageMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
             InsertMessageTask insertMessageTask = new InsertMessageTask();
             insertMessageTask.setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
                 @Override
@@ -124,7 +123,7 @@ public class PublicMessageSendUtils {
             session.setPriority(amImageMessage.getTimestamp());
             session.setTargetId(targetId);
             session.setMessageType(amImageMessage.getMessageType());
-            session.setSessionContent(amImageMessage.getContent());
+            session.setSessionContent(amImageMessage.getMessageContent());
             session.setSessionType(SessionType.CHAT);
             session.setSessionName(targetId);
             SessionDao sessionDao = new SessionDaoImpl();

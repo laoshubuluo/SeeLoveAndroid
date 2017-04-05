@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/message_sender_bg"
+        android:minHeight="@dimen/layout_55dp">
+
+        <ImageView
+            android:id="@+id/btn_emoji"
+            android:layout_width="@dimen/layout_30dp"
+            android:layout_height="@dimen/layout_30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/layout_10dp"
+            android:src="@drawable/selector_btn_emoji" />
+
+        <ImageView
+            android:id="@+id/btn_box"
+            android:layout_width="@dimen/layout_30dp"
+            android:layout_height="@dimen/layout_30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/layout_5dp"
+            android:layout_toRightOf="@+id/btn_emoji"
+            android:src="@drawable/selector_btn_box" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/layout_5dp"
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:layout_toRightOf="@+id/btn_box">
+
+            <RelativeLayout
+                android:id="@+id/textSender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:id="@+id/sendLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/layout_30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_5dp">
+
+                    <Button
+                        android:id="@+id/btn_send"
+                        android:layout_width="@dimen/layout_45dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/message_sender_send_btn"
+                        android:textColor="@color/bg_green_9c"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_switch_to_voice"
+                        android:layout_width="@dimen/layout_30dp"
+                        android:layout_height="@dimen/layout_30dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/selector_btn_voice" />
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/inputMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="@dimen/layout_8dp"
+                    android:layout_marginTop="@dimen/layout_8dp"
+                    android:layout_toLeftOf="@id/sendLayout"
+                    android:background="@drawable/message_sender_input__bg"
+                    android:maxLines="5"
+                    android:textColor="@color/font_grey"
+                    android:textSize="@dimen/font_16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/voiceSender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/btn_voice_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/layout_30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_5dp">
+
+                    <Button
+                        android:id="@+id/btn_voice_changebtn"
+                        android:layout_width="@dimen/layout_30dp"
+                        android:layout_height="@dimen/layout_30dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/selector_btn_keyborad" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/btn_voice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/layout_40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="@dimen/layout_2dp"
+                    android:layout_marginRight="@dimen/layout_2dp"
+                    android:layout_toLeftOf="@id/btn_voice_change"
+                    android:background="@drawable/message_sender_voice_bg"
+                    android:gravity="center"
+                    android:text="按住  说话"
+                    android:textColor="@color/font_grey"
+                    android:textSize="@dimen/font_15sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/message_plugin_box"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_150dp"
+        android:background="@drawable/chat_bottom_input"></RelativeLayout>
+</LinearLayout>

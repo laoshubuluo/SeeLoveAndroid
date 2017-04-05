@@ -283,15 +283,15 @@ public class MapMessageActivity extends BaseActivity {
                                                              final long lastId = System.currentTimeMillis();
                                                              SLLocationMessage locationMessage = new SLLocationMessage();
                                                              locationMessage.setMessageId(String.valueOf(lastId));
-                                                             locationMessage.setContent(savePath);
+                                                             locationMessage.setMessageContent(savePath);
                                                              locationMessage.setUserFrom(AppUtils.getInstance().getUserId());
                                                              locationMessage.setUserTo(target);
-                                                             locationMessage.setIsRead(SLMessage.msg_read);
+                                                             locationMessage.setIsRead(SLMessage.msgRead);
                                                              locationMessage.setTimestamp(new Date().getTime());
                                                              locationMessage.setLat(poiInfo.location.latitude);
                                                              locationMessage.setLng(poiInfo.location.longitude);
                                                              locationMessage.setAddress(poiInfo.address);
-                                                             locationMessage.setState(SLMessage.MessagePropertie.MSG_SENDING);
+                                                             locationMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
                                                              InsertMessageTask insertMessageTask = new InsertMessageTask();
                                                              insertMessageTask
                                                                      .setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
@@ -315,7 +315,7 @@ public class MapMessageActivity extends BaseActivity {
                                                              session.setLastMessageId(String.valueOf(lastId));
                                                              session.setPriority(locationMessage.getTimestamp());
                                                              session.setTargetId(target);
-                                                             session.setSessionContent(locationMessage.getContent());
+                                                             session.setSessionContent(locationMessage.getMessageContent());
                                                              session.setMessageType(locationMessage.getMessageType());
                                                              session.setSessionType(SessionType.CHAT);
                                                              session.setSessionName(userDao.getUserByUid(target).getNickName());
@@ -583,7 +583,7 @@ public class MapMessageActivity extends BaseActivity {
     /**
      * 隐藏软键盘
      *
-     * @param view
+     * @param
      */
     private void hideSoftinput(Context mContext) {
         InputMethodManager manager = (InputMethodManager) mContext

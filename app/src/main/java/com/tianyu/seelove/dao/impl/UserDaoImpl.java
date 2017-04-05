@@ -66,7 +66,7 @@ public class UserDaoImpl implements UserDao {
                     new String[]{String.valueOf(user.getUserId()),
                             user.getNickName(), user.getHeadUrl(),
                             String.valueOf(user.getAccountType()), SexType.parseByMsg(user.getSex()).getResultCode(),
-                            String.valueOf(user.getAge()), user.getBgImg(),
+                            String.valueOf(user.getAge()), user.getRemark(),
                             String.valueOf(user.getCityCode()), user.getCityName(),
                             String.valueOf(user.getWorkCode()), user.getWorkName(),
                             String.valueOf(user.getEducationCode()),
@@ -126,7 +126,7 @@ public class UserDaoImpl implements UserDao {
                     new String[]{String.valueOf(user.getUserId()),
                             user.getNickName(), user.getHeadUrl(),
                             String.valueOf(user.getAccountType()), SexType.parseByMsg(user.getSex()).getResultCode(),
-                            String.valueOf(user.getAge()), user.getBgImg(),
+                            String.valueOf(user.getAge()), user.getBigImg(),
                             String.valueOf(user.getCityCode()), user.getCityName(),
                             String.valueOf(user.getWorkCode()), user.getWorkName(),
                             String.valueOf(user.getEducationCode()),
@@ -395,7 +395,7 @@ public class UserDaoImpl implements UserDao {
         stat.bindString(4, String.valueOf(user.getAccountType()));
         stat.bindString(5, SexType.parseByMsg(user.getSex()).getResultCode());
         stat.bindString(6, String.valueOf(user.getAge()));
-        stat.bindString(7, user.getBgImg());
+        stat.bindString(7, user.getBigImg());
         stat.bindString(8, String.valueOf(user.getCityCode()));
         stat.bindString(9, user.getCityName());
         stat.bindString(10, String.valueOf(user.getWorkCode()));
@@ -424,7 +424,7 @@ public class UserDaoImpl implements UserDao {
         user.setAccountType(cursor.getInt(cursor.getColumnIndexOrThrow("amenId")));
         user.setSex(cursor.getString(cursor.getColumnIndexOrThrow("sex")));
         user.setAge(cursor.getInt(cursor.getColumnIndexOrThrow("province")));
-        user.setBgImg(cursor.getString(cursor.getColumnIndexOrThrow("city")));
+        user.setBigImg(cursor.getString(cursor.getColumnIndexOrThrow("city")));
         user.setCityCode(cursor.getInt(cursor.getColumnIndexOrThrow("country")));
         user.setCityName(cursor.getString(cursor.getColumnIndexOrThrow("headUrl")));
         user.setWorkCode(cursor.getInt(cursor.getColumnIndexOrThrow("phoneNum")));
