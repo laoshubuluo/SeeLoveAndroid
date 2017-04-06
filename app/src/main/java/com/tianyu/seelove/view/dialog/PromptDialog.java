@@ -8,14 +8,7 @@ import android.widget.TextView;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.utils.StringUtils;
 
-
-/**
- * author : L.jinzhu
- * date : 2015/8/17
- * introduce : 提示框
- */
 public class PromptDialog extends Dialog {
-
     private TextView titleTV;
     private TextView contentTV;
     public TextView sureTV;

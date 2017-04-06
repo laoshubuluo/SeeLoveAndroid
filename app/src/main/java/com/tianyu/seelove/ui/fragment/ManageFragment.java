@@ -8,25 +8,33 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.model.entity.video.VideoInfo;
 import com.tianyu.seelove.ui.activity.user.MyInfoActivity;
 import com.tianyu.seelove.ui.activity.video.VideoListActivity;
 import com.tianyu.seelove.utils.LogUtil;
+import com.tianyu.seelove.view.dialog.CustomProgressDialog;
+import com.tianyu.seelove.wxapi.QQEntryActivity;
+import com.tianyu.seelove.wxapi.WXEntryActivity;
+
 import java.util.ArrayList;
 
 /**
  * Fragmengt(管理)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:03
  */
-public class ManageFragment extends Fragment {
+public class ManageFragment extends Fragment implements View.OnClickListener {
     ArrayList<VideoInfo> videoInfos;
+    public CustomProgressDialog customProgressDialog;
 
     @Override
     public void onAttach(Activity activity) {
@@ -68,7 +76,7 @@ public class ManageFragment extends Fragment {
         videoInfos = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             VideoInfo videoInfo = new VideoInfo();
-            videoInfo.setVideoTitle("00"+i);
+            videoInfo.setVideoTitle("00" + i);
             videoInfos.add(videoInfo);
         }
         int size = videoInfos.size();
@@ -87,6 +95,36 @@ public class ManageFragment extends Fragment {
         gridView.setNumColumns(size); // 设置列数量=列表集合数
         gridView.setAdapter(new VideoGridAdapter(getActivity(), videoInfos));
         return view;
+    }
+
+    private void initView(View view) {
+        Button qqLoginBtn = (Button) view.findViewById(R.id.qqLoginBtn);
+        Button wechatLoginBtn = (Button) view.findViewById(R.id.wechatLoginBtn);
+        qqLoginBtn.setOnClickListener(this);
+        wechatLoginBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = null;
+        switch (view.getId()) {
+            case R.id.qqLoginBtn: {
+                customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
+                customProgressDialog.show();
+                intent = new Intent(getActivity(), QQEntryActivity.class);
+                startActivityForResult(intent, 0);
+                break;
+            }
+            case R.id.wechatLoginBtn: {
+                customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
+                customProgressDialog.show();
+                intent = new Intent(getActivity(), WXEntryActivity.class);
+                startActivityForResult(intent, 0);
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     @Override
