@@ -6,23 +6,12 @@ import android.os.Bundle;
 
 import com.tianyu.seelove.R;
 
-
 /**
  * @author shisheng.zhao
  * @Description: 自定义ProgressDialog
  * @date 2015-09-06 下午17:57:26
  */
 public class CustomProgressDialog extends ProgressDialog {
-//    private ImageView image;
-//    private TextView loadingText;
-//
-//    private final int LEFT = 0;
-//    private final int RIGHT = 1;
-//    private final int START = 0;
-//
-//    private Context context;
-//    private RotateAnimation rotateAnim = null;
-//    private String text;
 
     public CustomProgressDialog(Context context, String text) {
         super(context);

@@ -20,4 +20,11 @@ public class Constant {
     public static int imageCount = 4; // 图片最多可以选择张数
 
     public static int[] deviceWidthHeight;
+
+    //QQ开放平台
+    public static final String QQ_APP_ID = "1104784484";
+    public static final String QQ_APP_KEY = "ASJIYRxo7CfkLPy9";
+    //微信开放平台
+    public static final String WEIXIN_APP_ID = "wxb3509f0204b8d3cb";
+    public static final String WEIXIN_APP_SECRET = "457fdf85cd950d433626fec52f9c610d";
 }
