@@ -3,6 +3,7 @@ package com.tianyu.seelove.utils;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 /**
  * 日志工具类,对所有的日志文件进行统一管理
+ *
  * @author shisheng.zhao
  * @date 2017-03-28 16:12
  */
@@ -45,11 +47,15 @@ public class LogUtil {
         }
     }
 
-    public static void e(String tag, String msg) {
+    public static void e(String msg) {
         if (enable) {
-            if (tag == null || TextUtils.isEmpty(tag)) {
-                tag = TAG;
-            }
+            Log.e(TAG, msg);
+        }
+    }
+
+    public static void e(String tag, String msg) {
+        tag = StringUtils.isNotBlank(tag) ? TAG : tag;
+        if (enable) {
             Log.e(tag, msg);
         }
     }

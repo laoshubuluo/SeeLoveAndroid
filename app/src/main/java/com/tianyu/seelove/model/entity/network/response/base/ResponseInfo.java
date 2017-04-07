@@ -7,10 +7,10 @@ import com.google.gson.annotations.SerializedName;
  * date : 2015/8/12
  * introduce : 响应实体
  */
-public class ResponseInfo extends AbstractResponseInfo{
+public class ResponseInfo extends AbstractResponseInfo {
     private int actionId;
     @SerializedName("statusCode")
-    private String code;
+    private int code;
     @SerializedName("statusMsg")
     private String message;
 
@@ -22,11 +22,11 @@ public class ResponseInfo extends AbstractResponseInfo{
         this.actionId = actionId;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

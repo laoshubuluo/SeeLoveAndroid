@@ -13,7 +13,6 @@ import com.tianyu.seelove.utils.LogUtil;
  * introduce : 请求实体
  */
 public class AppInfo extends AbstractRequestInfo {
-
     private String language;
     private int versionCode;
     private String versionName;

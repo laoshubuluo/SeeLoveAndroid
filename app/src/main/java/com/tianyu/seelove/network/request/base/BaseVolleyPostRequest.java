@@ -35,13 +35,13 @@ public abstract class BaseVolleyPostRequest<REQUEST, RESPONSE> extends BaseVolle
             os = new ByteArrayOutputStream();
             dos = new DataOutputStream(os);
             //二进制前缀
-            String userId = AppUtils.getInstance().getUserId();
-            long uid = StringUtils.isNotBlank(userId) ? Long.parseLong(userId) : 0;
-            int version = 100;
-            long tmp = 0;
-            dos.writeLong(uid);//写入uid
-            dos.writeInt(version);//协议版本
-            dos.writeLong(tmp);//占位符
+//            String userId = AppUtils.getInstance().getUserId();
+//            long uid = StringUtils.isNotBlank(userId) ? Long.parseLong(userId) : 0;
+//            int version = 100;
+//            long tmp = 0;
+//            dos.writeLong(uid);//写入uid
+//            dos.writeInt(version);//协议版本
+//            dos.writeLong(tmp);//占位符
             dos.write(jsonStr.getBytes("utf-8"));
             bytes = os.toByteArray();
         } catch (Throwable e) {

@@ -59,7 +59,7 @@ public class UserInfoActivity extends BaseActivity {
         customProgressDialog = new CustomProgressDialog(UserInfoActivity.this, getString(R.string.loading));
         customProgressDialog.show();
         controller = new FriendController(getApplication(), handler);
-        controller.search("", 0, 0, DataGetType.UPDATE);
+        controller.search("1212", 111, 11123123, DataGetType.UPDATE);
     }
 
     /**

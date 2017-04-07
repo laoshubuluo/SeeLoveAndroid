@@ -9,7 +9,6 @@ import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.ResponseConstant;
 import com.tianyu.seelove.common.WebConstant;
 import com.tianyu.seelove.model.entity.network.request.FriendSearchActionInfo;
-import com.tianyu.seelove.model.entity.network.request.base.ActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.FriendSearchInfo;
 import com.tianyu.seelove.model.enums.DataGetType;
@@ -19,15 +18,12 @@ import com.tianyu.seelove.utils.LogUtil;
 
 import org.json.JSONObject;
 
-import java.util.List;
-
 /**
  * author : L.jinzhu
  * date : 2015/9/11
  * introduce : 好友搜索请求request
  */
 public class FriendSearchRequest extends PostJsonRequest {
-    private List<String> numberList;
     private String keyWord;
     private DataGetType dataGetType;// 数据获取类型
     private int totalPage;
@@ -51,9 +47,9 @@ public class FriendSearchRequest extends PostJsonRequest {
 
     @Override
     protected String getParamsJson() {
-        ActionInfo actionInfo = new ActionInfo(27);
+        FriendSearchActionInfo actionInfo = new FriendSearchActionInfo(27, keyWord, totalPage, currentPage, pageType);
         RequestInfo r = new RequestInfo(context, actionInfo);
-        return GsonUtil.toJson(actionInfo);
+        return GsonUtil.toJson(r);
     }
 
     @Override
@@ -74,10 +70,9 @@ public class FriendSearchRequest extends PostJsonRequest {
             LogUtil.i("response success json: [" + requestTag() + "]: " + response.toString());
             FriendSearchInfo info = GsonUtil.fromJson(response.toString(), FriendSearchInfo.class);
             //响应正常
-            if (ResponseConstant.SUCCESS.equals(info.getCode())) {
+            if (ResponseConstant.SUCCESS == info.getCode()) {
                 b.putInt("totalPage", info.getTotalPage());
                 b.putInt("currentPage", info.getCurrentPage());
-                b.putString("userName", info.getMessage());
                 b.putString("dataGetType", dataGetType == null ? "" : dataGetType.getType());
                 msg.what = MessageSignConstant.FRIEND_SEARCH_SUCCESS;
                 msg.setData(b);
@@ -86,12 +81,12 @@ public class FriendSearchRequest extends PostJsonRequest {
             }
             //响应失败
             else {
-                b.putString("code", info.getCode());
+                b.putInt("code", info.getCode());
                 b.putString("message", info.getMessage());
                 msg.what = MessageSignConstant.FRIEND_SEARCH_FAILURE;
                 msg.setData(b);
                 handler.sendMessage(msg);
-                LogUtil.e("friend search failure: code: " + info.getCode() + ",message: " + info.getMessage(), "");
+                LogUtil.e("friend search failure: code: " + info.getCode() + ",message: " + info.getMessage());
             }
         } catch (Throwable e) {
             handler.sendEmptyMessage(MessageSignConstant.UNKNOWN_ERROR);
