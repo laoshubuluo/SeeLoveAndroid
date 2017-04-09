@@ -70,7 +70,7 @@
     <string name="pre">张</string>
     <string name="select_photos">选择照片</string>
 
-    <string name="friend_search_sucess">好友搜索成功</string>
-    <string name="friend_search_failure">好友搜索失败</string>
-    <string name="friend_search_error">好友搜索异常</string>
+    <string name="user_create_sucess">用户创建成功</string>
+    <string name="user_create_failure">用户创建失败</string>
+    <string name="user_create_error">用户创建异常</string>
 </resources>

@@ -9,6 +9,5 @@ public class ResponseConstant {
     private ResponseConstant() {
     }
 
-    public static final int SUCCESS = 1;
-    public static final int USER_DISABLE = 300;// 用户被封
+    public static final int SUCCESS = 100;
 }

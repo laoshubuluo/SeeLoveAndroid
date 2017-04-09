@@ -8,9 +8,9 @@ import android.widget.TextView;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
-import com.tianyu.seelove.controller.FriendController;
+import com.tianyu.seelove.controller.UserController;
+import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.video.VideoInfo;
-import com.tianyu.seelove.model.enums.DataGetType;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
@@ -28,7 +28,7 @@ public class UserInfoActivity extends BaseActivity {
     private ArrayList<VideoInfo> videoInfos;
     private String userName = "";
 
-    private FriendController controller;
+    private UserController controller;
 
     private TextView titleView;
     private TextView nameView;
@@ -58,8 +58,8 @@ public class UserInfoActivity extends BaseActivity {
 
         customProgressDialog = new CustomProgressDialog(UserInfoActivity.this, getString(R.string.loading));
         customProgressDialog.show();
-        controller = new FriendController(getApplication(), handler);
-        controller.search("1212", 111, 11123123, DataGetType.UPDATE);
+        controller = new UserController(getApplication(), handler);
+        controller.create("梁金柱", "我是从微信返回的字段，供服务器解析，假设代表工作地点");
     }
 
     /**
@@ -75,25 +75,23 @@ public class UserInfoActivity extends BaseActivity {
         if (promptDialog == null || promptDialog.isShowing())
             promptDialog = new PromptDialog(UserInfoActivity.this);
         switch (msg.what) {
-            case MessageSignConstant.FRIEND_SEARCH_SUCCESS:
-                int totalPage = msg.getData().getInt("totalPage");
-                int currentPage = msg.getData().getInt("currentPage");
-                String userName = msg.getData().getString("userName", "");
-                titleView.setText(userName);
-                nameView.setText(userName);
+            case MessageSignConstant.USER_CREATE_SUCCESS:
+                SLUser user = (SLUser) msg.getData().getSerializable("user");
+                titleView.setText(user.getNickName());
+                nameView.setText(String.valueOf(user.getUserId()) + user.getWorkName());
                 break;
-            case MessageSignConstant.FRIEND_SEARCH_FAILURE:
+            case MessageSignConstant.USER_CREATE_FAILURE:
                 String code = msg.getData().getString("code");
                 String message = msg.getData().getString("message");
-                promptDialog.initData(getString(R.string.friend_search_failure), message);
+                promptDialog.initData(getString(R.string.user_create_failure), message);
                 promptDialog.show();
                 break;
             case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
-                promptDialog.initData(getString(R.string.friend_search_error), msg.getData().getString("message"));
+                promptDialog.initData(getString(R.string.user_create_error), msg.getData().getString("message"));
                 promptDialog.show();
                 break;
             case MessageSignConstant.UNKNOWN_ERROR:
-                promptDialog.initData(getString(R.string.friend_search_error), getString(R.string.unknown_error));
+                promptDialog.initData(getString(R.string.user_create_error), getString(R.string.unknown_error));
                 promptDialog.show();
                 break;
         }

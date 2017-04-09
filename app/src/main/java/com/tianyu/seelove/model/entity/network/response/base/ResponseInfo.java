@@ -1,18 +1,14 @@
 package com.tianyu.seelove.model.entity.network.response.base;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * author : L.jinzhu
  * date : 2015/8/12
  * introduce : 响应实体
  */
 public class ResponseInfo extends AbstractResponseInfo {
-    private int actionId;
-    @SerializedName("statusCode")
-    private int code;
-    @SerializedName("statusMsg")
-    private String message;
+    protected int actionId;
+    protected int statusCode;
+    protected String statusMsg;
 
     public int getActionId() {
         return actionId;
@@ -22,19 +18,19 @@ public class ResponseInfo extends AbstractResponseInfo {
         this.actionId = actionId;
     }
 
-    public int getCode() {
-        return code;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
-    public String getMessage() {
-        return message;
+    public String getStatusMsg() {
+        return statusMsg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setStatusMsg(String statusMsg) {
+        this.statusMsg = statusMsg;
     }
 }

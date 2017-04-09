@@ -12,4 +12,12 @@ public class ActionInfo extends AbstractRequestInfo {
     public ActionInfo(int actionId) {
         this.actionId = actionId;
     }
+
+    public int getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(int actionId) {
+        this.actionId = actionId;
+    }
 }
