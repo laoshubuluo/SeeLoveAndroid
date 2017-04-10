@@ -53,8 +53,8 @@ public class ImageMessageEntity extends MessageEntity {
     public ImageMessageEntity(SLMessage message) {
         super(message);
         this.imageMessage = (SLImageMessage) message;
-        this.user = new UserDaoImpl().getUserByUid(message.getUserFrom());
-        this.self = new UserDaoImpl().getUserByUid(AppUtils.getInstance()
+        this.user = new UserDaoImpl().getUserByUserId(message.getUserFrom());
+        this.self = new UserDaoImpl().getUserByUserId(AppUtils.getInstance()
                 .getUserId());
     }
 
@@ -356,7 +356,7 @@ public class ImageMessageEntity extends MessageEntity {
         session.setTargetId(amImageMessage.getUserTo());
         session.setMessageType(amImageMessage.getMessageType());
         session.setSessionContent(amImageMessage.getMessageContent());
-        SLUser user = new UserDaoImpl().getUserByUid(amImageMessage.getUserTo());
+        SLUser user = new UserDaoImpl().getUserByUserId(amImageMessage.getUserTo());
         session.setSessionIcon(user.getHeadUrl());
         session.setSessionType(SessionType.CHAT);
         session.setSessionName(user.getNickName());

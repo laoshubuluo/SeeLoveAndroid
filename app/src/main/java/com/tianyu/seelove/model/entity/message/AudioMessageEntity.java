@@ -49,8 +49,8 @@ public class AudioMessageEntity extends MessageEntity {
     public AudioMessageEntity(SLMessage message) {
         super(message);
         audioMessage = (SLAudioMessage) message;
-        user = new UserDaoImpl().getUserByUid(message.getUserFrom());
-        self = new UserDaoImpl().getUserByUid(AppUtils.getInstance()
+        user = new UserDaoImpl().getUserByUserId(message.getUserFrom());
+        self = new UserDaoImpl().getUserByUserId(AppUtils.getInstance()
                 .getUserId());
     }
 
@@ -277,7 +277,7 @@ public class AudioMessageEntity extends MessageEntity {
         session.setTargetId(amMessage.getUserTo());
         session.setMessageType(amAudioMessage.getMessageType());
         session.setSessionContent(amAudioMessage.getMessageContent());
-        SLUser user = new UserDaoImpl().getUserByUid(amAudioMessage.getUserTo());
+        SLUser user = new UserDaoImpl().getUserByUserId(amAudioMessage.getUserTo());
         session.setSessionIcon(user.getHeadUrl());
         session.setSessionType(SessionType.CHAT);
         session.setSessionName(user.getNickName());

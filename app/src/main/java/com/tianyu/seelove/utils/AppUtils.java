@@ -86,7 +86,7 @@ public class AppUtils {
      * @return
      */
     public String getUserId() {
-        return sharedPreferences.getString("userId", "0");
+        return sharedPreferences.getString("userId", "1000");
     }
 
     /**

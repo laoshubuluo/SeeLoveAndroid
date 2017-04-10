@@ -9,6 +9,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FindUserAdapter;
@@ -23,7 +24,8 @@ import java.util.List;
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
-public class FindFragment extends Fragment {
+public class FindFragment extends Fragment implements View.OnClickListener{
+    private View view = null;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private FindUserAdapter mAdapter;
@@ -43,11 +45,28 @@ public class FindFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LogUtil.d("FindFragment____onCreateView");
-        View view = inflater.inflate(R.layout.fragment_find, container, false);
+        // 防止onCreateView被多次调用
+        if (null != view) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (null != parent)
+                parent.removeView(view);
+        } else {
+            view = inflater.inflate(R.layout.fragment_find, container, false);
+            initView(view);
+        }
+        return view;
+    }
+
+    private void initView(View view){
         TextView titleView = (TextView) view.findViewById(R.id.titleView);
+        ImageView rightView = (ImageView) view.findViewById(R.id.rightBtn);
         titleView.setText(R.string.find);
+        rightView.setVisibility(View.VISIBLE);
+        rightView.setBackgroundResource(R.mipmap.find_select_btn);
+        rightView.setOnClickListener(this);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        //mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 5, false));
         mAdapter = new FindUserAdapter(getActivity(), buildData());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -60,7 +79,16 @@ public class FindFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.rightBtn:
+                break;
+            default:
+                break;
+        }
     }
 
     // 测试数据

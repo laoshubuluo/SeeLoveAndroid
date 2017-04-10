@@ -1,79 +1,81 @@
 package com.tianyu.seelove.ui.activity.system;
 
-import android.annotation.TargetApi;
-import android.graphics.Color;
-import android.os.Build;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.RadioGroup;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+import android.widget.TabHost;
+import android.widget.TextView;
 import com.tianyu.seelove.R;
-import com.tianyu.seelove.adapter.FragmentTabAdapter;
+import com.tianyu.seelove.manager.DbConnectionManager;
+import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.ui.fragment.FindFragment;
 import com.tianyu.seelove.ui.fragment.FollowFragment;
 import com.tianyu.seelove.ui.fragment.ManageFragment;
 import com.tianyu.seelove.ui.fragment.MessageFragment;
-import com.tianyu.seelove.utils.LogUtil;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 主页－统一对fragment进行管理
  * @author shisheng.zhao
  * @date 2017-03-28 16:27
  */
-public class MainActivity extends FragmentActivity {
-    private RadioGroup radioGroup;
-    public List<Fragment> fragments = new ArrayList<Fragment>();
+public class MainActivity extends BaseActivity {
+    public static FragmentTabHost mTabHost;
+    private LayoutInflater mInflater;
+    private Class<?>[] fragmentArray = {FindFragment.class, MessageFragment.class,
+            FollowFragment.class, ManageFragment.class};
+    private String[] mTextviewArray;
+    private int[] mImageViewArray = {R.drawable.selector_bottom_find,
+            R.drawable.selector_bottom_message, R.drawable.selector_bottom_follow,
+            R.drawable.selector_bottom_manager};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        showFullScreen();
-        fragments.add(new FindFragment());
-        fragments.add(new MessageFragment());
-        fragments.add(new FollowFragment());
-        fragments.add(new ManageFragment());
-        radioGroup = (RadioGroup) findViewById(R.id.tabs_radioGroup);
-        FragmentTabAdapter tabAdapter = new FragmentTabAdapter(this, fragments, R.id.tab_content, radioGroup);
-        tabAdapter.setOnRgsExtraCheckedChangedListener(new FragmentTabAdapter.OnRgsExtraCheckedChangedListener(){
+        mTextviewArray = this.getResources().getStringArray(R.array.frag_text);
+        initView();
+        DbConnectionManager.getInstance().reload();
+    }
+
+    private void initView() {
+        mInflater = LayoutInflater.from(this);
+        // 实例化TabHost对象，得到TabHost
+        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+        mTabHost.setup(this, getSupportFragmentManager(), R.id.tabLayout);
+        // 得到fragment的个数
+        int count = fragmentArray.length;
+        for (int i = 0; i < count; i++) {
+            // 为每一个Tab按钮设置图标、文字和内容
+            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(mTextviewArray[i]).setIndicator(getTabItemView(i));
+            // 将Tab按钮添加进Tab选项卡中
+            mTabHost.addTab(tabSpec, fragmentArray[i], null);
+        }
+        mTabHost.getTabWidget().setDividerDrawable(null);
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
-            public void OnRgsExtraCheckedChanged(RadioGroup radioGroup, int checkedId, int index) {
-                LogUtil.d("index = " + index);
+            public void onTabChanged(String tabId) {
+                // 根据tabId处理相关tabChang事件
+                // 隐藏键盘
+                InputMethodManager imm = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
+                if (isOpen) {
+                    imm.hideSoftInputFromWindow(mTabHost.getWindowToken(), 0); //强制隐藏键盘
+                }
             }
         });
     }
 
-    protected void showFullScreen() {
-        // 4.4及以上版本开启
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-            FrameLayout view = (FrameLayout) this.findViewById(android.R.id.content);
-            View rootView = view.getChildAt(0);
-            rootView.setFitsSystemWindows(true);
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            // 自定义颜色
-            tintManager.setTintColor(Color.parseColor("#f5537a"));
-        }
-    }
-
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
+    private View getTabItemView(int index) {
+        View view = mInflater.inflate(R.layout.tab_item_view, null);
+        ImageView tabIcon = (ImageView) view.findViewById(R.id.tabIcon);
+        tabIcon.setImageResource(mImageViewArray[index]);
+        TextView tabTitle = (TextView) view.findViewById(R.id.tabTitle);
+        tabTitle.setText(mTextviewArray[index]);
+        return view;
     }
 }

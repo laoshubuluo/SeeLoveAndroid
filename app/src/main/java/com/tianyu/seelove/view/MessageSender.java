@@ -217,7 +217,7 @@ public class MessageSender extends RelativeLayout implements OnClickListener {
             session.setTargetId(target);
             session.setMessageType(message.getMessageType());
             session.setSessionContent(message.getMessageContent());
-            SLUser user = new UserDaoImpl().getUserByUid(target);
+            SLUser user = new UserDaoImpl().getUserByUserId(target);
             session.setSessionIcon(user.getHeadUrl());
             session.setSessionType(SessionType.CHAT);
             session.setSessionName(getTargetName());

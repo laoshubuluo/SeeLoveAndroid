@@ -55,8 +55,8 @@ public class LocationMessageEntity extends MessageEntity {
     public LocationMessageEntity(SLMessage message) {
         super(message);
         this.locationMessage = (SLLocationMessage) message;
-        this.user = new UserDaoImpl().getUserByUid(message.getUserFrom());
-        this.self = new UserDaoImpl().getUserByUid(AppUtils.getInstance()
+        this.user = new UserDaoImpl().getUserByUserId(message.getUserFrom());
+        this.self = new UserDaoImpl().getUserByUserId(AppUtils.getInstance()
                 .getUserId());
     }
 
@@ -313,7 +313,7 @@ public class LocationMessageEntity extends MessageEntity {
         session.setTargetId(amMessage.getUserTo());
         session.setMessageType(amLocationMessage.getMessageType());
         session.setSessionContent(amLocationMessage.getMessageContent());
-        SLUser user = new UserDaoImpl().getUserByUid(amLocationMessage.getUserTo());
+        SLUser user = new UserDaoImpl().getUserByUserId(amLocationMessage.getUserTo());
         session.setSessionIcon(user.getHeadUrl());
         session.setSessionType(SessionType.CHAT);
         session.setSessionName(user.getNickName());

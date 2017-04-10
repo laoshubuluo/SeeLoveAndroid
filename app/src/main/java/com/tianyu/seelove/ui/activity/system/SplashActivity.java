@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.common.WebConstant;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 
 /**
@@ -16,6 +17,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setCurrentColor("#00000000");
         setContentView(R.layout.activity_splash);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -25,6 +27,6 @@ public class SplashActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 3000);
+        }, WebConstant.SPLASH_TIME);
     }
 }

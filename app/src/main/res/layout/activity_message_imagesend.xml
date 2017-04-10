@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:id="@+id/contain_layout"
-        style="@style/wh_ff"
+        style="@style/wh_mm"
         android:layout_above="@+id/layout_line"
         android:layout_below="@+id/about_layout"></RelativeLayout>
 

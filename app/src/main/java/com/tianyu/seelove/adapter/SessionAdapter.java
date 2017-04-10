@@ -36,8 +36,7 @@ public class SessionAdapter extends BaseAdapter {
         super();
         this.mContext = mContext;
         this.sessions = sessions;
-        this.inflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public void addData(List<SLSession> sessions) {
@@ -118,38 +117,25 @@ public class SessionAdapter extends BaseAdapter {
         } else {
             viewHoder = (ViewHoder) convertView.getTag();
         }
-        viewHoder.iv_sign.setVisibility(View.GONE);
-        viewHoder.message_tv_who.setText(FaceConversionUtils.getInstace()
-                .getExpressionString(convertView.getContext(), TextUtils.StringFilter(sessions.get(position)
-                        .getSessionName())));
+        viewHoder.message_tv_who.setText(FaceConversionUtils.getInstace().getExpressionString(convertView.getContext(), TextUtils.StringFilter(sessions.get(position).getSessionName())));
         if (sessions.get(position).getSessionType() == SessionType.CHAT) {
-            ImageLoader.getInstance().displayImage(sessions.get(position).getSessionIcon(),
-                    viewHoder.message_img_photo,
-                    ImageLoaderUtil.getSmallImageOptions());
+            ImageLoader.getInstance().displayImage(sessions.get(position).getSessionIcon(), viewHoder.message_img_photo, ImageLoaderUtil.getSmallImageOptions());
         }
-        viewHoder.message_tv_time.setText(DateUtils.getFriendlyDate(sessions
-                .get(position).getPriority()));
-        if (sessions.get(position).getMessageType()
-                .equals(MessageType.AUDIO)) {
+        viewHoder.message_tv_time.setText(DateUtils.getPastDate(sessions.get(position).getPriority()));
+        if (sessions.get(position).getMessageType().equals(MessageType.AUDIO)) {
             viewHoder.message_tv_content.setText("[语音]");
-        } else if (sessions.get(position).getMessageType()
-                .equals(MessageType.IMAGE)) {
+        } else if (sessions.get(position).getMessageType().equals(MessageType.IMAGE)) {
             viewHoder.message_tv_content.setText("[图片]");
-        } else if (sessions.get(position).getMessageType()
-                .equals(MessageType.LOCATION)) {
+        } else if (sessions.get(position).getMessageType().equals(MessageType.LOCATION)) {
             viewHoder.message_tv_content.setText("[位置]");
-        } else if (sessions.get(position).getMessageType()
-                .equals(MessageType.TEXT)) {
-            SpannableString spannableString = FaceConversionUtils
-                    .getInstace().getExpressionString(mContext,
-                            sessions.get(position).getSessionContent());
+        } else if (sessions.get(position).getMessageType().equals(MessageType.TEXT)) {
+            SpannableString spannableString = FaceConversionUtils.getInstace().getExpressionString(mContext, sessions.get(position).getSessionContent());
             viewHoder.message_tv_content.setText(spannableString);
         }
         return convertView;
     }
 
     private class ViewHoder {
-        ImageView iv_sign;
         ImageView message_img_photo;
         TextView message_tv_who;
         TextView message_tv_time;

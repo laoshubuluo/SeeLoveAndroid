@@ -46,7 +46,7 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         SLUser userInfo = mData.get(position);
         ImageLoader.getInstance().displayImage(userInfo.getHeadUrl(), viewHolder.userAvatar, ImageLoaderUtil.getSmallImageOptions());
-        viewHolder.userAvatar.getLayoutParams().height = 400; // 从数据源中获取图片高度，动态设置到控件上
+        viewHolder.userAvatar.getLayoutParams().height = 550; // 从数据源中获取图片高度，动态设置到控件上
         viewHolder.userName.setText(userInfo.getNickName());
         viewHolder.itemView.setTag(mData.get(position));
     }
