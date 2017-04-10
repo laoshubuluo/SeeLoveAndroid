@@ -70,7 +70,6 @@
     <string name="pre">张</string>
     <string name="select_photos">选择照片</string>
 
-    <string name="user_create_sucess">用户创建成功</string>
+    <string name="user_login_failure">用户登录失败</string>
     <string name="user_create_failure">用户创建失败</string>
-    <string name="user_create_error">用户创建异常</string>
 </resources>

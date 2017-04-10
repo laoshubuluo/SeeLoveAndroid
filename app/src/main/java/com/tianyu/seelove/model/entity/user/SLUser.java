@@ -16,7 +16,7 @@ public class SLUser implements Serializable{
     private String nickName; // 用户昵称
     private int accountType = 0; // 0:未知;1:微信;2:QQ
     private int age = 0; // 用户年龄
-    private String sex = SexType.SEX_UNKNOW.getResultCode();//性别 0:未知;1男;2女
+    private String sex ;//性别 0:未知;1男;2女
     private String bigImg; // 用户信息默认大图
     private int cityCode; // 城市编号
     private String cityName; // 城市名称
@@ -30,6 +30,9 @@ public class SLUser implements Serializable{
     private String marriageName; // 婚姻状况名称
     private String introduce; // 一句话介绍
     private String remark; // 保留域
+
+    // 其他参数
+    private String token4RongCloud;// 融云token
 
     // 显示额外信息
     private int videoCount; // 视频数
@@ -85,11 +88,7 @@ public class SLUser implements Serializable{
     }
 
     public String getSex() {
-        SexType sexType = SexType.parse(sex);
-        if (null == sexType)
-            return SexType.parse("0").getResultMsg();
-        else
-            return sexType.getResultMsg();
+        return sex;
     }
 
     public void setSex(String sex) {
@@ -216,31 +215,21 @@ public class SLUser implements Serializable{
         this.followCount = followCount;
     }
 
+    public String getToken4RongCloud() {
+        return token4RongCloud;
+    }
+
+    public void setToken4RongCloud(String token4RongCloud) {
+        this.token4RongCloud = token4RongCloud;
+    }
+
     @Override
     public String toString() {
-        return "SLUser{" +
+        return "User{" +
                 "userId=" + userId +
-                ", headUrl='" + headUrl + '\'' +
                 ", nickName='" + nickName + '\'' +
-                ", accountType=" + accountType +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", bigImg='" + bigImg + '\'' +
-                ", cityCode=" + cityCode +
-                ", cityName='" + cityName + '\'' +
-                ", workCode=" + workCode +
-                ", workName='" + workName + '\'' +
-                ", educationCode=" + educationCode +
-                ", educationName='" + educationName + '\'' +
-                ", houseCode=" + houseCode +
-                ", houseName='" + houseName + '\'' +
-                ", marriageCode=" + marriageCode +
-                ", marriageName='" + marriageName + '\'' +
-                ", introduce='" + introduce + '\'' +
-                ", remark='" + remark + '\'' +
-                ", videoCount=" + videoCount +
-                ", followCount=" + followCount +
-                ", followedCount=" + followedCount +
+                ", token4RongCloud='" + token4RongCloud + '\'' +
+                ", headUrl='" + headUrl + '\'' +
                 '}';
     }
 }

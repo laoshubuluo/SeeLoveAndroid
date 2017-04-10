@@ -2,16 +2,22 @@ package com.tianyu.seelove.ui.activity.user;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.view.View;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
+import com.tianyu.seelove.model.entity.ImageViewHolder;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.video.VideoInfo;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
+import com.tianyu.seelove.utils.ImageUtil;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 
@@ -27,6 +33,7 @@ public class UserInfoActivity extends BaseActivity {
     private VideoGridAdapter gridAdapter;
     private ArrayList<VideoInfo> videoInfos;
     private String userName = "";
+    private Long userId;
 
     private UserController controller;
 
@@ -56,10 +63,26 @@ public class UserInfoActivity extends BaseActivity {
         gridAdapter = new VideoGridAdapter(this, videoInfos);
         gridView.setAdapter(gridAdapter);
 
-        customProgressDialog = new CustomProgressDialog(UserInfoActivity.this, getString(R.string.loading));
-        customProgressDialog.show();
+
+        // TODO by L.jinzhu for test
         controller = new UserController(getApplication(), handler);
-        controller.create("梁金柱", "我是从微信返回的字段，供服务器解析，假设代表工作地点");
+
+        findViewById(R.id.testBtn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customProgressDialog = new CustomProgressDialog(UserInfoActivity.this, getString(R.string.loading));
+                customProgressDialog.show();
+                controller.create(userName, "我是从微信返回的字段");
+            }
+        });
+        findViewById(R.id.testBtn2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customProgressDialog = new CustomProgressDialog(UserInfoActivity.this, getString(R.string.loading));
+                customProgressDialog.show();
+                controller.login(userId, "", "");
+            }
+        });
     }
 
     /**
@@ -74,24 +97,43 @@ public class UserInfoActivity extends BaseActivity {
             customProgressDialog.dismiss();
         if (promptDialog == null || promptDialog.isShowing())
             promptDialog = new PromptDialog(UserInfoActivity.this);
+        SLUser user;
+        String code;
+        String message;
         switch (msg.what) {
             case MessageSignConstant.USER_CREATE_SUCCESS:
-                SLUser user = (SLUser) msg.getData().getSerializable("user");
+                user = (SLUser) msg.getData().getSerializable("user");
+                userId = user.getUserId();
                 titleView.setText(user.getNickName());
-                nameView.setText(String.valueOf(user.getUserId()) + user.getWorkName());
+                nameView.setText("创建token:" + user.getToken4RongCloud());
+                Toast.makeText(getApplicationContext(), "创建成功：" + user.toString(), Toast.LENGTH_LONG).show();
                 break;
             case MessageSignConstant.USER_CREATE_FAILURE:
-                String code = msg.getData().getString("code");
-                String message = msg.getData().getString("message");
+                code = msg.getData().getString("code");
+                message = msg.getData().getString("message");
                 promptDialog.initData(getString(R.string.user_create_failure), message);
                 promptDialog.show();
                 break;
+            case MessageSignConstant.USER_LOGIN_SUCCESS:
+                user = (SLUser) msg.getData().getSerializable("user");
+                titleView.setText(user.getNickName());
+                nameView.setText("登录获取token:" + user.getToken4RongCloud());
+                ImageView view = (ImageView) findViewById(R.id.headView);
+                ImageLoader.getInstance().displayImage(user.getHeadUrl(), view, ImageUtil.getImageOptions());
+                Toast.makeText(getApplicationContext(), "登录成功：" + user.toString(), Toast.LENGTH_LONG).show();
+                break;
+            case MessageSignConstant.USER_LOGIN_FAILURE:
+                code = msg.getData().getString("code");
+                message = msg.getData().getString("message");
+                promptDialog.initData(getString(R.string.user_login_failure), message);
+                promptDialog.show();
+                break;
             case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
-                promptDialog.initData(getString(R.string.user_create_error), msg.getData().getString("message"));
+                promptDialog.initData("", msg.getData().getString("message"));
                 promptDialog.show();
                 break;
             case MessageSignConstant.UNKNOWN_ERROR:
-                promptDialog.initData(getString(R.string.user_create_error), getString(R.string.unknown_error));
+                promptDialog.initData("", getString(R.string.unknown_error));
                 promptDialog.show();
                 break;
         }

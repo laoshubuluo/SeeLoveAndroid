@@ -5,12 +5,13 @@ import android.os.Handler;
 
 import com.tianyu.seelove.network.VolleyManager;
 import com.tianyu.seelove.network.request.UserCreateRequest;
+import com.tianyu.seelove.network.request.UserLoginRequest;
 
 
 /**
  * author : L.jinzhu
  * date : 2015/8/24
- * introduce : 好友控制器
+ * introduce : 用户控制
  */
 public class UserController {
 
@@ -23,10 +24,18 @@ public class UserController {
     }
 
     /**
-     * 好友搜索
+     * 创建
      */
     public void create(String userName, String dataFromOtherPlatform) {
         UserCreateRequest request = new UserCreateRequest(handler, context, userName, dataFromOtherPlatform);
+        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
+    }
+
+    /**
+     * 登录
+     */
+    public void login(Long userId, String userName, String password) {
+        UserLoginRequest request = new UserLoginRequest(handler, context, userId, userName, password);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 }

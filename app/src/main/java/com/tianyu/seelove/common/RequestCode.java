@@ -6,4 +6,5 @@ package com.tianyu.seelove.common;
  */
 public class RequestCode {
     public static final int USER_CREATE = 1001;
+    public static final int USER_LOGIN = 1002;
 }
