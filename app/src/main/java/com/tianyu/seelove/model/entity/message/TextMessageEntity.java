@@ -57,8 +57,8 @@ public class TextMessageEntity extends MessageEntity {
     public TextMessageEntity(SLMessage message) {
         super(message);
         this.textMessage = (SLTextMessage) message;
-        user = new UserDaoImpl().getUserByUid(message.getUserFrom());
-        self = new UserDaoImpl().getUserByUid(AppUtils.getInstance().getUserId());
+        user = new UserDaoImpl().getUserByUserId(message.getUserFrom());
+        self = new UserDaoImpl().getUserByUserId(AppUtils.getInstance().getUserId());
     }
 
     // FIXME:这里等重构完成之后可以改成用ViewCache
@@ -293,7 +293,7 @@ public class TextMessageEntity extends MessageEntity {
         session.setTargetId(amMessage.getUserTo());
         session.setMessageType(amTextMessage.getMessageType());
         session.setSessionContent(amTextMessage.getMessageContent());
-        SLUser user = new UserDaoImpl().getUserByUid(amTextMessage.getUserTo());
+        SLUser user = new UserDaoImpl().getUserByUserId(amTextMessage.getUserTo());
         session.setSessionIcon(user.getHeadUrl());
         session.setSessionType(SessionType.CHAT);
         session.setSessionName(user.getNickName());

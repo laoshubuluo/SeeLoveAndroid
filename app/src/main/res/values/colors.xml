@@ -1,7 +1,23 @@
 <resources>
-    <color name="red">#f5537a</color>
-    <color name="white">#ffffff</color>
+    <!--整体背景色调-->
     <color name="gray_e5">#e5e5e5</color>
+    <!--tab上面线的颜色-->
+    <color name="gray_b2">#b2b2b2</color>
+    <!--用户信息文字颜色-->
+    <color name="gray_73">#6a6a73</color>
+    <!--主页底部tab背景色-->
+    <color name="white_f8">#f7f7f8</color>
+    <color name="white">#ffffff</color>
+    <!--主体酒红色颜色-->
+    <color name="red_7a">#f5537a</color>
+    <!--用户名称文字颜色-->
+    <color name="black_37">#2b2b37</color>
+
+
+
+
+
+
     <color name="black">#000000</color>
     <!--公共颜色值：字体-->
     <color name="font_black">#0a0a0a</color>//字体黑色

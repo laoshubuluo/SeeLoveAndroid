@@ -83,7 +83,7 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
         userDao = new UserDaoImpl();
         messageBroadcastReceiver = new MessageBroadcastReceiver();
         userId = getIntent().getStringExtra("userId");
-        user = userDao.getUserByUid(userId);
+        user = userDao.getUserByUserId(userId);
         try {
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(Integer.valueOf(userId));

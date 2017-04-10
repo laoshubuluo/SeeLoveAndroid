@@ -1,18 +1,17 @@
 package com.tianyu.seelove.ui.activity.base;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
@@ -20,11 +19,10 @@ import com.tianyu.seelove.view.dialog.PromptDialog;
 
 /**
  * 基类activity, 实现一些activity公共方法、开关动画
- *
  * @author shisheng.zhao
  * @date 2017-03-28 16:27
  */
-public class BaseActivity extends Activity implements Handler.Callback, View.OnClickListener {
+public class BaseActivity extends FragmentActivity implements Handler.Callback, View.OnClickListener {
     public String currentColor = "#f5537a";
     public Handler handler;
     public CustomProgressDialog customProgressDialog;

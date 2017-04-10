@@ -318,7 +318,7 @@ public class MapMessageActivity extends BaseActivity {
                                                              session.setSessionContent(locationMessage.getMessageContent());
                                                              session.setMessageType(locationMessage.getMessageType());
                                                              session.setSessionType(SessionType.CHAT);
-                                                             session.setSessionName(userDao.getUserByUid(target).getNickName());
+                                                             session.setSessionName(userDao.getUserByUserId(target).getNickName());
                                                              SessionDaoImpl sessionDaoImpl = new SessionDaoImpl();
                                                              sessionDaoImpl.addSession(session);
                                                              Intent session_intent = new Intent(Actions.ACTION_SESSION);

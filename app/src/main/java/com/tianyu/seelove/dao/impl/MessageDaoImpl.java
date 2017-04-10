@@ -33,14 +33,14 @@ public class MessageDaoImpl implements MessageDao {
     protected static final String UNREAD_MESSAGE_COUNT = "select count(*) ct from messageinfo " +
             "where isRead=0 and (groupId is null or groupId = 'null') and userFrom=?";
     protected static final String SET_ALL_READ = "update messageinfo set isRead=1 where (userFrom=? and userTo = ?) or (userTo=? and userFrom =?) and (groupId is null or groupId = 'null')";
-    protected static final String GET_MESSAGE_BY_PAGE = "SELECT * FROM (select * from messageinfo where ("
-            + "userFrom=? and userTo = ?) or (userTo=? and userFrom =?) and (groupId is null or groupId = 'null') and isVisible != 1 order by _id desc limit ?,?) as t1 order by _id";
     protected static final String GET_IMAG_MESSAGE = "SELECT * FROM (select * from messageinfo where (userFrom=? and userTo = ? and type = 'IMAGE') or (userTo=? and userFrom =? and type = 'IMAGE') and (groupId is null or groupId = 'null') and isVisible != '1' order by _id desc) as t1 order by _id";
     protected static final String ALL_UNREAD = "select count(*) ct from messageinfo where isRead=0";
     public static final String sqlInsertMessageInfo = "insert into messageinfo(messageId,userFrom,userTo,content,timestamp," +
             "groupId,isRead,isVisible,isDelay,state,type,audiolength,lng,lat,address,volumeId,chapterId,sectionId,prayId,thumUrl," +
             "articleId,title,imageUrl,url,articleType,userId,userName,headUrl,userTemp) " +
             "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+    private final static String GET_MESSAGE_BY_PAGE = "SELECT * FROM (SELECT * FROM MESSAGEINFO WHERE (UserFrom = ? AND UserTo = ?) OR (UserTo = ? AND UserFrom = ?) AND IsVisable !=1 ORDER BY _ID DESC LIMIT ?,?) AS T1 ORDER BY _ID";
 
     private HashMap<MessageType, MessageDaoImpl> map = new HashMap<MessageType, MessageDaoImpl>();
 
@@ -81,7 +81,7 @@ public class MessageDaoImpl implements MessageDao {
         try {
             while (cursor.moveToNext()) {
                 String messageType = cursor.getString(cursor
-                        .getColumnIndex("type"));
+                        .getColumnIndex("MessageType"));
                 messages.add(getDaoImpl(MessageType.valueOf(messageType))
                         .getMessageByCursor(cursor));
             }

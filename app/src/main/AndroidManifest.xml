@@ -67,7 +67,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.system.SplashActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -94,6 +95,12 @@
             android:name=".ui.activity.video.VideoPlayActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"></activity>
+        <!-- 单聊Activity-->
+        <activity
+            android:name=".ui.activity.message.SingleChatActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!-- 融云SDK begin 测试环境：8luwapkv8tr4l 生产环境：pgyu6atqyr7fu-->
         <meta-data

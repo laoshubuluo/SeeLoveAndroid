@@ -285,7 +285,7 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
                     } else {
                         btn_send.setClickable(false);
                         UserDao userDao = new UserDaoImpl();
-                        SLUser user = userDao.getUserByUid(target);
+                        SLUser user = userDao.getUserByUserId(target);
                         for (String imagePath : AlbumImageAdapter.mSelectedImage) {
                             if (!StringUtils.isNotBlank(imagePath)) {
                                 break;

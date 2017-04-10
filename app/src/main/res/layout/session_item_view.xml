@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_session"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:descendantFocusability="blocksDescendants"
-    android:orientation="vertical"
-    android:padding="3dp">
+    android:padding="@dimen/layout_2dp">
 
     <FrameLayout
-        android:id="@+id/layout_head"
-        android:layout_width="60dp"
-        android:layout_height="60dp">
+        android:id="@+id/headLayout"
+        android:layout_width="@dimen/layout_60dp"
+        android:layout_height="@dimen/layout_60dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -18,8 +17,8 @@
 
             <ImageView
                 android:id="@+id/message_img_photo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/layout_50dp"
+                android:layout_height="@dimen/layout_50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:background="@mipmap/ic_launcher"
@@ -33,26 +32,8 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center"
                 android:visibility="gone" />
-
         </RelativeLayout>
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/message_tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/layout_head"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/message_tv_who"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/layout_head"
-        android:ellipsize="end"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:singleLine="true"
-        android:text=" "
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_15sp" />
 
     <TextView
         android:id="@+id/message_tv_time"
@@ -60,21 +41,37 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="6dp"
-        android:text="早上 8:30"
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_15sp" />
+        android:layout_marginRight="@dimen/layout_8dp"
+        android:layout_marginTop="@dimen/layout_6dp"
+        android:textColor="@color/gray_73"
+        android:textSize="@dimen/font_12sp" />
 
     <TextView
         android:id="@+id/message_tv_who"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/message_tv_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/layout_5dp"
         android:layout_toLeftOf="@id/message_tv_time"
-        android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:text="刘某"
-        android:textColor="@color/black"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/layout_5dp"
+        android:textColor="@color/black_37"
         android:textSize="@dimen/font_15sp" />
+
+    <TextView
+        android:id="@+id/message_tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/headLayout"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/message_tv_who"
+        android:layout_marginTop="@dimen/layout_5dp"
+        android:layout_toRightOf="@id/headLayout"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/layout_5dp"
+        android:paddingRight="@dimen/layout_5dp"
+        android:textColor="@color/gray_73"
+        android:textSize="@dimen/font_12sp" />
 </RelativeLayout>

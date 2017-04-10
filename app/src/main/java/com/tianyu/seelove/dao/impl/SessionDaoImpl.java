@@ -26,15 +26,15 @@ public class SessionDaoImpl implements SessionDao {
     @Override
     public synchronized void addSession(SLSession session) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("targetId", session.getTargetId());
-        contentValues.put("sessionType", session.getSessionType().toString());
-        contentValues.put("lastMessageId", session.getLastMessageId());
-        contentValues.put("priority", session.getPriority());
-        contentValues.put("sessionIcon", session.getSessionIcon());
-        contentValues.put("messageType", session.getMessageType().toString());
-        contentValues.put("sessionName", session.getSessionName());
-        contentValues.put("sessionContent", session.getSessionContent());
-        contentValues.put("sessionIsRead", session.getSessionIsRead());
+        contentValues.put("TargetId", session.getTargetId());
+        contentValues.put("SessionType", session.getSessionType().toString());
+        contentValues.put("LastMessageId", session.getLastMessageId());
+        contentValues.put("Priority", session.getPriority());
+        contentValues.put("SessionIcon", session.getSessionIcon());
+        contentValues.put("MessageType", session.getMessageType().toString());
+        contentValues.put("SessionName", session.getSessionName());
+        contentValues.put("SessionContent", session.getSessionContent());
+        contentValues.put("SessionIsRead", session.getSessionIsRead());
         DbConnectionManager.getInstance().getConnection().beginTransaction();
         try {
             DbConnectionManager.getInstance().getConnection()
@@ -104,15 +104,15 @@ public class SessionDaoImpl implements SessionDao {
 
     public SLSession getSessionByCursor(Cursor cursor) {
         SLSession session = new SLSession();
-        session.setTargetId(cursor.getString(cursor.getColumnIndex("targetId")));
-        session.setSessionType(SessionType.valueOf(cursor.getString(cursor.getColumnIndex("sessionType"))));
-        session.setLastMessageId(cursor.getString(cursor.getColumnIndex("lastMessageId")));
-        session.setPriority(cursor.getInt(cursor.getColumnIndex("priority")));
-        session.setSessionIcon(cursor.getString(cursor.getColumnIndex("sessionIcon")));
-        session.setMessageType(MessageType.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("messageType"))));
-        session.setSessionName(cursor.getString(cursor.getColumnIndex("sessionName")));
-        session.setSessionContent(cursor.getString(cursor.getColumnIndex("sessionContent")));
-        session.setSessionIsRead(cursor.getInt(cursor.getColumnIndex("sessionIsRead")));
+        session.setTargetId(cursor.getString(cursor.getColumnIndex("TargetId")));
+        session.setSessionType(SessionType.CHAT);
+        session.setLastMessageId(cursor.getString(cursor.getColumnIndex("LastMessageId")));
+        session.setPriority(cursor.getInt(cursor.getColumnIndex("Priority")));
+        session.setSessionIcon(cursor.getString(cursor.getColumnIndex("SessionIcon")));
+        session.setMessageType(MessageType.TEXT);
+        session.setSessionName(cursor.getString(cursor.getColumnIndex("SessionName")));
+        session.setSessionContent(cursor.getString(cursor.getColumnIndex("SessionContent")));
+        session.setSessionIsRead(cursor.getInt(cursor.getColumnIndex("SessionIsRead")));
         return session;
     }
 }

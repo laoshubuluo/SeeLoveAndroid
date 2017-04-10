@@ -1,4 +1,17 @@
 <resources>
+    <!-- 根布局样式 -->
+    <style name="root_layout" parent="@style/wh_mm">
+        <item name="android:background">@color/gray_e5</item>
+    </style>
+
+    <style name="wh_mm">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+
+
+
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -75,10 +88,7 @@
         <item name="android:button">@drawable/checkbox_style</item>
     </style>
 
-    <style name="wh_ff">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
+
 
     <style name="layout_title">
         <item name="android:layout_width">match_parent</item>

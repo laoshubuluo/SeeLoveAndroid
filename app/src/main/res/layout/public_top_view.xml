@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/topLayout"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/layout_45dp"
-    android:background="@color/red"
+    android:background="@color/red_7a"
     android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/leftBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/layout_20dp"
+        android:background="@mipmap/top_back_btn"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/titleView"
@@ -12,6 +21,14 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColor="@color/white"
-        android:textSize="@dimen/font_15sp"/>
+        android:textSize="@dimen/font_17sp" />
 
+    <ImageView
+        android:id="@+id/rightBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/layout_20dp"
+        android:visibility="gone" />
 </RelativeLayout>

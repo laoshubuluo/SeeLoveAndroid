@@ -101,9 +101,10 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
     private void initData() {
         sessionList = new ArrayList<SLSession>();
         tempSessionList = sessionDao.getLatestSessions(1000);
+        LogUtil.e("session",tempSessionList.get(0).toString());
         for (SLSession slSession : tempSessionList) {
             if (SessionType.CHAT.equals(slSession.getSessionType())) {
-                SLUser slUser = userDao.getUserByUid(slSession.getTargetId());
+                SLUser slUser = userDao.getUserByUserId(slSession.getTargetId());
                 if (null != slUser) {
                     slSession.setSessionIcon(slUser.getHeadUrl());
                     slSession.setSessionName(slUser.getNickName());
@@ -112,6 +113,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
             sessionList.add(slSession);
         }
         sessionAdapter = new SessionAdapter(getActivity(), sessionList);
+        messageList.setAdapter(sessionAdapter);
     }
 
     private void initIntent() {
@@ -221,7 +223,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
         }
         if (SessionType.CHAT.equals(slSession.getSessionType())) {
             slSession.setSessionContent(slMessage.getMessageContent());
-            SLUser slUser = userDao.getUserByUid(slSession.getTargetId());
+            SLUser slUser = userDao.getUserByUserId(slSession.getTargetId());
             if (null != slUser) {
                 slSession.setSessionIcon(slUser.getHeadUrl());
                 slSession.setSessionName(slUser.getNickName());
