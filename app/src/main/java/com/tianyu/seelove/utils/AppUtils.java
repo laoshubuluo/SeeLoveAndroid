@@ -107,4 +107,12 @@ public class AppUtils {
         return sharedPreferences.getString("userToken", "");
     }
 
+    /**
+     * 更新系统文章版本
+     */
+    public void setJniServiceVersion(boolean jniServiceVersion) {
+        String key = "jniService_" + getCurrentVersion();;
+        sharedPreferences.edit().putBoolean(key, jniServiceVersion).commit();
+    }
+
 }

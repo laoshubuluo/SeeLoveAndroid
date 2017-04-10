@@ -1,6 +1,7 @@
 package com.tianyu.seelove.ui.activity.system;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.manager.DbConnectionManager;
+import com.tianyu.seelove.manager.IntentManager;
+import com.tianyu.seelove.service.MessageSendService;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.ui.fragment.FindFragment;
 import com.tianyu.seelove.ui.fragment.FollowFragment;
@@ -38,7 +41,15 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         mTextviewArray = this.getResources().getStringArray(R.array.frag_text);
         initView();
+        initService();
         DbConnectionManager.getInstance().reload();
+    }
+
+    private void initService(){
+        Intent intent;
+        // 启动发送消息Service
+        intent = IntentManager.createIntent(getApplicationContext(), MessageSendService.class);
+        startService(intent);
     }
 
     private void initView() {
