@@ -14,6 +14,7 @@ import io.rong.imlib.RongIMClient;
  * @date 2016-11-14 18:06:11
  */
 public class SeeLoveApplication extends Application {
+    public static String deviceMode = "";
 
     @Override
     public void onCreate() {
@@ -31,5 +32,10 @@ public class SeeLoveApplication extends Application {
         // 初始化融云SDK
         RongIMClient.init(this);
         RongCloudManager.getInstance().init(this);
+        deviceMode = getDeviceModel();
+    }
+
+    private String getDeviceModel() {
+        return android.os.Build.MODEL; // 手机型号
     }
 }

@@ -19,6 +19,12 @@ public class Constant {
     public static int IO_BUFFER_SIZE = 2 * 1024;
     public static int imageCount = 4; // 图片最多可以选择张数
 
+    public static int childCount = 2;
+    public static int processDepth = 1;
+
+    public static long tempMill = 0;
+    public static long currentMill = 0;
+
     public static int[] deviceWidthHeight;
 
     //QQ开放平台

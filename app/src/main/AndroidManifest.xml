@@ -101,6 +101,17 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.activity.system.TranslateActivity"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:excludeFromRecents="true"></activity>
+
+        <!-- 发送message service -->
+        <service
+            android:name=".service.MessageSendService"
+            android:enabled="true" />
+
 
         <!-- 融云SDK begin 测试环境：8luwapkv8tr4l 生产环境：pgyu6atqyr7fu-->
         <meta-data

@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.common.Actions;
@@ -36,11 +35,9 @@ import com.tianyu.seelove.utils.DateUtils;
 import com.tianyu.seelove.utils.DimensionUtils;
 import com.tianyu.seelove.utils.FaceConversionUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
-import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.utils.TextUtils;
 import com.tianyu.seelove.view.dialog.SureDialog;
 import com.tianyu.seelove.view.pop.ResourcePopupWindow;
-
 import java.util.Date;
 
 /**
@@ -48,7 +45,6 @@ import java.util.Date;
  * @Description: 文字消息
  * @date 2015-09-11 下午17:57:22
  */
-@SuppressWarnings("deprecation")
 public class TextMessageEntity extends MessageEntity {
     private SLTextMessage textMessage;
     private SLUser user;
@@ -83,26 +79,17 @@ public class TextMessageEntity extends MessageEntity {
         viewHolder.setImageAuth((ImageView) convertView
                 .findViewById(R.id.user_recognise));
         convertView.setTag(viewHolder);
-        viewHolder.getContent().setMaxWidth(Constant.screenWidth - DimensionUtils.convertDipToPixels(context.getResources(), 100));
+        //viewHolder.getContent().setMaxWidth(Constant.screenWidth - DimensionUtils.convertDipToPixels(context.getResources(), 100));
         // 设置头像 姓名
-        if (textMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
-            if (self != null && self.getHeadUrl() != null
-                    && self.getHeadUrl().length() > 0) {
-                ImageLoader.getInstance().displayImage(
-                        ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()),
-                        viewHolder.getHeader(),
-                        ImageLoaderUtil.getSmallImageOptions());
+        if (textMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
+            if (self != null && self.getHeadUrl() != null && self.getHeadUrl().length() > 0) {
+                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()), viewHolder.getHeader(), ImageLoaderUtil.getSmallImageOptions());
             }
             viewHolder.getUsername().setVisibility(View.GONE);
             viewHolder.getImageAuth().setVisibility(View.GONE);
         } else {
-            if (user != null && user.getHeadUrl() != null
-                    && user.getHeadUrl().length() > 0) {
-                ImageLoader.getInstance().displayImage(
-                        ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()),
-                        viewHolder.getHeader(),
-                        ImageLoaderUtil.getSmallImageOptions());
+            if (user != null && user.getHeadUrl() != null && user.getHeadUrl().length() > 0) {
+                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()), viewHolder.getHeader(), ImageLoaderUtil.getSmallImageOptions());
             }
             if (viewHolder.getUsername() != null) {
                 viewHolder.getUsername().setVisibility(View.GONE);
@@ -116,17 +103,13 @@ public class TextMessageEntity extends MessageEntity {
         } else {
             viewHolder.getCreateTime().setVisibility(View.GONE);
         }
-        viewHolder.getContent().setCompoundDrawablesWithIntrinsicBounds(0, 0,
-                0, 0);
+        viewHolder.getContent().setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         viewHolder.getContent().clearComposingText();
         viewHolder.getContent().setText("");
-        viewHolder.getContent().setMovementMethod(
-                LinkMovementMethod.getInstance());
-        SpannableString spannableString = FaceConversionUtils.getInstace()
-                .getExpressionString(context, TextUtils.StringFilter(textMessage.getMessageContent()), false);
+        viewHolder.getContent().setMovementMethod(LinkMovementMethod.getInstance());
+        SpannableString spannableString = FaceConversionUtils.getInstace().getExpressionString(context, TextUtils.StringFilter(textMessage.getMessageContent()), false);
         viewHolder.getContent().setText(spannableString);
-        if (textMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (textMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
             viewHolder.getSendFail().setTag(textMessage.getMessageId());
             if (textMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDSUS) {
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
@@ -261,7 +244,6 @@ public class TextMessageEntity extends MessageEntity {
 
     private void sendMessage(SLTextMessage amMessage, final Context context) {
         final long lastId = System.currentTimeMillis();
-        final boolean isGroup;
         SLTextMessage amTextMessage = new SLTextMessage();
         amTextMessage.setMessageId(String.valueOf(lastId));
         amTextMessage.setUserFrom(AppUtils.getInstance().getUserId());

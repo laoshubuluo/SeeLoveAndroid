@@ -115,10 +115,10 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         String insertUserVideo = "INSERT INTO USER_VIDEO(UserId,VideoId) VALUES('1000','1000')";
         db.execSQL(insertUserVideo);
         String insertMessageInfo = "INSERT INTO MESSAGEINFO(MessageId,UserFrom,UserTo,MessageContent,TimeStamp,IsRead,IsVisable," +
-                "IsDelay,SendStatue) VALUES('1000','1001','1000','我是测试消息!'," + System.currentTimeMillis() + ",'0','0','1','0')";
+                "IsDelay,SendStatue,MessageType) VALUES('1000','1001','1000','我是测试消息!'," + System.currentTimeMillis() + ",'0','0','1','0','TEXT')";
         db.execSQL(insertMessageInfo);
         String insertMessageInfo2 = "INSERT INTO MESSAGEINFO(MessageId,UserFrom,UserTo,MessageContent,TimeStamp,IsRead,IsVisable," +
-                "IsDelay,SendStatue) VALUES('1001','1002','1000','我是天涯消息!'," + System.currentTimeMillis() + ",'0','0','1','0')";
+                "IsDelay,SendStatue,MessageType) VALUES('1001','1002','1000','我是天涯消息!'," + System.currentTimeMillis() + ",'0','0','1','0','TEXT')";
         db.execSQL(insertMessageInfo2);
         String insertSessionInfo = "INSERT INTO SESSIONINFO(TargetId,LastMessageId,Priority,SessionIcon,SessionName," +
                 "SessionIsRead,SessionContent) VALUES('1001','1000'," + System.currentTimeMillis() + ",'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=673651839,1464649612&fm=111&gp=0.jpg','天宇','0','我是测试消息!')";

@@ -3,6 +3,7 @@ package com.tianyu.seelove.dao.impl;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+
 import com.tianyu.seelove.dao.MessageDao;
 import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.model.entity.message.SLAudioMessage;
@@ -12,6 +13,7 @@ import com.tianyu.seelove.model.entity.message.SLMessage;
 import com.tianyu.seelove.model.entity.message.SLTextMessage;
 import com.tianyu.seelove.model.enums.MessageType;
 import com.tianyu.seelove.utils.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +34,8 @@ public class MessageDaoImpl implements MessageDao {
             "SELECT * FROM (select * from messageinfo where groupId=? and isVisible != '1' and type = 'IMAGE' order by _id desc) as t0 order by _id";
     protected static final String UNREAD_MESSAGE_COUNT = "select count(*) ct from messageinfo " +
             "where isRead=0 and (groupId is null or groupId = 'null') and userFrom=?";
-    protected static final String SET_ALL_READ = "update messageinfo set isRead=1 where (userFrom=? and userTo = ?) or (userTo=? and userFrom =?) and (groupId is null or groupId = 'null')";
+
+
     protected static final String GET_IMAG_MESSAGE = "SELECT * FROM (select * from messageinfo where (userFrom=? and userTo = ? and type = 'IMAGE') or (userTo=? and userFrom =? and type = 'IMAGE') and (groupId is null or groupId = 'null') and isVisible != '1' order by _id desc) as t1 order by _id";
     protected static final String ALL_UNREAD = "select count(*) ct from messageinfo where isRead=0";
     public static final String sqlInsertMessageInfo = "insert into messageinfo(messageId,userFrom,userTo,content,timestamp," +
@@ -40,7 +43,9 @@ public class MessageDaoImpl implements MessageDao {
             "articleId,title,imageUrl,url,articleType,userId,userName,headUrl,userTemp) " +
             "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-    private final static String GET_MESSAGE_BY_PAGE = "SELECT * FROM (SELECT * FROM MESSAGEINFO WHERE (UserFrom = ? AND UserTo = ?) OR (UserTo = ? AND UserFrom = ?) AND IsVisable !=1 ORDER BY _ID DESC LIMIT ?,?) AS T1 ORDER BY _ID";
+    private final static String GET_MESSAGE_BY_PAGE = "SELECT * FROM (SELECT * FROM MESSAGEINFO WHERE (UserFrom = ? AND UserTo = ?) OR (UserTo = ? AND UserFrom = ?) " +
+            "AND IsVisable !=1 ORDER BY _ID DESC LIMIT ?,?) AS T1 ORDER BY _ID";
+    private final static String SET_ALL_READ = "UPDATE MESSAGEINFO SET IsRead = '1' WHERE (UserFrom = ? AND UserTo = ?) OR (UserTo = ? AND UserFrom = ?)";
 
     private HashMap<MessageType, MessageDaoImpl> map = new HashMap<MessageType, MessageDaoImpl>();
 
