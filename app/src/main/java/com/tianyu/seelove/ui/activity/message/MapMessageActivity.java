@@ -117,7 +117,7 @@ public class MapMessageActivity extends BaseActivity {
     // 延时多少秒diss掉dialog
     private static final int DELAY_DISMISS = 1000 * 30;
     private PoiInfo poiInfo = null;
-    private String target, targetGroup;
+    private long target = 0l;
     private UserDao userDao;
 
     @Override
@@ -126,8 +126,7 @@ public class MapMessageActivity extends BaseActivity {
         setContentView(R.layout.activity_select_position);
         this.mContext = this;
         userDao = new UserDaoImpl();
-        target = getIntent().getExtras().getString("target");
-        targetGroup = getIntent().getExtras().getString("targetGroup");
+        target = getIntent().getExtras().getLong("target");
         Constant.deviceWidthHeight = DensityUtil.getDeviceInfo(this);
         initView();
         locate();
@@ -299,7 +298,7 @@ public class MapMessageActivity extends BaseActivity {
                                                                          public void handle(Boolean result) {
                                                                              // 发送融云广播
                                                                              Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
-                                                                             send_Intent.putExtra("MessageID",
+                                                                             send_Intent.putExtra("messageId",
                                                                                      String.valueOf(lastId));
                                                                              send_Intent.putExtra("chatType", "single");
                                                                              getApplicationContext().sendOrderedBroadcast(send_Intent, null);
@@ -323,7 +322,7 @@ public class MapMessageActivity extends BaseActivity {
                                                              sessionDaoImpl.addSession(session);
                                                              Intent session_intent = new Intent(Actions.ACTION_SESSION);
                                                              Bundle bundle = new Bundle();
-                                                             bundle.putString("targetId", session.getTargetId());
+                                                             bundle.putLong("targetId", session.getTargetId());
                                                              session_intent.putExtras(bundle);
                                                              sendOrderedBroadcast(session_intent, null);
                                                              MapMessageActivity.this.finish();

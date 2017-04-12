@@ -101,7 +101,6 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
     private void initData() {
         sessionList = new ArrayList<SLSession>();
         tempSessionList = sessionDao.getLatestSessions(1000);
-        LogUtil.e("session",tempSessionList.get(0).toString());
         for (SLSession slSession : tempSessionList) {
             if (SessionType.CHAT.equals(slSession.getSessionType())) {
                 SLUser slUser = userDao.getUserByUserId(slSession.getTargetId());
@@ -149,7 +148,6 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
             intent.setClass(getActivity(), SingleChatActivity.class);
             intent.putExtra("userId", session.getTargetId());
             startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }
     }
 
@@ -178,10 +176,10 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Actions.ACTION_SESSION)) {
-                String targetId = intent.getStringExtra("targetId");
+                long targetId = intent.getLongExtra("targetId", 0l);
                 updateLastSession(targetId);
             } else if (intent.getAction().equals(Actions.ACTION_CLEAN_USER_SESSION)) {
-                String targetId = intent.getStringExtra("userId");
+                long targetId = intent.getLongExtra("userId", 0l);
                 SLSession slSession = sessionDao.getSessionByTargetId(targetId);
                 // 删除session会话
                 sessionDao.deleteSession(targetId);
@@ -212,7 +210,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
         }
     }
 
-    private void updateLastSession(String targetId) {
+    private void updateLastSession(long targetId) {
         SLSession slSession = sessionDao.getSessionByTargetId(targetId);
         if (null == slSession) {
             return;

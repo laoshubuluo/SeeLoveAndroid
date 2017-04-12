@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/root_layout"
     android:orientation="vertical">
 
     <include layout="@layout/public_top_view"></include>
 
     <LinearLayout
+        android:id="@+id/loginLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/headView"
@@ -41,143 +41,207 @@
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:text="注册" />
+            android:layout_marginBottom="@dimen/layout_10dp"
+            android:layout_marginTop="@dimen/layout_10dp"
+            android:background="@drawable/shape_corners_button_red_7a"
+            android:text="注册"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15sp" />
 
         <Button
             android:id="@+id/loginBtn"
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:text="登录" />
+            android:layout_marginBottom="@dimen/layout_10dp"
+            android:background="@drawable/shape_corners_button_red_7a"
+            android:text="登录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15sp" />
 
         <Button
             android:id="@+id/qqLoginBtn"
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:text="QQ登录" />
+            android:layout_marginBottom="@dimen/layout_10dp"
+            android:background="@drawable/shape_corners_button_red_7a"
+            android:text="QQ登录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15sp" />
 
         <Button
             android:id="@+id/wechatLoginBtn"
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:text="微信登录" />
+            android:background="@drawable/shape_corners_button_red_7a"
+            android:text="微信登录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15sp" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/userLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:orientation="vertical">
+            android:layout_height="@dimen/layout_200dp">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:background="@mipmap/ic_launcher" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:text="天宇"
-                android:textColor="@color/white" />
+                android:id="@+id/bigImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/headUrl"
+                    android:layout_width="@dimen/layout_60dp"
+                    android:layout_height="@dimen/layout_60dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/layout_40dp"
+                    android:scaleType="centerCrop"/>
+
+                <TextView
+                    android:id="@+id/userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="12"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="视频"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white"></View>
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/layout_10dp"
+                    android:text="天宇"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_15sp" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="@dimen/layout_15dp"
+                    android:layout_marginTop="@dimen/layout_15dp"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="213"
-                        android:textColor="@color/white" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/videoCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="12"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/layout_5dp"
+                            android:gravity="center_horizontal"
+                            android:text="视频"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/layout_1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/layout_5dp"
+                        android:layout_marginTop="@dimen/layout_5dp"
+                        android:background="@color/white"></View>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="关注"
-                        android:textColor="@color/white" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/followCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="213"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/layout_5dp"
+                            android:gravity="center_horizontal"
+                            android:text="关注"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/layout_1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/layout_5dp"
+                        android:layout_marginTop="@dimen/layout_5dp"
+                        android:background="@color/white"></View>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/followedCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="213"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/layout_5dp"
+                            android:gravity="center_horizontal"
+                            android:text="关注"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/videoLayout"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="@dimen/layout_150dp"
+            android:layout_marginTop="@dimen/layout_5dp"
             android:background="@color/white"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp">
+                android:layout_height="@dimen/layout_40dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:text="我的视频"
-                    android:textColor="@color/black" />
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/my_video"
+                    android:textColor="@color/gray_73"
+                    android:textSize="@dimen/font_15sp" />
 
                 <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
-                    android:background="@mipmap/ic_launcher" />
+                    android:layout_marginRight="@dimen/layout_15dp"
+                    android:background="@mipmap/arrow_icon" />
             </RelativeLayout>
 
             <LinearLayout
@@ -187,22 +251,22 @@
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_margin="@dimen/layout_5dp"
                     android:scrollbars="none">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_margin="10dp"
+                        android:layout_margin="@dimen/layout_10dp"
                         android:orientation="horizontal">
 
                         <GridView
                             android:id="@+id/videoGridView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:horizontalSpacing="10dp"
+                            android:horizontalSpacing="@dimen/layout_10dp"
                             android:numColumns="auto_fit"
-                            android:verticalSpacing="10dp"></GridView>
+                            android:verticalSpacing="@dimen/layout_10dp"></GridView>
                     </LinearLayout>
                 </HorizontalScrollView>
             </LinearLayout>
@@ -211,26 +275,26 @@
         <RelativeLayout
             android:id="@+id/userInfoLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="@dimen/layout_40dp"
+            android:layout_marginTop="@dimen/layout_5dp"
             android:background="@color/white">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:text="我的资料"
-                android:textColor="@color/black" />
+                android:layout_marginLeft="@dimen/layout_15dp"
+                android:text="@string/my_information"
+                android:textColor="@color/gray_73"
+                android:textSize="@dimen/font_15sp" />
 
             <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
-                android:background="@mipmap/ic_launcher" />
-
+                android:layout_marginRight="@dimen/layout_15dp"
+                android:background="@mipmap/arrow_icon" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

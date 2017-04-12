@@ -66,7 +66,7 @@ public class CameraMessagePlugin extends MessagePlugin {
                                             ImageSendActivity.class);
                                     Bundle bundlec = new Bundle();
                                     bundlec.putString("images", pathString);
-                                    bundlec.putString("target", manager.getTarget());
+                                    bundlec.putLong("target", manager.getTarget());
                                     bundlec.putString("targetGroup",
                                             manager.getTargetGroup());
                                     intentc.putExtras(bundlec);

@@ -63,10 +63,10 @@ public class SessionDaoImpl implements SessionDao {
     }
 
     @Override
-    public SLSession getSessionByTargetId(String targetId) {
+    public SLSession getSessionByTargetId(long targetId) {
         Cursor cursor = DbConnectionManager.getInstance().getConnection()
                 .rawQuery(GET_SESSION_BY_TARGETID,
-                        new String[]{targetId});
+                        new String[]{String.valueOf(targetId)});
         while (cursor.moveToNext()) {
             return getSessionByCursor(cursor);
         }
@@ -77,9 +77,9 @@ public class SessionDaoImpl implements SessionDao {
     }
 
     @Override
-    public void deleteSession(String sessionId) {
+    public void deleteSession(long sessionId) {
         DbConnectionManager.getInstance().getConnection()
-                .execSQL(DELETE_SESSION, new Object[]{sessionId});
+                .execSQL(DELETE_SESSION, new Object[]{String.valueOf(sessionId)});
     }
 
     @Override
@@ -90,9 +90,9 @@ public class SessionDaoImpl implements SessionDao {
     }
 
     @Override
-    public void updateSessionContent(String sessionContent, String targetId) {
+    public void updateSessionContent(String sessionContent, long targetId) {
         DbConnectionManager.getInstance().getConnection()
-                .execSQL(UPDATE_SESSIONCONTENT_BY_TARGETID, new String[]{sessionContent, targetId});
+                .execSQL(UPDATE_SESSIONCONTENT_BY_TARGETID, new String[]{sessionContent, String.valueOf(targetId)});
 
     }
 
@@ -104,7 +104,7 @@ public class SessionDaoImpl implements SessionDao {
 
     public SLSession getSessionByCursor(Cursor cursor) {
         SLSession session = new SLSession();
-        session.setTargetId(cursor.getString(cursor.getColumnIndex("TargetId")));
+        session.setTargetId(cursor.getLong(cursor.getColumnIndex("TargetId")));
         session.setSessionType(SessionType.CHAT);
         session.setLastMessageId(cursor.getString(cursor.getColumnIndex("LastMessageId")));
         session.setPriority(cursor.getInt(cursor.getColumnIndex("Priority")));

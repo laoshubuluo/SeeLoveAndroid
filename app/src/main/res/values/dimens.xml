@@ -31,5 +31,7 @@
     <dimen name="layout_60dp">60dp</dimen>
     <dimen name="layout_112dp">112dp</dimen>
     <dimen name="layout_150dp">150dp</dimen>
+    <dimen name="layout_200dp">200dp</dimen>
+    <dimen name="layout_300dp">300dp</dimen>
     <dimen name="layout_240dp">340dp</dimen>
 </resources>

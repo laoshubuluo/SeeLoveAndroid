@@ -3,21 +3,14 @@ package com.tianyu.seelove.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.Settings;
-
 import com.tianyu.seelove.common.Constant;
-import com.tianyu.seelove.dao.impl.MessageDaoImpl;
-import com.tianyu.seelove.dao.impl.SessionDaoImpl;
 import com.tianyu.seelove.model.entity.message.SLSession;
 import com.tianyu.seelove.model.entity.message.SLTextMessage;
-import com.tianyu.seelove.model.enums.MessageType;
-import com.tianyu.seelove.model.enums.SessionType;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
 
 /**
  * 数据库操作工具类
- *
  * @author shisheng.zhao
  * @date 2017-04-05 07:53
  */
@@ -51,12 +44,12 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     private static Context context;
 
     private DbOpenHelper(Context context) {
-        super(context, AppUtils.getInstance().getUserId(), null, Constant.DB_COMMON_VERSION);
+        super(context, String.valueOf(AppUtils.getInstance().getUserId()), null, Constant.DB_COMMON_VERSION);
         DbOpenHelper.context = context;
     }
 
     private DbOpenHelper() {
-        super(context, AppUtils.getInstance().getUserId(), null, Constant.DB_COMMON_VERSION);
+        super(context, String.valueOf(AppUtils.getInstance().getUserId()), null, Constant.DB_COMMON_VERSION);
     }
 
     public static DbOpenHelper getInstance(Context context) {
@@ -93,7 +86,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(sqlCreateUserVideoInfo);// 短视频和用户关系表
         db.execSQL(sqlCreateMessageInfo);// 消息表
         db.execSQL(sqlCreateSessionInfo);// 会话表
-        initData(db);
+//        initData(db);
     }
 
     private void initData(SQLiteDatabase db) {
@@ -129,8 +122,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
         SLTextMessage slTextMessage = new SLTextMessage();
         slTextMessage.setMessageId("1000");
-        slTextMessage.setUserFrom("1001");
-        slTextMessage.setUserTo("1000");
+        slTextMessage.setUserFrom(1001);
+        slTextMessage.setUserTo(1000);
         slTextMessage.setMessageContent("我是测试消息!");
         slTextMessage.setTimestamp(System.currentTimeMillis());
         slTextMessage.setIsRead(0);
@@ -140,7 +133,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 //        new MessageDaoImpl().addMessage(slTextMessage);
 
         SLSession slSession = new SLSession();
-        slSession.setTargetId("1000");
+        slSession.setTargetId(1000);
 //        slSession.setSessionType(SessionType.CHAT);
         slSession.setLastMessageId("1000");
         slSession.setPriority(System.currentTimeMillis());

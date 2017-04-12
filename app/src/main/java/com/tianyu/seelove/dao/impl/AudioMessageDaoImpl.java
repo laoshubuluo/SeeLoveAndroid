@@ -29,8 +29,8 @@ public class AudioMessageDaoImpl extends MessageDaoImpl {
     public SLMessage getMessageByCursor(Cursor cursor) {
         SLAudioMessage message = new SLAudioMessage();
         message.setMessageId(cursor.getString(cursor.getColumnIndexOrThrow("MessageId")));
-        message.setUserFrom(cursor.getString(cursor.getColumnIndexOrThrow("UserFrom")));
-        message.setUserTo(cursor.getString(cursor.getColumnIndexOrThrow("UserTo")));
+        message.setUserFrom(cursor.getLong(cursor.getColumnIndexOrThrow("UserFrom")));
+        message.setUserTo(cursor.getLong(cursor.getColumnIndexOrThrow("UserTo")));
         message.setMessageContent(cursor.getString(cursor.getColumnIndexOrThrow("MessageContent")));
         message.setTimestamp(cursor.getLong(cursor.getColumnIndexOrThrow("TimeStamp")));
         message.setIsRead(cursor.getInt(cursor.getColumnIndexOrThrow("IsRead")));

@@ -20,7 +20,7 @@ public interface SessionDao {
      * 通过id从本地数据库中删除对应的会话
      * @param sessionId
      */
-    public void deleteSession(String sessionId);
+    public void deleteSession(long sessionId);
 
     /**
      * 获取最近的会话列表
@@ -34,7 +34,7 @@ public interface SessionDao {
      * @param targetId
      * @return
      */
-    public SLSession getSessionByTargetId(String targetId);
+    public SLSession getSessionByTargetId(long targetId);
 
     /**
      * 根据sessionId更新sessionName
@@ -48,7 +48,7 @@ public interface SessionDao {
      * @param sessionContent
      * @param targetId
      */
-    public void updateSessionContent(String sessionContent, String targetId);
+    public void updateSessionContent(String sessionContent, long targetId);
 
     /**
      * 根据sessionId更新sessionName和sessionIcon

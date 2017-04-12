@@ -1,6 +1,5 @@
 package com.tianyu.seelove.model.entity.network.response;
 
-
 import com.tianyu.seelove.model.entity.network.response.base.ResponseInfo;
 import com.tianyu.seelove.model.entity.user.SLUser;
 

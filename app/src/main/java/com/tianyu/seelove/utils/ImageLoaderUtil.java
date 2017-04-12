@@ -1,6 +1,7 @@
 package com.tianyu.seelove.utils;
 
 import android.content.Context;
+
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -9,12 +10,16 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.common.Constant;
+
 import java.io.File;
 
 /**
  * ImageLoader配置工具类
+ *
  * @author shisheng.zhao
  * @date 2017-03-28 16:19
  */
@@ -49,6 +54,13 @@ public class ImageLoaderUtil {
         return options;
     }
 
+    // 获取头像图片信息
+    public static DisplayImageOptions getHeadUrlImageOptions() {
+        RoundedBitmapDisplayer bitmapDisplayer = new RoundedBitmapDisplayer(Constant.corners); // 设定圆角
+        DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.mipmap.default_head).imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+                .displayer(bitmapDisplayer).showImageOnFail(R.mipmap.default_head).cacheInMemory(true).cacheOnDisk(true).build();
+        return options;
+    }
 
     public static String getAcceptableUri(String file) {
         if (StringUtils.isNullOrBlank(file)) {

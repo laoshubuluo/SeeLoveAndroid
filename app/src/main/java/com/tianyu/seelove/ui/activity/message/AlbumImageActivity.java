@@ -19,11 +19,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.AlbumImageAdapter;
@@ -48,12 +48,9 @@ import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.pop.ListImageDirPopupWindow;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -88,10 +85,9 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
     private TextView mImageCount;
     private int mScreenHeight;
     private ListImageDirPopupWindow mListImageDirPopupWindow;
-    private TextView btn_back;
-    private TextView btn_send;
-    private TextView title;
-    private String target, targetGroup;
+    private ImageView btn_back, btn_send;
+    private TextView titleView;
+    private long target;
     private UserDao userDao;
 
     private Handler mHandler = new Handler() {
@@ -132,8 +128,6 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
         mImageCount.setText(totalCount + getString(R.string.pre));
     }
 
-    ;
-
     /**
      * 初始化展示文件夹的popupWindw
      */
@@ -142,7 +136,6 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
                 LayoutParams.MATCH_PARENT, (int) (mScreenHeight * 0.7),
                 mImageFloders, LayoutInflater.from(getApplicationContext())
                 .inflate(R.layout.list_dir, null));
-
         mListImageDirPopupWindow.setOnDismissListener(new OnDismissListener() {
 
             @Override
@@ -166,8 +159,7 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
         mScreenHeight = outMetrics.heightPixels;
         AlbumImageAdapter.mSelectedImage.clear();
         userDao = new UserDaoImpl();
-        target = getIntent().getExtras().getString("target");
-        targetGroup = getIntent().getExtras().getString("targetGroup");
+        target = getIntent().getExtras().getLong("target");
         initView();
         // 在獲取圖片之前進行全盤檢索,防止剛加入的圖片沒有被查找到
 //        allScan();
@@ -256,28 +248,32 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
      * 初始化View
      */
     private void initView() {
-//        btn_back = (TextView) findViewById(R.id.top_left);
-//        btn_send = (TextView) findViewById(R.id.top_right);
-        title = (TextView) findViewById(R.id.titleView);
-        title.setText(getString(R.string.select_photos));
+        btn_back = (ImageView) findViewById(R.id.leftBtn);
+        btn_send = (ImageView) findViewById(R.id.rightBtn);
+        titleView = (TextView) findViewById(R.id.titleView);
+        titleView.setText(getString(R.string.select_photos));
         btn_send.setVisibility(View.VISIBLE);
         btn_back.setVisibility(View.VISIBLE);
-        btn_send.setText(R.string.sure);
+        btn_send.setBackgroundResource(R.mipmap.share_btn);
+        btn_send.setOnClickListener(this);
+        btn_back.setOnClickListener(this);
         mGirdView = (GridView) findViewById(R.id.id_gridView);
         mChooseDir = (TextView) findViewById(R.id.id_choose_dir);
         mImageCount = (TextView) findViewById(R.id.id_total_count);
         mBottomLy = (RelativeLayout) findViewById(R.id.id_bottom_ly);
-        btn_back.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    }
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        switch (view.getId()) {
+            case R.id.leftBtn: {
                 finish();
+                break;
             }
-        });
-        btn_send.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            case R.id.rightBtn: {
                 if (AlbumImageAdapter.mSelectedImage.size() > 0) {
-                    if (StringUtils.isNullOrBlank(target)) {
+                    if (0l == target) {
                         Intent intent = new Intent();
                         intent.putStringArrayListExtra("selectImg", AlbumImageAdapter.mSelectedImage);
                         setResult(ActivityResultConstant.SELECT_PICTURE, intent);
@@ -314,24 +310,20 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
                             imageMessage.setTimestamp(new Date().getTime());
                             imageMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
                             InsertMessageTask insertMessageTask = new InsertMessageTask();
-                            insertMessageTask
-                                    .setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
+                            insertMessageTask.setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
                                         @Override
                                         public void handle(Boolean result) {
                                             // 发送融云广播
                                             Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
-                                            send_Intent.putExtra("MessageID",
-                                                    String.valueOf(lastId));
+                                            send_Intent.putExtra("messageId", String.valueOf(lastId));
                                             send_Intent.putExtra("chatType", "single");
                                             getApplicationContext().sendOrderedBroadcast(send_Intent, null);
                                             // 本地会话广播
                                             Intent intent = new Intent(Actions.SINGLEMESSAGE_ADD_ACTION);
-                                            intent.putExtra("messageID",
-                                                    String.valueOf(lastId));
+                                            intent.putExtra("messageID", String.valueOf(lastId));
                                             getApplicationContext().sendOrderedBroadcast(intent, null);
                                             // 图片消息发送的时候默认发送一个进度,让图片加灰处理
-                                            Intent process_Intent = new Intent(
-                                                    Actions.ACTION_UPDATE_IMGMESSAGE_PROCESS);
+                                            Intent process_Intent = new Intent(Actions.ACTION_UPDATE_IMGMESSAGE_PROCESS);
                                             process_Intent.putExtra("ProcessCount", "0");
                                             process_Intent.putExtra("MessageID", String.valueOf(lastId));
                                             getApplicationContext().sendOrderedBroadcast(process_Intent, null);
@@ -349,16 +341,15 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
                             SessionDaoImpl sessionDaoImpl = new SessionDaoImpl();
                             sessionDaoImpl.addSession(session);
                             Intent session_intent = new Intent(Actions.ACTION_SESSION);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("targetId", session.getTargetId());
-                            session_intent.putExtras(bundle);
+                            session_intent.putExtra("targetId", session.getTargetId());
                             sendOrderedBroadcast(session_intent, null);
                         }
                     }
                 }
                 finish();
+                break;
             }
-        });
+        }
     }
 
     private void initEvent() {
@@ -368,8 +359,7 @@ public class AlbumImageActivity extends BaseActivity implements ListImageDirPopu
         mBottomLy.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListImageDirPopupWindow
-                        .setAnimationStyle(R.style.anim_popup_dir);
+                mListImageDirPopupWindow.setAnimationStyle(R.style.anim_popup_dir);
                 mListImageDirPopupWindow.showAsDropDown(mBottomLy, 0, 0);
                 // 设置背景颜色变暗
                 WindowManager.LayoutParams lp = getWindow().getAttributes();

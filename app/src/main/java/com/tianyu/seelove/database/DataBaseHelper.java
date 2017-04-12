@@ -6,19 +6,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import com.tianyu.seelove.common.Constant;
-import com.tianyu.seelove.dao.BibleDao;
-import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
+/**
+ * @author shisheng.zhao
+ * @Description: 读取内置数据库工具类
+ * @date 2017-04-12 15:26
+ */
 public class DataBaseHelper extends SQLiteOpenHelper {
     private String DB_PATH = Constant.DB_PATH;
     private String DB_NAME = Constant.DB_NAME;
@@ -33,7 +33,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /**
      * 创建数据库
-     *
      * @throws IOException
      */
     public void createDataBase() throws IOException {
@@ -91,7 +90,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /**
      * 拷贝数据库
-     *
      * @throws IOException
      */
     private void copyDataBase() throws IOException {
@@ -118,7 +116,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /**
      * 打开数据库
-     *
      * @return
      * @throws SQLException
      */

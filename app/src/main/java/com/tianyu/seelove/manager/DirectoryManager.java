@@ -6,14 +6,13 @@ import java.util.List;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Environment;
-
 import com.tianyu.seelove.receiver.SDCardChangeReceiver;
 import com.tianyu.seelove.utils.LogUtil;
 
 /**
  * @author shisheng.zhao
  * @Description: 文件目录管理基类，负责管理所有的文件目录信息，并且监听SD卡发生的变化
- * @date 2015-09-01 下午14:55:35
+ * @date 2017-04-12 19:07
  */
 public class DirectoryManager {
     static List<SdcardStatusListener> listeners;

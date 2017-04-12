@@ -1,21 +1,26 @@
 package com.tianyu.seelove.network.request;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
 import com.tianyu.seelove.common.WebConstant;
+import com.tianyu.seelove.dao.impl.UserDaoImpl;
+import com.tianyu.seelove.manager.DbConnectionManager;
+import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.network.request.UserLoginActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.UserLoginRspInfo;
+import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.network.request.base.PostJsonRequest;
+import com.tianyu.seelove.service.MessageSendService;
+import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
-
 import org.json.JSONObject;
 
 /**
@@ -39,8 +44,8 @@ public class UserLoginRequest extends PostJsonRequest {
     @Override
     protected String getParamsJson() {
         UserLoginActionInfo actionInfo = new UserLoginActionInfo(RequestCode.USER_LOGIN, userId, userName, password);
-        RequestInfo r = new RequestInfo(context, actionInfo);
-        return GsonUtil.toJson(r);
+        RequestInfo requestInfo = new RequestInfo(context, actionInfo);
+        return GsonUtil.toJson(requestInfo);
     }
 
     @Override
@@ -63,6 +68,7 @@ public class UserLoginRequest extends PostJsonRequest {
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
                 b.putSerializable("user", info.getUser());
+                saveDataAfterLoginSuccess(info.getUser());
                 msg.what = MessageSignConstant.USER_LOGIN_SUCCESS;
                 msg.setData(b);
                 handler.sendMessage(msg);
@@ -81,5 +87,14 @@ public class UserLoginRequest extends PostJsonRequest {
             handler.sendEmptyMessage(MessageSignConstant.UNKNOWN_ERROR);
             LogUtil.e(requestTag() + " error", e);
         }
+    }
+
+    private void saveDataAfterLoginSuccess(SLUser slUser){
+        // 初始化用户信息
+        AppUtils.getInstance().setUserId(slUser.getUserId());
+        AppUtils.getInstance().setUserToken(slUser.getToken4RongCloud());
+        // 数据库指向用户自己的数据库
+        DbConnectionManager.getInstance().reload();
+        new UserDaoImpl().addUser(slUser);
     }
 }

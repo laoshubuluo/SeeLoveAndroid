@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public class SLSession implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String targetId; // 会话对象的id，这里会根据sessionType的不同而不同
+    private long targetId; // 会话对象的id，这里会根据sessionType的不同而不同
     private SessionType sessionType;// 会话类型
     private String lastMessageId;// 最后一次消息id
     private long priority;// 权重，权重越高，越靠前
@@ -21,12 +21,12 @@ public class SLSession implements Serializable {
     private int sessionIsRead; // 会话已读未读; 0 未读,1 已读
     private String sessionContent; // 会话内容
 
-    public String getTargetId() {
-        return targetId;
+    public void setTargetId(long targetId) {
+        this.targetId = targetId;
     }
 
-    public void setTargetId(String targetId) {
-        this.targetId = targetId;
+    public long getTargetId() {
+        return targetId;
     }
 
     public SessionType getSessionType() {

@@ -50,14 +50,12 @@ public class AudioMessageEntity extends MessageEntity {
         super(message);
         audioMessage = (SLAudioMessage) message;
         user = new UserDaoImpl().getUserByUserId(message.getUserFrom());
-        self = new UserDaoImpl().getUserByUserId(AppUtils.getInstance()
-                .getUserId());
+        self = new UserDaoImpl().getUserByUserId(AppUtils.getInstance().getUserId());
     }
 
     @Override
     protected View inflateView(Context context) {
-        if (audioMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (audioMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             return LayoutInflater.from(context).inflate(
                     R.layout.chatting_item_msg_text_right, null);
         } else {
@@ -88,8 +86,7 @@ public class AudioMessageEntity extends MessageEntity {
         viewHolder.setImageAuth((ImageView) convertView
                 .findViewById(R.id.user_recognise));
         convertView.setTag(viewHolder);
-        if (audioMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (audioMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.setFrameUser((ImageView) convertView
                     .findViewById(R.id.ivuser));
         } else {
@@ -98,8 +95,7 @@ public class AudioMessageEntity extends MessageEntity {
         }
         viewHolder.getContent().setMaxWidth(Constant.screenWidth - DimensionUtils.convertDipToPixels(context.getResources(), 100));
         // 设置头像
-        if (audioMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (audioMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getHeader().setImageResource(R.mipmap.default_head);
             // viewHolder.
             // .setTag(doctor.getHeader());
@@ -136,8 +132,7 @@ public class AudioMessageEntity extends MessageEntity {
         /**
          * 根据说话的时间改变语音对话框的长度
          */
-        if (!audioMessage.getUserTo().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (audioMessage.getUserTo() != AppUtils.getInstance().getUserId()) {
             if (null != viewHolder.getFrameUser()) {
                 viewHolder.getFrameUser().setVisibility(View.VISIBLE);
             }
@@ -169,7 +164,7 @@ public class AudioMessageEntity extends MessageEntity {
         viewHolder.getContent().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (audioMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
+                if (audioMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
                     ImageView ivuser = viewHolder.getFrameUser();
                     ivuser.setBackgroundResource(R.drawable.audio_list_r);
                     ivuser.setVisibility(View.VISIBLE);
@@ -186,8 +181,7 @@ public class AudioMessageEntity extends MessageEntity {
                 }
             }
         });
-        if (audioMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (audioMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getSendFail().setTag(audioMessage.getMessageId());
             if (audioMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDSUS) {
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
@@ -227,8 +221,7 @@ public class AudioMessageEntity extends MessageEntity {
         viewHolder.getHeader().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (audioMessage.getUserFrom().equals(
-                        AppUtils.getInstance().getUserId())) {
+                if (audioMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
                     Intent intent = IntentManager.createIntent(v.getContext(), UserInfoActivity.class);
                     intent.putExtra("user", self);
                     v.getContext().startActivity(intent);
@@ -260,7 +253,7 @@ public class AudioMessageEntity extends MessageEntity {
             public void handle(Boolean result) {
                 // 发送融云广播
                 Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
-                send_Intent.putExtra("MessageID", String.valueOf(lastId));
+                send_Intent.putExtra("messageId", String.valueOf(lastId));
                 send_Intent.putExtra("chatType", "single");
                 context.sendOrderedBroadcast(send_Intent, null);
                 // 本地会话广播
@@ -285,7 +278,7 @@ public class AudioMessageEntity extends MessageEntity {
         sessionDao.addSession(session);
         Intent session_intent = new Intent(Actions.ACTION_SESSION);
         Bundle bundle = new Bundle();
-        bundle.putString("targetId", session.getTargetId());
+        bundle.putLong("targetId", session.getTargetId());
         session_intent.putExtras(bundle);
         context.sendOrderedBroadcast(session_intent, null);
     }

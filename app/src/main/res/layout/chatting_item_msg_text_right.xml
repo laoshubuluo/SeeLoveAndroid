@@ -38,6 +38,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
             android:focusable="false"
+            android:scaleType="centerCrop"
             android:src="@mipmap/default_head" />
 
         <ImageView

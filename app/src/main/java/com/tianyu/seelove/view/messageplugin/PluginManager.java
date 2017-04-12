@@ -26,7 +26,7 @@ public class PluginManager {
     /**
      * 聊天对象
      */
-    private String target;
+    private long target;
 
     private String targetGroup;
     /**
@@ -54,11 +54,11 @@ public class PluginManager {
         this.targetGroup = targetGroup;
     }
 
-    public void setTarget(String target) {
+    public void setTarget(long target) {
         this.target = target;
     }
 
-    public String getTarget() {
+    public long getTarget() {
         return target;
     }
 
@@ -80,7 +80,7 @@ public class PluginManager {
     }
 
     public PluginManager(Context context, ViewGroup pluginbox,
-                         EditText editText, String target) {
+                         EditText editText, long target) {
         this(context, pluginbox, editText);
     }
 

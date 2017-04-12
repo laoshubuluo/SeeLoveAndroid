@@ -30,7 +30,6 @@ public class SLUser implements Serializable{
     private String marriageName; // 婚姻状况名称
     private String introduce; // 一句话介绍
     private String remark; // 保留域
-
     // 其他参数
     private String token4RongCloud;// 融云token
 

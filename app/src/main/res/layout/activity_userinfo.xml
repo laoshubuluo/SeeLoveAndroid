@@ -9,14 +9,13 @@
     <FrameLayout
         android:id="@+id/userLayout"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="@dimen/layout_300dp"
         android:layout_below="@id/topLayout">
 
         <ImageView
             android:id="@+id/bigImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black"
             android:scaleType="centerCrop" />
 
         <RelativeLayout
@@ -95,10 +94,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_40dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/layout_10dp"
         android:layout_marginLeft="@dimen/layout_15dp"
         android:layout_marginRight="@dimen/layout_15dp"
         android:layout_marginTop="@dimen/layout_10dp"
-        android:layout_marginBottom="@dimen/layout_10dp"
         android:background="@drawable/shape_corners_button_red_7a"
         android:gravity="center"
         android:text="发送消息"
@@ -110,8 +109,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/sendMessage"
         android:layout_below="@id/userLayout"
-        android:background="@color/white"
         android:layout_marginTop="@dimen/layout_5dp"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <TextView

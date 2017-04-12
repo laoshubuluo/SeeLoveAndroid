@@ -62,7 +62,7 @@ public class PublicMessageSendUtils {
         return list;
     }
 
-    public void sendMessage(String targetId, final boolean isGroup) {
+    public void sendMessage(long targetId, final boolean isGroup) {
         final long lastId = System.currentTimeMillis();
         if (amMessage instanceof SLTextMessage) { // 文本消息
             SLTextMessage amTextMessage = (SLTextMessage) amMessage;
@@ -88,12 +88,12 @@ public class PublicMessageSendUtils {
             session.setMessageType(amTextMessage.getMessageType());
             session.setSessionContent(amTextMessage.getMessageContent());
             session.setSessionType(SessionType.CHAT);
-            session.setSessionName(targetId);
+            session.setSessionName(String.valueOf(targetId));
             SessionDao sessionDao = new SessionDaoImpl();
             sessionDao.addSession(session);
             Intent session_intent = new Intent(Actions.ACTION_SESSION);
             Bundle bundle = new Bundle();
-            bundle.putString("targetId", session.getTargetId());
+            bundle.putLong("targetId", session.getTargetId());
             session_intent.putExtras(bundle);
             context.sendOrderedBroadcast(session_intent, null);
         } else if (amMessage instanceof SLImageMessage) { // 图片消息
@@ -120,12 +120,12 @@ public class PublicMessageSendUtils {
             session.setMessageType(amImageMessage.getMessageType());
             session.setSessionContent(amImageMessage.getMessageContent());
             session.setSessionType(SessionType.CHAT);
-            session.setSessionName(targetId);
+            session.setSessionName(String.valueOf(targetId));
             SessionDao sessionDao = new SessionDaoImpl();
             sessionDao.addSession(session);
             Intent session_intent = new Intent(Actions.ACTION_SESSION);
             Bundle bundle = new Bundle();
-            bundle.putString("targetId", session.getTargetId());
+            bundle.putLong("targetId", session.getTargetId());
             session_intent.putExtras(bundle);
             context.sendOrderedBroadcast(session_intent, null);
         } else if (amMessage instanceof SLAudioMessage) {// 语音消息
@@ -144,7 +144,7 @@ public class PublicMessageSendUtils {
     public static void sendMessageBroadcast(Context context, String messageId, boolean isGroup) {
         // 发送融云广播
         Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
-        send_Intent.putExtra("MessageID", messageId);
+        send_Intent.putExtra("messageId", messageId);
         send_Intent.putExtra("chatType", "single");
         context.sendOrderedBroadcast(send_Intent, null);
         // 本地会话广播
