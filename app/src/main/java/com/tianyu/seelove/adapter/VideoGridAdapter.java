@@ -1,6 +1,7 @@
 package com.tianyu.seelove.adapter;
 
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,12 +11,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.video.VideoInfo;
 import com.tianyu.seelove.ui.activity.video.VideoPlayActivity;
+import com.tianyu.seelove.utils.ImageLoaderUtil;
 
 /**
  * 视频显示自定义adapter
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 17:50
  */
@@ -57,7 +62,7 @@ public class VideoGridAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         VideoInfo appInfo = listInfo.get(position);
-        holder.imageView.setImageResource(R.mipmap.ic_launcher);
+        ImageLoader.getInstance().displayImage("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=673651839,1464649612&fm=111&gp=0.jpg", holder.imageView, ImageLoaderUtil.getSmallImageOptions());
         holder.textView.setText(appInfo.getVideoTitle());
         holder.gridViewItem.setOnClickListener(new View.OnClickListener() {
             @Override
