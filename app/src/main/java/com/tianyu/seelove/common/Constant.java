@@ -10,7 +10,7 @@ public class Constant {
     public final static int DB_COMMON_VERSION = 10;
 
     //数据库[圣经]常量
-    public final static String DB_NAME = "bible.db"; // 数据库名称
+    public final static String DB_NAME = "seelove.db"; // 数据库名称
     public final static String DB_PATH = "/data/data/com.tianyu.seelove/databases/";// 数据库存储路径
     public final static int DB_BIBLE_VERSION = 5;// 数据库版本号
 
@@ -33,4 +33,6 @@ public class Constant {
     //微信开放平台
     public static final String WEIXIN_APP_ID = "wxb3509f0204b8d3cb";
     public static final String WEIXIN_APP_SECRET = "457fdf85cd950d433626fec52f9c610d";
+
+    public static final int corners = 100;
 }

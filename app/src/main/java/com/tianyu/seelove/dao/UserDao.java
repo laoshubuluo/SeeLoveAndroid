@@ -10,11 +10,17 @@ import com.tianyu.seelove.model.entity.user.SLUser;
 public interface UserDao {
 
     /**
+     * 添加用户信息
+     * @param slUser
+     */
+    public void addUser(SLUser slUser);
+
+    /**
      * 根据userId获取user信息
      * @param userId
      * @return
      */
-    public SLUser getUserByUserId(String userId);
+    public SLUser getUserByUserId(long userId);
 
     /**
      * 根据userId更新用户信息
@@ -36,5 +42,5 @@ public interface UserDao {
      * @param userId
      * @return
      */
-    public boolean deleteUserByUserId(long userId);
+    public boolean deleteUserByUserId(String userId);
 }

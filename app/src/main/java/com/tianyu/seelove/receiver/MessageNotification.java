@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.application.SeeLoveApplication;
 import com.tianyu.seelove.common.Constant;
@@ -79,7 +80,7 @@ public class MessageNotification {
         } else {
             intent = new Intent(mContext, SingleChatActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("userId", amMessage.getUserFrom());
+            bundle.putLong("userId", amMessage.getUserFrom());
             intent.putExtras(bundle);
         }
         mPendingIntent = PendingIntent.getActivity(mContext, 0, intent,
@@ -108,7 +109,7 @@ public class MessageNotification {
         }
         if (IsVisbleStatus.INVISBLE.getResultCode() == amMessage.getIsVisible()) {
         } else {
-            mNotificationManager.notify(Integer.valueOf(amMessage.getUserFrom()), notification);
+            mNotificationManager.notify((int) amMessage.getUserFrom(), notification);
         }
     }
 

@@ -23,8 +23,8 @@ public abstract class SLMessage implements Serializable {
         /** 发送失败 */
     }
     private String messageId;// 消息ID
-    private String userFrom; // 消息来源Uid
-    private String userTo; // 消息目标Uid
+    private long userFrom; // 消息来源Uid
+    private long userTo; // 消息目标Uid
     private String messageContent; // 消息主体：可以使文本内容或者是文件的路径，根据getMessageType来判断
     private long timestamp; // 时间戳
     private int isRead; // 0 为未读 1 为已读
@@ -85,20 +85,20 @@ public abstract class SLMessage implements Serializable {
         this.isDelay = isDelay;
     }
 
-    public String getUserFrom() {
-        return userFrom;
-    }
-
-    public void setUserFrom(String userFrom) {
+    public void setUserFrom(long userFrom) {
         this.userFrom = userFrom;
     }
 
-    public String getUserTo() {
-        return userTo;
+    public void setUserTo(long userTo) {
+        this.userTo = userTo;
     }
 
-    public void setUserTo(String userTo) {
-        this.userTo = userTo;
+    public long getUserFrom() {
+        return userFrom;
+    }
+
+    public long getUserTo() {
+        return userTo;
     }
 
     public void setMessageContent(String messageContent) {

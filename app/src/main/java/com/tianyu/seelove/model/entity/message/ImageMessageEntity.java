@@ -60,8 +60,7 @@ public class ImageMessageEntity extends MessageEntity {
 
     @Override
     protected View inflateView(Context context) {
-        if (imageMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (imageMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             return LayoutInflater.from(context).inflate(
                     R.layout.chatting_item_msg_img_right, null);
         } else {
@@ -90,13 +89,11 @@ public class ImageMessageEntity extends MessageEntity {
                 .findViewById(R.id.mc_sendfail));
         viewHolder.setImageAuth((ImageView) convertView
                 .findViewById(R.id.user_recognise));
-        if (imageMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (imageMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.setImgProcessCount((TextView) convertView.findViewById(R.id.imgProcessCount));
         }
         // 设置头像
-        if (imageMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (imageMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getHeader().setImageResource(R.mipmap.default_head);
             if (self != null && self.getHeadUrl() != null
                     && self.getHeadUrl().length() > 0) {
@@ -135,7 +132,7 @@ public class ImageMessageEntity extends MessageEntity {
         } else {
             viewHolder.getCreateTime().setVisibility(View.GONE);
         }
-        if (imageMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
+        if (imageMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             imagePath = ImageLoaderUtil.getSmallPic(imageMessage.getMessageContent());
         } else {
             imagePath = imageMessage.getMessageContent();
@@ -144,8 +141,7 @@ public class ImageMessageEntity extends MessageEntity {
             @Override
             public void onLoadingComplete(String imageUri,
                                           View view, Bitmap loadedImage) {
-                if (imageMessage.getUserFrom().equals(
-                        AppUtils.getInstance().getUserId())) {
+                if (imageMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
                     if (StringUtils.isNotBlank(imageMessage.getSendProcess())) {
                         if (Integer.parseInt(imageMessage.getSendProcess()) >= 98) {
                             viewHolder.getImgProcessCount().setVisibility(View.GONE);
@@ -162,8 +158,7 @@ public class ImageMessageEntity extends MessageEntity {
                 }
             }
         });
-        if (imageMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (imageMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getSendFail().setTag(imageMessage.getMessageId());
             if (imageMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDSUS) {
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
@@ -204,10 +199,10 @@ public class ImageMessageEntity extends MessageEntity {
             @Override
             public void onClick(View v) {
                 List<ViewPageImage> list = new ArrayList<ViewPageImage>();
-                if (imageMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
+                if (imageMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
                     list = getViewPageImageList(messageDao.getImageMessage(AppUtils.getInstance().getUserId(), imageMessage.getUserTo()));
                 } else {
-                    list = getViewPageImageList(messageDao.getImageMessage(String.valueOf(self.getUserId()), String.valueOf(user.getUserId())));
+                    list = getViewPageImageList(messageDao.getImageMessage(self.getUserId(), user.getUserId()));
                 }
                 Intent intent = IntentManager.createIntent(v.getContext(), ViewPageFragment.class);
                 intent.putExtra("viewPageImages", (Serializable) list);
@@ -219,8 +214,7 @@ public class ImageMessageEntity extends MessageEntity {
         viewHolder.getHeader().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imageMessage.getUserFrom().equals(
-                        AppUtils.getInstance().getUserId())) {
+                if (imageMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
                     Intent intent = IntentManager.createIntent(v.getContext(), UserInfoActivity.class);
                     intent.putExtra("user", self);
                     v.getContext().startActivity(intent);
@@ -294,7 +288,7 @@ public class ImageMessageEntity extends MessageEntity {
         List<ViewPageImage> viewPageImages = new ArrayList<ViewPageImage>();
         for (SLMessage amMessage : list) {
             SLImageMessage message = (SLImageMessage) amMessage;
-            if (message.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
+            if (message.getUserFrom() == AppUtils.getInstance().getUserId()) {
                 imagePath = ImageLoaderUtil.getSmallPic(message.getMessageContent());
             } else {
                 imagePath = message.getMessageContent();
@@ -309,7 +303,7 @@ public class ImageMessageEntity extends MessageEntity {
 
     private String getSelectImage(SLMessage amMessage) {
         SLImageMessage message = (SLImageMessage) amMessage;
-        if (message.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
+        if (message.getUserFrom() == AppUtils.getInstance().getUserId()) {
             return ImageLoaderUtil.getSmallPic(message.getMessageContent());
         } else {
             return message.getMessageContent();
@@ -333,7 +327,7 @@ public class ImageMessageEntity extends MessageEntity {
             public void handle(Boolean result) {
                 // 发送融云广播
                 Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
-                send_Intent.putExtra("MessageID", String.valueOf(lastId));
+                send_Intent.putExtra("messageId", String.valueOf(lastId));
                 send_Intent.putExtra("chatType", "single");
                 context.sendOrderedBroadcast(send_Intent, null);
                 // 本地会话广播
@@ -364,7 +358,7 @@ public class ImageMessageEntity extends MessageEntity {
         sessionDao.addSession(session);
         Intent session_intent = new Intent(Actions.ACTION_SESSION);
         Bundle bundle = new Bundle();
-        bundle.putString("targetId", session.getTargetId());
+        bundle.putLong("targetId", session.getTargetId());
         session_intent.putExtras(bundle);
         context.sendOrderedBroadcast(session_intent, null);
     }

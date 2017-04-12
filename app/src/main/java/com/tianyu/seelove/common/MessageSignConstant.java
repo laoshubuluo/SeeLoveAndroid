@@ -12,8 +12,8 @@ public class MessageSignConstant {
     public static final int SERVER_OR_NETWORK_ERROR = 500; // 服务器or网络错误
     public static final int UNKNOWN_ERROR = 9999; // 未知错误、内部错误
 
-    public static final int USER_CREATE_SUCCESS = 1001;
-    public static final int USER_CREATE_FAILURE = 1002;
+    public static final int USER_REGIST_SUCCESS = 1001;
+    public static final int USER_REGIST_FAILURE = 1002;
 
     public static final int USER_LOGIN_SUCCESS = 1003;
     public static final int USER_LOGIN_FAILURE = 1004;

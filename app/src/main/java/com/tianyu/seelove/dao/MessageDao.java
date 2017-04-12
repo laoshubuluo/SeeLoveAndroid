@@ -20,14 +20,14 @@ public interface MessageDao {
      * 根据用户ID获取所有消息列表
      * @return
      */
-    public List<SLMessage> getMessageByPage(String from, String to, int start, int count);
+    public List<SLMessage> getMessageByPage(long from, long to, int start, int count);
 
     /**
      * 單聊中清空兩者之間的消息來往
      * @param from
      * @param to
      */
-    public void cleanSingalChatMessage(String from, String to);
+    public void cleanSingalChatMessage(long from, long to);
 
     /**
      * 通过消息id获取消息
@@ -41,19 +41,19 @@ public interface MessageDao {
      * @param messageId
      * @return
      */
-    public void deleteMessageById(String messageId);
+    public void deleteMessageByMessageId(String messageId);
 
     /**
      * 更新消息状态为成功
      * @param messageId
      */
-    public void markAsSusMsg(String messageId);
+    public void updateSendStatueSuccessByMessageId(String messageId);
 
     /**
      * 更新消息状态为失败
      * @param messageId
      */
-    public void markAsFailedMsg(String messageId);
+    public void updateSendStatueFailByMessageId(String messageId);
 
     /**
      * 获取和某人聊天过程中的未读消息总数
@@ -66,13 +66,13 @@ public interface MessageDao {
      * 把某人的消息全部置成已读 点对点
      * @param from
      */
-    public void setAllRead(String from, String to);
+    public void setAllRead(long from, long to);
 
     /**
      * 获取所有未读的消息总数 点对点消息
      * @return
      */
-    public int getUnreadCount();
+    public int getAllUnReadMessageCount();
 
     /**
      * 根据MessageId 更新消息状态为已读
@@ -93,5 +93,5 @@ public interface MessageDao {
      * @param to
      * @return
      */
-    public List<SLMessage> getImageMessage(String from, String to);
+    public List<SLMessage> getImageMessage(long from, long to);
 }

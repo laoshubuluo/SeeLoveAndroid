@@ -2,7 +2,6 @@ package com.tianyu.seelove.manager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.common.RongCloudErrorCode;
@@ -72,7 +71,7 @@ public class RongCloudManager {
 
             @Override
             public void onSuccess(String userId) {
-                LogUtil.i("rongcloud connect success: userId: " + userId);
+                LogUtil.e("rongcloud connect success: userId: " + userId);
             }
 
             @Override
@@ -115,43 +114,38 @@ public class RongCloudManager {
             //文字消息
             if (message.getContent() instanceof TextMessage) {
                 TextMessage msg = (TextMessage) message.getContent();
-                SLTextMessage amTextMessage = null;
+                SLTextMessage slTextMessage = null;
                 long lastId = System.currentTimeMillis();
-                amTextMessage = new SLTextMessage();
-                amTextMessage.setMessageId(String.valueOf(lastId));
-                amTextMessage.setUserFrom(message.getSenderUserId());
-                amTextMessage.setUserTo(AppUtils.getInstance().getUserId());
-                amTextMessage.setMessageContent(msg.getContent());
-                amTextMessage.setTimestamp(new Date().getTime());
-                amTextMessage.setIsRead(SLMessage.msgUnread);
-                amTextMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
+                slTextMessage = new SLTextMessage();
+                slTextMessage.setMessageId(String.valueOf(lastId));
+                slTextMessage.setUserFrom(Long.parseLong(message.getSenderUserId()));
+                slTextMessage.setUserTo(AppUtils.getInstance().getUserId());
+                slTextMessage.setMessageContent(msg.getContent());
+                slTextMessage.setTimestamp(new Date().getTime());
+                slTextMessage.setIsRead(SLMessage.msgUnread);
+                slTextMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
                 // 保存本地数据库记录
                 MessageDaoImpl messageDao = new MessageDaoImpl();
-                messageDao.addMessage(amTextMessage);
-                // 群组ID message.getTargetId();
+                messageDao.addMessage(slTextMessage);
                 if (message.getConversationType().getName().equals("private")) { // 接收单聊文本消息
                     Intent single_intent = new Intent(Actions.ACTION_RECEIVER_SINGLE_MESSAGE);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("messageID", amTextMessage.getMessageId());
-                    bundle.putInt("messageCount", left);
-                    single_intent.putExtras(bundle);
+                    single_intent.putExtra("messageID", slTextMessage.getMessageId());
+                    single_intent.putExtra("messageCount", left);
                     context.sendOrderedBroadcast(single_intent, null);
                 }
                 SLSession session = new SLSession();
-                session.setLastMessageId(amTextMessage.getMessageId());
-                session.setPriority(amTextMessage.getTimestamp());
+                session.setLastMessageId(slTextMessage.getMessageId());
+                session.setPriority(slTextMessage.getTimestamp());
                 session.setMessageType(MessageType.TEXT);
-                session.setSessionContent(amTextMessage.getMessageContent());
+                session.setSessionContent(slTextMessage.getMessageContent());
                 if (message.getConversationType().getName().equals("private")) {
                     session.setSessionType(SessionType.CHAT);
-                    session.setTargetId(amTextMessage.getUserFrom());
+                    session.setTargetId(slTextMessage.getUserFrom());
                 }
                 SessionDaoImpl sessionDaoImpl = new SessionDaoImpl();
                 sessionDaoImpl.addSession(session);
                 Intent session_intent = new Intent(Actions.ACTION_SESSION);
-                Bundle bundle = new Bundle();
-                bundle.putString("targetId", session.getTargetId());
-                session_intent.putExtras(bundle);
+                session_intent.putExtra("targetId", session.getTargetId());
                 context.sendOrderedBroadcast(session_intent, null);
                 // 发送广播 通知MainActivity 重新设置tab 数字标签
                 context.sendBroadcast(new Intent(Actions.MESSAGE_READ_CHANGE));
@@ -160,53 +154,48 @@ public class RongCloudManager {
             //位置消息
             else if (message.getContent() instanceof LocationMessage) {
                 LocationMessage msg = (LocationMessage) message.getContent();
-                SLLocationMessage amLocationMessage = null;
+                SLLocationMessage slLocationMessage = null;
                 long lastId = System.currentTimeMillis();
-                amLocationMessage = new SLLocationMessage();
-                amLocationMessage.setMessageId(String.valueOf(lastId));
-                amLocationMessage.setUserFrom(message.getSenderUserId());
-                amLocationMessage.setUserTo(AppUtils.getInstance().getUserId());
+                slLocationMessage = new SLLocationMessage();
+                slLocationMessage.setMessageId(String.valueOf(lastId));
+                slLocationMessage.setUserFrom(Long.parseLong(message.getSenderUserId()));
+                slLocationMessage.setUserTo(AppUtils.getInstance().getUserId());
                 try {
                     String[] srts = msg.getExtra().split("amen");
                     String imageBase64 = srts[1];
                     String address = srts[0];
-                    amLocationMessage.setMessageContent(imageBase64);
-                    amLocationMessage.setAddress(address);
+                    slLocationMessage.setMessageContent(imageBase64);
+                    slLocationMessage.setAddress(address);
                 } catch (Exception e) {
-                    amLocationMessage.setAddress(msg.getExtra());
-                    amLocationMessage.setMessageContent(msg.getImgUri().toString());
+                    slLocationMessage.setAddress(msg.getExtra());
+                    slLocationMessage.setMessageContent(msg.getImgUri().toString());
                 }
-                amLocationMessage.setTimestamp(new Date().getTime());
-                amLocationMessage.setLat(msg.getLat());
-                amLocationMessage.setLng(msg.getLng());
-                amLocationMessage.setIsRead(SLMessage.msgUnread);
-                amLocationMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
+                slLocationMessage.setTimestamp(new Date().getTime());
+                slLocationMessage.setLat(msg.getLat());
+                slLocationMessage.setLng(msg.getLng());
+                slLocationMessage.setIsRead(SLMessage.msgUnread);
+                slLocationMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
                 // 保存本地数据库记录
                 MessageDaoImpl messageDao = new MessageDaoImpl();
-                messageDao.addMessage(amLocationMessage);
-                // 群组ID message.getTargetId();
+                messageDao.addMessage(slLocationMessage);
                 if (message.getConversationType().getName().equals("private")) { // 接收单聊文本消息
                     Intent single_intent = new Intent(Actions.ACTION_RECEIVER_SINGLE_MESSAGE);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("messageID", amLocationMessage.getMessageId());
-                    single_intent.putExtras(bundle);
+                    single_intent.putExtra("messageID", slLocationMessage.getMessageId());
                     context.sendOrderedBroadcast(single_intent, null);
                 }
                 SLSession session = new SLSession();
-                session.setLastMessageId(amLocationMessage.getMessageId());
-                session.setPriority(amLocationMessage.getTimestamp());
+                session.setLastMessageId(slLocationMessage.getMessageId());
+                session.setPriority(slLocationMessage.getTimestamp());
                 session.setMessageType(MessageType.LOCATION);
-                session.setSessionContent(amLocationMessage.getMessageContent());
+                session.setSessionContent(slLocationMessage.getMessageContent());
                 if (message.getConversationType().getName().equals("private")) {
                     session.setSessionType(SessionType.CHAT);
-                    session.setTargetId(amLocationMessage.getUserFrom());
+                    session.setTargetId(slLocationMessage.getUserFrom());
                 }
                 SessionDaoImpl sessionDaoImpl = new SessionDaoImpl();
                 sessionDaoImpl.addSession(session);
                 Intent session_intent = new Intent(Actions.ACTION_SESSION);
-                Bundle bundle = new Bundle();
-                bundle.putString("targetId", session.getTargetId());
-                session_intent.putExtras(bundle);
+                session_intent.putExtra("targetId", session.getTargetId());
                 context.sendOrderedBroadcast(session_intent, null);
                 // 发送广播 通知MainActivity 重新设置tab 数字标签
                 context.sendBroadcast(new Intent(Actions.MESSAGE_READ_CHANGE));
@@ -221,7 +210,7 @@ public class RongCloudManager {
                 audioMessage.setMessageId(String.valueOf(lastId));
                 audioMessage.setMessageContent(msg.getUri().toString());
                 audioMessage.setAudioLength(msg.getDuration());
-                audioMessage.setUserFrom(message.getSenderUserId());
+                audioMessage.setUserFrom(Long.parseLong(message.getSenderUserId()));
                 audioMessage.setUserTo(AppUtils.getInstance().getUserId());
                 audioMessage.setTimestamp(new Date().getTime());
                 audioMessage.setIsRead(SLMessage.msgUnread);
@@ -246,9 +235,7 @@ public class RongCloudManager {
                 SessionDaoImpl sessionDaoImpl = new SessionDaoImpl();
                 sessionDaoImpl.addSession(session);
                 Intent session_intent = new Intent(Actions.ACTION_SESSION);
-                Bundle bundle = new Bundle();
-                bundle.putString("targetId", session.getTargetId());
-                session_intent.putExtras(bundle);
+                session_intent.putExtra("targetId", session.getTargetId());
                 context.sendOrderedBroadcast(session_intent, null);
                 // 发送广播 通知MainActivity 重新设置tab 数字标签
                 context.sendBroadcast(new Intent(Actions.MESSAGE_READ_CHANGE));
@@ -257,40 +244,38 @@ public class RongCloudManager {
             //图片消息
             else if (message.getContent() instanceof ImageMessage) {
                 ImageMessage msg = (ImageMessage) message.getContent();
-                SLImageMessage amImageMessage = null;
+                SLImageMessage slImageMessage = null;
                 long lastId = System.currentTimeMillis();
-                amImageMessage = new SLImageMessage();
-                amImageMessage.setMessageId(String.valueOf(lastId));
-                amImageMessage.setMessageContent(msg.getRemoteUri().toString());
-                amImageMessage.setThumUrl(msg.getThumUri().toString());
-                amImageMessage.setUserFrom(message.getSenderUserId());
-                amImageMessage.setUserTo(AppUtils.getInstance().getUserId());
-                amImageMessage.setIsRead(SLMessage.msgUnread);
-                amImageMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
-                amImageMessage.setTimestamp(new Date().getTime());
+                slImageMessage = new SLImageMessage();
+                slImageMessage.setMessageId(String.valueOf(lastId));
+                slImageMessage.setMessageContent(msg.getRemoteUri().toString());
+                slImageMessage.setThumUrl(msg.getThumUri().toString());
+                slImageMessage.setUserFrom(Long.parseLong(message.getSenderUserId()));
+                slImageMessage.setUserTo(AppUtils.getInstance().getUserId());
+                slImageMessage.setIsRead(SLMessage.msgUnread);
+                slImageMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
+                slImageMessage.setTimestamp(new Date().getTime());
                 // 保存本地数据库记录
                 MessageDaoImpl messageDao = new MessageDaoImpl();
-                messageDao.addMessage(amImageMessage);
+                messageDao.addMessage(slImageMessage);
                 if (message.getConversationType().getName().equals("private")) { // 接收单聊文本消息
                     Intent single_intent = new Intent(Actions.ACTION_RECEIVER_SINGLE_MESSAGE);
-                    single_intent.putExtra("messageID", amImageMessage.getMessageId());
+                    single_intent.putExtra("messageID", slImageMessage.getMessageId());
                     context.sendOrderedBroadcast(single_intent, null);
                 }
                 SLSession session = new SLSession();
-                session.setLastMessageId(amImageMessage.getMessageId());
-                session.setPriority(amImageMessage.getTimestamp());
+                session.setLastMessageId(slImageMessage.getMessageId());
+                session.setPriority(slImageMessage.getTimestamp());
                 session.setMessageType(MessageType.IMAGE);
-                session.setSessionContent(amImageMessage.getMessageContent());
+                session.setSessionContent(slImageMessage.getMessageContent());
                 if (message.getConversationType().getName().equals("private")) {
                     session.setSessionType(SessionType.CHAT);
-                    session.setTargetId(amImageMessage.getUserFrom());
+                    session.setTargetId(slImageMessage.getUserFrom());
                 }
                 SessionDaoImpl sessionDaoImpl = new SessionDaoImpl();
                 sessionDaoImpl.addSession(session);
                 Intent session_intent = new Intent(Actions.ACTION_SESSION);
-                Bundle bundle = new Bundle();
-                bundle.putString("targetId", session.getTargetId());
-                session_intent.putExtras(bundle);
+                session_intent.putExtra("targetId", session.getTargetId());
                 context.sendOrderedBroadcast(session_intent, null);
                 // 发送广播 通知MainActivity 重新设置tab 数字标签
                 context.sendBroadcast(new Intent(Actions.MESSAGE_READ_CHANGE));
@@ -310,26 +295,6 @@ public class RongCloudManager {
         @Override
         public void onChanged(ConnectionStatus connectionStatus) {
             switch (connectionStatus) {
-//                case CONNECTED://连接成功。
-//                    Log.i("connection=====", "CONNECTED");
-//                    Intent sucess_intent = new Intent(Actions.CONNECTION_SUCCESS);
-//                    context.sendOrderedBroadcast(sucess_intent, null);
-//                    break;
-//                case DISCONNECTED://断开连接。
-//                    Log.i("connection=====", "DISCONNECTED");
-//                    Intent faile_intent = new Intent(Actions.CONNECTION_FAILED);
-//                    context.sendOrderedBroadcast(faile_intent, null);
-//                    break;
-//                case CONNECTING://连接中。
-//                    Log.i("connection=====", "CONNECTING");
-//                    Intent link_intent = new Intent(Actions.CONNECTION_LINKING);
-//                    context.sendOrderedBroadcast(link_intent, null);
-//                    break;
-//                case NETWORK_UNAVAILABLE://网络不可用。
-//                    Log.i("connection=====", "NETWORK_UNAVAILABLE");
-//                    Intent unavailable_intent = new Intent(Actions.CONNECTION_UNAVAILABLE);
-//                    context.sendOrderedBroadcast(unavailable_intent, null);
-//                    break;
                 case KICKED_OFFLINE_BY_OTHER_CLIENT://用户账户在其他设备登录，本机会被踢掉线
                     Handler handler = new Handler(context.getMainLooper()) {
                         @Override
@@ -366,12 +331,9 @@ public class RongCloudManager {
                     String token = AppUtils.getInstance().getUserToken(); //当前用户token
                     RongCloudManager.getInstance().connect(token);
                 }
-                Intent send_Intent = new Intent(
-                        Actions.ACTION_UPDATE_MESSAGE_STATUE);
-                Bundle bundle = new Bundle();
-                bundle.putInt("MessageStatus", SLMessage.MessagePropertie.MSG_FAIL);
-                bundle.putString("MessageID", messageId);
-                send_Intent.putExtras(bundle);
+                Intent send_Intent = new Intent(Actions.ACTION_UPDATE_MESSAGE_STATUE);
+                send_Intent.putExtra("MessageStatus", SLMessage.MessagePropertie.MSG_FAIL);
+                send_Intent.putExtra("MessageID", messageId);
                 context.sendOrderedBroadcast(send_Intent, null);
             }
 
@@ -382,23 +344,19 @@ public class RongCloudManager {
                     LogUtil.i("rongcloud send message[TextMessage]: getContent: " + msg.getContent() + ",getExtra: " + msg.getExtra());
                 } else if (message instanceof ImageMessage) {
                     ImageMessage msg = (ImageMessage) message;
-                    LogUtil.i("rongcloud send message[ImageMessage]: getRemoteUri: " + msg.getRemoteUri() +
-                            ",getThumUri: " + msg.getThumUri() + ",getLocalUri: " + msg.getLocalUri());
+                    LogUtil.i("rongcloud send message[ImageMessage]: getRemoteUri: " + msg.getRemoteUri() + ",getThumUri: " + msg.getThumUri() + ",getLocalUri: " + msg.getLocalUri());
                 } else if (message instanceof VoiceMessage) {
                     VoiceMessage msg = (VoiceMessage) message;
                     LogUtil.i("rongcloud send message[VoiceMessage]: getUri: " + msg.getUri() + ",getExtra: " + msg.getExtra());
                 } else if (message instanceof LocationMessage) {
                     LocationMessage msg = (LocationMessage) message;
                     LogUtil.i("rongcloud send message[LocationMessage]: getLat: " + msg.getLat());
-                    //消息发送成功,通知刷新消息状态
-                    Intent send_Intent = new Intent(
-                            Actions.ACTION_UPDATE_MESSAGE_STATUE);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("MessageStatus", SLMessage.MessagePropertie.MSG_SENDSUS);
-                    bundle.putString("MessageID", messageId);
-                    send_Intent.putExtras(bundle);
-                    context.sendOrderedBroadcast(send_Intent, null);
                 }
+                //消息发送成功,通知刷新消息状态
+                Intent send_Intent = new Intent(Actions.ACTION_UPDATE_MESSAGE_STATUE);
+                send_Intent.putExtra("MessageStatus", SLMessage.MessagePropertie.MSG_SENDSUS);
+                send_Intent.putExtra("MessageID", messageId);
+                context.sendOrderedBroadcast(send_Intent, null);
             }
         });
     }
@@ -409,7 +367,6 @@ public class RongCloudManager {
      * @param type
      * @param targetUserId
      */
-
     public void sendImageMessage(final MessageContent message, Conversation.ConversationType type, String targetUserId, String pushContent, final String messageId) {
         if (rongIMClient == null) {
             LogUtil.e("RongCloudManager", "rongcloud send message error: rongIMClient is null ");
@@ -430,24 +387,18 @@ public class RongCloudManager {
                     String token = AppUtils.getInstance().getUserToken(); //当前用户token
                     RongCloudManager.getInstance().connect(token);
                 }
-                Intent send_Intent = new Intent(
-                        Actions.ACTION_UPDATE_MESSAGE_STATUE);
-                Bundle bundle = new Bundle();
-                bundle.putInt("MessageStatus", SLMessage.MessagePropertie.MSG_FAIL);
-                bundle.putString("MessageID", messageId);
-                send_Intent.putExtras(bundle);
+                Intent send_Intent = new Intent(Actions.ACTION_UPDATE_MESSAGE_STATUE);
+                send_Intent.putExtra("MessageStatus", SLMessage.MessagePropertie.MSG_FAIL);
+                send_Intent.putExtra("MessageID", messageId);
                 context.sendOrderedBroadcast(send_Intent, null);
             }
 
             @Override
             public void onSuccess(Message message) {
                 //消息发送成功,通知刷新消息状态
-                Intent send_Intent = new Intent(
-                        Actions.ACTION_UPDATE_MESSAGE_STATUE);
-                Bundle bundle = new Bundle();
-                bundle.putInt("MessageStatus", SLMessage.MessagePropertie.MSG_SENDSUS);
-                bundle.putString("MessageID", messageId);
-                send_Intent.putExtras(bundle);
+                Intent send_Intent = new Intent(Actions.ACTION_UPDATE_MESSAGE_STATUE);
+                send_Intent.putExtra("MessageStatus", SLMessage.MessagePropertie.MSG_SENDSUS);
+                send_Intent.putExtra("MessageID", messageId);
                 context.sendOrderedBroadcast(send_Intent, null);
             }
 
@@ -455,12 +406,9 @@ public class RongCloudManager {
             public void onProgress(Message message, int i) {
                 //发送进度
                 //消息发送成功,通知刷新消息状态
-                Intent send_Intent = new Intent(
-                        Actions.ACTION_UPDATE_IMGMESSAGE_PROCESS);
-                Bundle bundle = new Bundle();
-                bundle.putString("ProcessCount", i + "");
-                bundle.putString("MessageID", messageId);
-                send_Intent.putExtras(bundle);
+                Intent send_Intent = new Intent(Actions.ACTION_UPDATE_IMGMESSAGE_PROCESS);
+                send_Intent.putExtra("ProcessCount", i + "");
+                send_Intent.putExtra("MessageID", messageId);
                 context.sendOrderedBroadcast(send_Intent, null);
             }
         });

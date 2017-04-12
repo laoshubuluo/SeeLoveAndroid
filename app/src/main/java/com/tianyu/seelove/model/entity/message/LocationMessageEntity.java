@@ -62,8 +62,7 @@ public class LocationMessageEntity extends MessageEntity {
 
     @Override
     protected View inflateView(Context context) {
-        if (locationMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (locationMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             return LayoutInflater.from(context).inflate(
                     R.layout.chatting_item_msg_location_right, null);
         } else {
@@ -95,8 +94,7 @@ public class LocationMessageEntity extends MessageEntity {
         viewHolder.setImageAuth((ImageView) convertView
                 .findViewById(R.id.user_recognise));
         // 设置头像
-        if (locationMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (locationMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getHeader().setImageResource(R.mipmap.default_head);
             if (self != null && self.getHeadUrl() != null
                     && self.getHeadUrl().length() > 0) {
@@ -136,7 +134,7 @@ public class LocationMessageEntity extends MessageEntity {
         }
         try {
             String imagePath = "";
-            if (locationMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
+            if (locationMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
                 imagePath = ImageLoaderUtil.getSmallPic(locationMessage.getMessageContent());
                 ImageLoader.getInstance().loadImage(imagePath,
                         ImageLoaderUtil.getDefaultDisplayOptions(),
@@ -196,8 +194,7 @@ public class LocationMessageEntity extends MessageEntity {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        if (locationMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (locationMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getSendFail().setTag(locationMessage.getMessageId());
             if (locationMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDSUS) {
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
@@ -248,8 +245,7 @@ public class LocationMessageEntity extends MessageEntity {
         viewHolder.getHeader().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (locationMessage.getUserFrom().equals(
-                        AppUtils.getInstance().getUserId())) {
+                if (locationMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
                     Intent intent = IntentManager.createIntent(v.getContext(), UserInfoActivity.class);
                     intent.putExtra("user", self);
                     v.getContext().startActivity(intent);
@@ -296,7 +292,7 @@ public class LocationMessageEntity extends MessageEntity {
             public void handle(Boolean result) {
                 // 发送融云广播
                 Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
-                send_Intent.putExtra("MessageID", String.valueOf(lastId));
+                send_Intent.putExtra("messageId", String.valueOf(lastId));
                 send_Intent.putExtra("chatType", "single");
                 context.sendOrderedBroadcast(send_Intent, null);
                 // 本地会话广播
@@ -321,7 +317,7 @@ public class LocationMessageEntity extends MessageEntity {
         sessionDao.addSession(session);
         Intent session_intent = new Intent(Actions.ACTION_SESSION);
         Bundle bundle = new Bundle();
-        bundle.putString("targetId", session.getTargetId());
+        bundle.putLong("targetId", session.getTargetId());
         session_intent.putExtras(bundle);
         context.sendOrderedBroadcast(session_intent, null);
     }

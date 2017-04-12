@@ -3,12 +3,14 @@ package com.tianyu.seelove.dao.impl;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+
 import com.tianyu.seelove.dao.UserDao;
 import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.SexType;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.utils.StringUtils;
+
 import java.util.List;
 
 /**
@@ -32,14 +34,20 @@ public class UserDaoImpl implements UserDao {
     // 根据userId删除当前用户
     public final static String sqlDeleteUserByUserId = "DELETE FROM USERINFO WHERE UserId = ?";
 
-    /**
-     * 执行插入动作，将用户插入数据库
-     * @param user
-     * @return
-     */
+    @Override
+    public void addUser(SLUser slUser) {
+        if (null == slUser) {
+            return;
+        }
+        if (null == getUserByUserId(slUser.getUserId())) {
+            insert(slUser);
+        } else {
+            deleteUserByUserId(String.valueOf(slUser.getUserId()));
+            insert(slUser);
+        }
+    }
+
     private boolean insert(SLUser user) {
-        if (user == null)
-            return false;
         try {
             DbConnectionManager.getInstance().getConnection().execSQL(
                     sqlInsertUserInfo,
@@ -65,6 +73,7 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * 执行插入动作，将用户插入数据库
+     *
      * @param userList
      * @return
      */
@@ -88,6 +97,7 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * update User
+     *
      * @param user
      * @return
      */
@@ -120,6 +130,7 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * update User
+     *
      * @param userId
      * @return
      */
@@ -141,15 +152,16 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * 根据uid获取User
+     *
      * @param userId
      * @return
      */
     @Override
-    public SLUser getUserByUserId(String userId) {
+    public SLUser getUserByUserId(long userId) {
         Cursor cursor = null;
         SLUser user = new SLUser();
         try {
-            cursor = DbConnectionManager.getInstance().getConnection().rawQuery(sqlSelectUserByUserId, new String[]{userId});
+            cursor = DbConnectionManager.getInstance().getConnection().rawQuery(sqlSelectUserByUserId, new String[]{String.valueOf(userId)});
             cursor.moveToFirst();
             if (cursor.getCount() > 0) {
                 return parseUserFromCursor(cursor);
@@ -167,11 +179,12 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * 删除用户信息
+     *
      * @param userId
      * @return
      */
     @Override
-    public boolean deleteUserByUserId(long userId) {
+    public boolean deleteUserByUserId(String userId) {
         try {
             DbConnectionManager.getInstance().getConnection().execSQL(
                     sqlDeleteUserByUserId,
@@ -215,6 +228,7 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * 从cursor中获取用户信息
+     *
      * @param cursor
      */
     private SLUser parseUserFromCursor(Cursor cursor) {

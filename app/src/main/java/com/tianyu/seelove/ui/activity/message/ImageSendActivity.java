@@ -35,7 +35,7 @@ public class ImageSendActivity extends BaseActivity {
     private TextView titleView;
     private String picPath;
     private RelativeLayout layout;
-    private String target = null;
+    private long target = 0l;
     private String targetName = "";
     private String targetGroup = "";
 
@@ -47,7 +47,7 @@ public class ImageSendActivity extends BaseActivity {
         titleView.setText("");
         layout = (RelativeLayout) findViewById(R.id.contain_layout);
         picPath = getIntent().getExtras().getString("images");
-        target = getIntent().getExtras().getString("target");
+        target = getIntent().getExtras().getLong("target");
         targetGroup = getIntent().getExtras().getString("targetGroup");
         PhotoView photoView = new PhotoView(ImageSendActivity.this);
         ImageLoader.getInstance().displayImage(
@@ -91,7 +91,7 @@ public class ImageSendActivity extends BaseActivity {
                                 public void handle(Boolean result) {
                                     // 发送融云广播
                                     Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
-                                    send_Intent.putExtra("MessageID",
+                                    send_Intent.putExtra("messageId",
                                             String.valueOf(lastId));
                                     send_Intent.putExtra("chatType", "single");
                                     getApplicationContext().sendOrderedBroadcast(send_Intent, null);
@@ -121,7 +121,7 @@ public class ImageSendActivity extends BaseActivity {
                     sessionDaoImpl.addSession(session);
                     Intent session_intent = new Intent(Actions.ACTION_SESSION);
                     Bundle bundle = new Bundle();
-                    bundle.putString("targetId", session.getTargetId());
+                    bundle.putLong("targetId", session.getTargetId());
                     session_intent.putExtras(bundle);
                     sendOrderedBroadcast(session_intent, null);
                     ImageSendActivity.this.finish();

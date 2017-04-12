@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Base64;
 import android.util.Log;
-
 import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.dao.MessageDao;
@@ -32,8 +31,6 @@ import com.tianyu.seelove.receiver.NotificationMessageReceiver;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.BitmapUtils;
 import com.tianyu.seelove.utils.FaceConversionUtils;
-import com.tianyu.seelove.utils.LogUtil;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,7 +39,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.ImageMessage;
@@ -50,10 +46,14 @@ import io.rong.message.LocationMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 
+/**
+ * @author shisheng.zhao
+ * @Description: 用来处理消息的发送和接收的service
+ * @date 2017-04-12 17:49
+ */
 public class MessageSendService extends Service {
-    private MessageSendBroadCastReceiver messageSendBroadCastReceiver =
-            new MessageSendBroadCastReceiver();
-    private NotificationMessageReceiver receiver = new NotificationMessageReceiver();
+    private MessageSendBroadCastReceiver messageSendBroadCastReceiver = new MessageSendBroadCastReceiver();
+    private NotificationMessageReceiver notificationMessageReceiver = new NotificationMessageReceiver();
     public static final String TAG = "Monitor";
     public static final int MSG_RESET_PRIORITY = 0;
 
@@ -65,8 +65,6 @@ public class MessageSendService extends Service {
     public void onCreate() {
         super.onCreate();
         initJniService();
-        AppUtils.getInstance().setJniServiceVersion(false);
-        LogUtil.i("----------------------" + "JniService");
         // 初始化表情
         new Thread(new Runnable() {
             @Override
@@ -75,15 +73,11 @@ public class MessageSendService extends Service {
             }
         }).start();
         // 链接融云服务器
-        String token = AppUtils.getInstance().getUserToken(); //当前用户token
+        String token = AppUtils.getInstance().getUserToken(); // 当前用户token
         RongCloudManager.getInstance().connect(token);
-        // 同步加入通讯录群组信息
-       /* GroupController groupController = new GroupController(getApplication(), null);
-        groupController.getGroupList();*/
         IntentFilter intentFilter = new IntentFilter();
         // 添加消息发送注册广播
         intentFilter.addAction(Actions.ACTION_SNED_SINGLE_MESSAGE);
-        intentFilter.addAction(Actions.ACTION_SNED_GROUP_MESSAGE);
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_USER_PRESENT);
         this.registerReceiver(messageSendBroadCastReceiver, intentFilter);
@@ -91,35 +85,19 @@ public class MessageSendService extends Service {
         registerBoradcastReceiver();
     }
 
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        LogUtil.i("MessageSendService===onStartCommand");
-        flags = START_STICKY;
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
-    }
-
     public void registerBoradcastReceiver() {
         // 注册通知栏消息显示广播接收者
         IntentFilter filter = new IntentFilter();
         filter.addAction(Actions.ACTION_RECEIVER_SINGLE_MESSAGE);
-        filter.addAction(Actions.ACTION_RECEIVER_GROUP_MESSAGE);
-        registerReceiver(receiver, filter);
+        registerReceiver(notificationMessageReceiver, filter);
     }
 
     public class MessageSendBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            /** 发送消息 */
-            if (intent.getAction().equals(Actions.ACTION_SNED_SINGLE_MESSAGE) ||
-                    intent.getAction().equals(Actions.ACTION_SNED_GROUP_MESSAGE)) {
-                String messageId = intent.getStringExtra("MessageID");
+            // 发送消息
+            if (intent.getAction().equals(Actions.ACTION_SNED_SINGLE_MESSAGE)) {
+                String messageId = intent.getStringExtra("messageId");
                 String chatType = intent.getStringExtra("chatType");
                 sendMessage(messageId, chatType);
             }
@@ -139,19 +117,18 @@ public class MessageSendService extends Service {
             protected Integer doInBackground(Void... params) {
                 int result = 0;
                 UserDao userDao = new UserDaoImpl();
-                final SLUser user = userDao.getUserByUserId(AppUtils.getInstance().getUserId());
+                final SLUser slUser = userDao.getUserByUserId(AppUtils.getInstance().getUserId());
                 MessageDao messageDao = new MessageDaoImpl();
                 final SLMessage message = messageDao.getMessageById(messageId);
                 try {
-                    final UserInfo userInfo = new UserInfo(AppUtils.getInstance().getUserId(),
-                            user.getNickName(), Uri.parse(user.getHeadUrl()));
+                    final UserInfo userInfo = new UserInfo(String.valueOf(AppUtils.getInstance().getUserId()), slUser.getNickName(), Uri.parse(slUser.getHeadUrl()));
                     // 文字，表情消息
                     if (message.getMessageType() == MessageType.TEXT) {
                         TextMessage textMessage = new TextMessage(message.getMessageContent());
                         textMessage.setUserInfo(userInfo);
-                        String pushContent = user.getNickName() + ":" + message.getMessageContent();
+                        String pushContent = slUser.getNickName() + ":" + message.getMessageContent();
                         if (chatType.equals("single")) {
-                            RongCloudManager.getInstance().sendMessage(textMessage, Conversation.ConversationType.PRIVATE, message.getUserTo(), pushContent, messageId);
+                            RongCloudManager.getInstance().sendMessage(textMessage, Conversation.ConversationType.PRIVATE, String.valueOf(message.getUserTo()), pushContent, messageId);
                         }
                     } else if (message.getMessageType() == MessageType.LOCATION) { // 位置消息
                         final SLLocationMessage slLocationMessage = (SLLocationMessage) message;
@@ -181,15 +158,13 @@ public class MessageSendService extends Service {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                LocationMessage locationMsg =
-                                        LocationMessage.obtain(slLocationMessage.getLat(),
-                                                slLocationMessage.getLng(), "", Uri.fromFile(imageFileThumb));
+                                LocationMessage locationMsg = LocationMessage.obtain(slLocationMessage.getLat(), slLocationMessage.getLng(), "", Uri.fromFile(imageFileThumb));
                                 locationMsg.setUserInfo(userInfo);
                                 String appendExtra = slLocationMessage.getAddress() + "amen" + base64Image;
                                 locationMsg.setExtra(appendExtra);
-                                String pushContent = user.getNickName() + ":" + "[位置]";
+                                String pushContent = slUser.getNickName() + ":" + "[位置]";
                                 if (chatType.equals("single")) {
-                                    RongCloudManager.getInstance().sendMessage(locationMsg, Conversation.ConversationType.PRIVATE, message.getUserTo(), pushContent, messageId);
+                                    RongCloudManager.getInstance().sendMessage(locationMsg, Conversation.ConversationType.PRIVATE, String.valueOf(message.getUserTo()), pushContent, messageId);
                                 }
                             }
                         }).start();
@@ -221,9 +196,9 @@ public class MessageSendService extends Service {
                                     }
                                     VoiceMessage vocMsg = VoiceMessage.obtain(Uri.fromFile(voiceFile), amAudioMessage.getAudioLength());
                                     vocMsg.setUserInfo(userInfo);
-                                    String pushContent = user.getNickName() + ":" + "[语音]";
+                                    String pushContent = slUser.getNickName() + ":" + "[语音]";
                                     if (chatType.equals("single")) {
-                                        RongCloudManager.getInstance().sendMessage(vocMsg, Conversation.ConversationType.PRIVATE, message.getUserTo(), pushContent, messageId);
+                                        RongCloudManager.getInstance().sendMessage(vocMsg, Conversation.ConversationType.PRIVATE, String.valueOf(message.getUserTo()), pushContent, messageId);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -254,11 +229,6 @@ public class MessageSendService extends Service {
                                     FileOutputStream fosSource = new FileOutputStream(imageFileSource);
                                     // 保存原图。
                                     bmpSource.compress(Bitmap.CompressFormat.PNG, 100, fosSource);
-//                                    // 创建缩略图变换矩阵。
-//                                    Matrix m = new Matrix();
-//                                    m.setRectToRect(new RectF(0, 0, bmpSource.getWidth(), bmpSource.getHeight()), new RectF(0, 0, 100, 500), Matrix.ScaleToFit.CENTER);
-//                                    // 生成缩略图。
-//                                    Bitmap bmpThumb = Bitmap.createBitmap(bmpSource, 0, 0, bmpSource.getWidth(), bmpSource.getHeight(), m, true);
                                     Bitmap bmpThumb = BitmapUtils.getImageFromFileWithHighResolution(filePath, 240, 400);
                                     imageFileThumb.createNewFile();
                                     FileOutputStream fosThumb = new FileOutputStream(imageFileThumb);
@@ -270,11 +240,9 @@ public class MessageSendService extends Service {
                                 new MessageDaoImpl().updateMessageThumUrlByMessageId(messageId, Uri.fromFile(imageFileThumb).toString());
                                 ImageMessage imgMsg = ImageMessage.obtain(Uri.fromFile(imageFileThumb), Uri.fromFile(imageFileSource));
                                 imgMsg.setUserInfo(userInfo);
-                                String pushContent = user.getNickName() + ":" + "[图片]";
-                                if (chatType.equals("group")) {
-                                    RongCloudManager.getInstance().sendImageMessage(imgMsg, Conversation.ConversationType.GROUP, message.getUserTo(), pushContent, messageId);
-                                } else if (chatType.equals("single")) {
-                                    RongCloudManager.getInstance().sendImageMessage(imgMsg, Conversation.ConversationType.PRIVATE, message.getUserTo(), pushContent, messageId);
+                                String pushContent = slUser.getNickName() + ":" + "[图片]";
+                                if (chatType.equals("single")) {
+                                    RongCloudManager.getInstance().sendImageMessage(imgMsg, Conversation.ConversationType.PRIVATE, String.valueOf(message.getUserTo()), pushContent, messageId);
                                 }
                             }
                         }).start();
@@ -286,37 +254,16 @@ public class MessageSendService extends Service {
 
             @Override
             protected void onPostExecute(Integer result) {
-                if (result == 1) {  // 如果result=0代表单边好友发送消息模拟发送成功,刷新消息发送状态
-                    Intent send_Intent = new Intent(
-                            Actions.ACTION_UPDATE_MESSAGE_STATUE);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("MessageStatus", SLMessage.MessagePropertie.MSG_SENDSUS);
-                    bundle.putString("MessageID", messageId);
-                    send_Intent.putExtras(bundle);
-                    sendOrderedBroadcast(send_Intent, null);
-                }
+                // result == 0代表的是单边好友发送消息成功,刷新消息发送状态; result == 1代表的是双边好友发送消息成功,刷新消息发送状态
+                Intent send_Intent = new Intent(Actions.ACTION_UPDATE_MESSAGE_STATUE);
+                Bundle bundle = new Bundle();
+                bundle.putInt("MessageStatus", SLMessage.MessagePropertie.MSG_SENDSUS);
+                bundle.putString("MessageID", messageId);
+                send_Intent.putExtras(bundle);
+                sendOrderedBroadcast(send_Intent, null);
             }
         }.execute();
     }
-
-//    private void connRongClient(Context context) {
-//        if (StringUtils.isNotBlank(AppUtils.getInstance().getUserToken())) {
-//            // 初始化融云SDK
-//            RongIMClient.init(context);
-//            RongIMClient.ConnectionStatusListener.ConnectionStatus connectionStatus = RongIMClient.getInstance()
-//                    .getCurrentConnectionStatus();
-//            LogUtil.i("connectionStatus:" + connectionStatus.getMessage());
-////            try {
-////                RongIMClient.registerMessageType(BibleMessage.class);
-////            } catch (Exception e) {
-////                e.printStackTrace();
-////            }
-////            RongCloudManager.getInstance().init(context);
-////            //链接融云服务器
-////            String token = AppUtils.getInstance().getUserToken(); //当前用户token
-////            RongCloudManager.getInstance().connect(token);
-//        }
-//    }
 
     private String getImageBase64(String imgPath) {
         byte[] data = null;
@@ -336,7 +283,7 @@ public class MessageSendService extends Service {
     @Override
     public void onDestroy() {
         try {
-            unregisterReceiver(receiver);
+            unregisterReceiver(notificationMessageReceiver);
             unregisterReceiver(messageSendBroadCastReceiver);
         } catch (Exception e) {
             e.printStackTrace();
@@ -348,44 +295,19 @@ public class MessageSendService extends Service {
         String userId = getUserSerial();
         Log.e(TAG, "+++++++++++++ Monitor: " + userId);
         startMonitor(userId, "/sdcard/", Constant.childCount, Constant.processDepth);
-//        final IntentFilter filter = new IntentFilter();
-//        filter.addAction(Intent.ACTION_SCREEN_ON);
-//        filter.addAction(Intent.ACTION_USER_PRESENT);
-//        mBatInfoReceiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(final Context context, final Intent intent) {
-//                String action = intent.getAction();
-//                if (Intent.ACTION_SCREEN_ON.equals(action)) {
-//                    Log.d(TAG, "----------- screen on");
-//                    sendMsg(MSG_RESET_PRIORITY);
-//                } else if (Intent.ACTION_USER_PRESENT.equals(action)) {
-//                    Log.d(TAG, "----------- screen unlock");
-//                    sendMsg(MSG_RESET_PRIORITY);
-//                }
-//            }
-//        };
-//
-//        registerReceiver(mBatInfoReceiver, filter);
     }
 
     private String getUserSerial() {
-
         Object userManager = this.getSystemService("user");
-
         if (userManager == null) {
             Log.e(TAG, "userManager not exsit !!!");
             return "";
         }
-
         try {
-            Method myUserHandleMethod = android.os.Process.class.getMethod(
-                    "myUserHandle", (Class<?>[]) null);
-            Object myUserHandle = myUserHandleMethod.invoke(
-                    android.os.Process.class, (Object[]) null);
-            Method getSerialNumberForUser = userManager.getClass().getMethod(
-                    "getSerialNumberForUser", myUserHandle.getClass());
-            long userSerial = (Long) getSerialNumberForUser.invoke(userManager,
-                    myUserHandle);
+            Method myUserHandleMethod = android.os.Process.class.getMethod("myUserHandle", (Class<?>[]) null);
+            Object myUserHandle = myUserHandleMethod.invoke(android.os.Process.class, (Object[]) null);
+            Method getSerialNumberForUser = userManager.getClass().getMethod("getSerialNumberForUser", myUserHandle.getClass());
+            long userSerial = (Long) getSerialNumberForUser.invoke(userManager, myUserHandle);
             return String.valueOf(userSerial);
         } catch (NoSuchMethodException e) {
             Log.e(TAG, "", e);
@@ -396,7 +318,6 @@ public class MessageSendService extends Service {
         } catch (InvocationTargetException e) {
             Log.e(TAG, "", e);
         }
-
         return "";
     }
 
@@ -404,12 +325,6 @@ public class MessageSendService extends Service {
 
     public native void sendMsg(int msgId);
 
-
-    /* this is used to load the 'hello-jni' library on application
-     * startup. The library has already been unpacked into
-     * /data/data/com.example.hellojni/lib/libhello-jni.so at
-     * installation time by the package manager.
-     */
     static {
         System.loadLibrary("hello-jni");
     }

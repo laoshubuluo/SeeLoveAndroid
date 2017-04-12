@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -26,7 +25,6 @@ import com.tianyu.seelove.dao.UserDao;
 import com.tianyu.seelove.dao.impl.MessageDaoImpl;
 import com.tianyu.seelove.dao.impl.SessionDaoImpl;
 import com.tianyu.seelove.dao.impl.UserDaoImpl;
-import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.message.MessageEntity;
 import com.tianyu.seelove.model.entity.message.MessageEntityFactory;
 import com.tianyu.seelove.model.entity.message.SLImageMessage;
@@ -35,7 +33,6 @@ import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.IsVisbleStatus;
 import com.tianyu.seelove.model.enums.MessageType;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
-import com.tianyu.seelove.ui.activity.system.MainActivity;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.utils.PublicMessageSendUtils;
@@ -66,7 +63,7 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
     private ChatMsgViewAdapter mAdapter;
     public MessageBroadcastReceiver messageBroadcastReceiver;
     private UserDao userDao;
-    private String userId;
+    private long userId = 0l;
     private SLUser user;
     private List<SLMessage> tempList = new ArrayList<SLMessage>();
     // ListView 底部View
@@ -82,11 +79,11 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
         messageDao = new MessageDaoImpl();
         userDao = new UserDaoImpl();
         messageBroadcastReceiver = new MessageBroadcastReceiver();
-        userId = getIntent().getStringExtra("userId");
+        userId = getIntent().getLongExtra("userId", 0l);
         user = userDao.getUserByUserId(userId);
         try {
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(Integer.valueOf(userId));
+            notificationManager.cancel((int) userId);
         } catch (Exception ex) {
             LogUtil.e(this.getClass().getName(), ex);
         }
@@ -102,8 +99,11 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
         listView = (ListView) findViewById(R.id.message_listview);
         pluginBox = (RelativeLayout) findViewById(R.id.message_plugin_box);
         titleView.setText(user.getNickName());
-        messageSender.setTarget(String.valueOf(user.getUserId()));
-        messageSender.setTargetName(user.getNickName());
+//        messageSender.setTarget(user.getUserId());
+//        messageSender.setTargetName(user.getNickName());
+        // todo shishengzhao
+        messageSender.setTarget(userId);
+        messageSender.setTargetName("天宇");
         // 实例化底部布局
         moreView = getLayoutInflater().inflate(R.layout.moredata, null);
         btLoad = (TextView) moreView.findViewById(R.id.bt_load);
@@ -154,11 +154,11 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
     }
 
     public void initData() {
-        slMessageList = messageDao.getMessageByPage(AppUtils.getInstance().getUserId(), String.valueOf(user.getUserId()), 0, 15);
+        slMessageList = messageDao.getMessageByPage(AppUtils.getInstance().getUserId(), user.getUserId(), 0, 15);
         if (slMessageList.size() < 15) {
             btLoad.setVisibility(View.GONE);
         }
-        messageDao.setAllRead(AppUtils.getInstance().getUserId(), String.valueOf(user.getUserId()));
+        messageDao.setAllRead(AppUtils.getInstance().getUserId(), user.getUserId());
         // 发送广播 通知MainActivity 重新设置tab 数字标签
         sendBroadcast(new Intent(Actions.MESSAGE_READ_CHANGE));
         for (int i = 0; i < slMessageList.size(); i++) {
@@ -215,7 +215,7 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
     private void loadMoreDate() {
         int count = mAdapter.getCount();
         // 每次加载
-        tempList = messageDao.getMessageByPage(AppUtils.getInstance().getUserId(), String.valueOf(user.getUserId()), count, 15);
+        tempList = messageDao.getMessageByPage(AppUtils.getInstance().getUserId(), user.getUserId(), count, 15);
         if (tempList.size() < 15) {
             listView.removeHeaderView(moreView);
         }
@@ -234,25 +234,6 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
             PublicMessageSendUtils.updateMessageSendStatus(slMessageList.get(i));
             linkedHashMap.put(slMessageList.get(i).getMessageId(),
                     MessageEntityFactory.getMessageEntity(slMessageList.get(i)));
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        messageSender.notifyResultChanged(requestCode, resultCode, data);
-        if (null == data) {
-            return;
-        }
-        String resultType = data.getStringExtra("resultCode");
-        switch (requestCode) {
-            case 1:
-                if (resultType.equals("close")) {
-                    finish();
-                }
-                break;
-            default:
-                break;
         }
     }
 
@@ -297,14 +278,14 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
                 String MeeageID = intent.getStringExtra("messageID");
                 SLMessage message = new MessageDaoImpl().getMessageById(MeeageID);
                 if (IsVisbleStatus.INVISBLE.getResultCode() != message.getIsVisible()) {
-                    if (message.getUserFrom().equals(AppUtils.getInstance().getUserId()) && message.getUserTo().equals(userId)) {
+                    if (message.getUserFrom() == AppUtils.getInstance().getUserId() && message.getUserTo() == userId) {
                         messageDao.updateMessageIsReadByMessageId(message.getMessageId());
                         MessageEntity messageEntity = MessageEntityFactory.getMessageEntity(message);
                         mAdapter.addData(message.getMessageId(), messageEntity);
                         mAdapter.notifyDataSetChanged();
                         listView.setSelection(listView.getCount() - 1);
                         isShow = true;
-                    } else if (message.getUserTo().equals(AppUtils.getInstance().getUserId()) && message.getUserFrom().equals(userId)) {
+                    } else if (message.getUserTo() == AppUtils.getInstance().getUserId() && message.getUserFrom() == userId) {
                         messageDao.updateMessageIsReadByMessageId(message.getMessageId());
                         MessageEntity messageEntity = MessageEntityFactory.getMessageEntity(message);
                         mAdapter.addData(message.getMessageId(), messageEntity);
@@ -341,7 +322,7 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
                     }
                 }
                 if (messageStatus == SLMessage.MessagePropertie.MSG_SENDSUS) {
-                    messageDao.markAsSusMsg(messageID);
+                    messageDao.updateSendStatueSuccessByMessageId(messageID);
                     slMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDSUS);
                     if (!slMessage.getMessageType().equals(MessageType.IMAGE)) {
                         mAdapter.cleanData(slMessage.getMessageId(),
@@ -351,7 +332,7 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
                     }
                     listView.setSelection(listView.getCount() - 1);
                 } else if (messageStatus == SLMessage.MessagePropertie.MSG_FAIL) {
-                    messageDao.markAsFailedMsg(messageID);
+                    messageDao.updateSendStatueFailByMessageId(messageID);
                     slMessage.setSendStatue(SLMessage.MessagePropertie.MSG_FAIL);
                     mAdapter.cleanData(slMessage.getMessageId(),
                             MessageEntityFactory
@@ -368,7 +349,7 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
                 String ProcessCount = intent.getStringExtra("ProcessCount");
                 SLImageMessage slImageMessage = (SLImageMessage) new MessageDaoImpl().getMessageById(messageID);
                 slImageMessage.setSendProcess(ProcessCount);
-                mAdapter.cleanData(slMessage.getMessageId(),
+                mAdapter.cleanData(slImageMessage.getMessageId(),
                         MessageEntityFactory
                                 .getMessageEntity(slImageMessage));
                 mAdapter.notifyDataSetChanged();
@@ -390,31 +371,19 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
                 mAdapter.deleteData(messageID);
                 mAdapter.notifyDataSetChanged();
                 listView.setSelection(listView.getCount() - 1);
-                messageDao.deleteMessageById(messageID);
+                messageDao.deleteMessageByMessageId(messageID);
                 // todo 删除消息之后需要发送广播通知会话列表更新最新内容 shisheng.zhao
                 SessionDao sessionDao = new SessionDaoImpl();
-                List<SLMessage> list = messageDao.getMessageByPage(AppUtils.getInstance().getUserId(),
-                        String.valueOf(user.getUserId()), 0, 1);
+                List<SLMessage> list = messageDao.getMessageByPage(AppUtils.getInstance().getUserId(), user.getUserId(), 0, 1);
                 SLMessage slMessage = list.get(0);
                 sessionDao.updateSessionContent(slMessage.getMessageContent(), userId);
                 Intent session_intent = new Intent(Actions.ACTION_SESSION);
                 Bundle bundle = new Bundle();
-                bundle.putString("targetId", userId);
+                bundle.putLong("targetId", userId);
                 session_intent.putExtras(bundle);
                 sendOrderedBroadcast(session_intent, null);
             }
         }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            Intent intent = IntentManager.createIntent(SingleChatActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return false;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     @Override

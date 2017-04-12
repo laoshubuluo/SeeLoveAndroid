@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v4.view.ViewPager;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -16,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.RelativeLayout.LayoutParams;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FaceAdapter;
 import com.tianyu.seelove.adapter.FaceViewPagerAdapter;

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,8 +17,9 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
+
 import com.tianyu.seelove.R;
-import com.tianyu.seelove.dao.BibleDao;
+import com.tianyu.seelove.dao.SeeLoveDao;
 import com.tianyu.seelove.model.entity.message.ChatEmoji;
 
 /**
@@ -311,7 +313,8 @@ public class FaceConversionUtils {
      * 初始化表情列表
      */
     public void getEmojiList(Context context) {
-        List<ChatEmoji> chatEmojis = new BibleDao(context).getDBEmojiList();
+        List<ChatEmoji> chatEmojis = new SeeLoveDao(context).getDBEmojiList();
+        LogUtil.e("chatEmojis" + chatEmojis.size());
         ChatEmoji emojEentry;
         try {
             for (ChatEmoji chatEmoji : chatEmojis) {

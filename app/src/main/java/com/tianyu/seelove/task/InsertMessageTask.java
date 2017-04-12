@@ -1,6 +1,5 @@
 package com.tianyu.seelove.task;
 
-
 import com.tianyu.seelove.dao.MessageDao;
 import com.tianyu.seelove.dao.impl.MessageDaoImpl;
 import com.tianyu.seelove.model.entity.message.SLMessage;
@@ -10,7 +9,7 @@ import com.tianyu.seelove.utils.LogUtil;
 /**
  * 插入聊天记录到本地数据库库异步任务
  * @author shisheng.zhao
- * @date 2015-09-11 15:19:32
+ * @date 2017-04-12 17:38
  */
 public class InsertMessageTask extends BaseTask<SLMessage, Void, Boolean> {
     private MessageDao messageDao = new MessageDaoImpl();

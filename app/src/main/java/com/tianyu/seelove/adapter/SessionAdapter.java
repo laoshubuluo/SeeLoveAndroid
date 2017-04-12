@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.message.SLSession;
@@ -19,11 +20,13 @@ import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.ListSortUtil;
 import com.tianyu.seelove.utils.TextUtils;
 import com.tianyu.seelove.view.RedDotView;
+
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * 发现显示自定义adapter
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 17:52
  */
@@ -45,12 +48,12 @@ public class SessionAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addDataSession(SLSession session,boolean isNewAdd) {
+    public void addDataSession(SLSession session, boolean isNewAdd) {
         if (null == session) {
             return;
         }
         for (SLSession sess : sessions) {
-            if (sess.getTargetId().equals(session.getTargetId())) {
+            if (sess.getTargetId() == session.getTargetId()) {
                 sess.setLastMessageId(session.getLastMessageId());
                 sess.setMessageType(session.getMessageType());
                 sess.setPriority(session.getPriority());
@@ -79,7 +82,7 @@ public class SessionAdapter extends BaseAdapter {
         Iterator iterator = sessions.iterator();
         while (iterator.hasNext()) {
             SLSession tempobj = (SLSession) iterator.next();
-            if (tempobj.getTargetId().equals(session.getTargetId())) {
+            if (tempobj.getTargetId() == session.getTargetId()) {
                 //移除当前的对象
                 iterator.remove();
             }

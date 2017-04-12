@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.common.Actions;
@@ -38,6 +39,7 @@ import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.TextUtils;
 import com.tianyu.seelove.view.dialog.SureDialog;
 import com.tianyu.seelove.view.pop.ResourcePopupWindow;
+
 import java.util.Date;
 
 /**
@@ -79,9 +81,9 @@ public class TextMessageEntity extends MessageEntity {
         viewHolder.setImageAuth((ImageView) convertView
                 .findViewById(R.id.user_recognise));
         convertView.setTag(viewHolder);
-        //viewHolder.getContent().setMaxWidth(Constant.screenWidth - DimensionUtils.convertDipToPixels(context.getResources(), 100));
+//        viewHolder.getContent().setMaxWidth(Constant.screenWidth - DimensionUtils.convertDipToPixels(context.getResources(), 100));
         // 设置头像 姓名
-        if (textMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
+        if (textMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             if (self != null && self.getHeadUrl() != null && self.getHeadUrl().length() > 0) {
                 ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()), viewHolder.getHeader(), ImageLoaderUtil.getSmallImageOptions());
             }
@@ -109,7 +111,7 @@ public class TextMessageEntity extends MessageEntity {
         viewHolder.getContent().setMovementMethod(LinkMovementMethod.getInstance());
         SpannableString spannableString = FaceConversionUtils.getInstace().getExpressionString(context, TextUtils.StringFilter(textMessage.getMessageContent()), false);
         viewHolder.getContent().setText(spannableString);
-        if (textMessage.getUserFrom().equals(AppUtils.getInstance().getUserId())) {
+        if (textMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getSendFail().setTag(textMessage.getMessageId());
             if (textMessage.getSendStatue() == SLMessage.MessagePropertie.MSG_SENDSUS) {
                 viewHolder.getSendFail().setVisibility(View.INVISIBLE);
@@ -149,8 +151,8 @@ public class TextMessageEntity extends MessageEntity {
         viewHolder.getHeader().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (textMessage.getUserFrom().equals(
-                        AppUtils.getInstance().getUserId())) {
+                if (textMessage.getUserFrom() ==
+                        AppUtils.getInstance().getUserId()) {
                     Intent intent = IntentManager.createIntent(v.getContext(), UserInfoActivity.class);
                     intent.putExtra("user", self);
                     v.getContext().startActivity(intent);
@@ -166,8 +168,8 @@ public class TextMessageEntity extends MessageEntity {
             @Override
             public boolean onLongClick(View view) {
                 final ResourcePopupWindow rPopupWindow;
-                if (textMessage.getUserFrom().equals(
-                        AppUtils.getInstance().getUserId())) {
+                if (textMessage.getUserFrom() ==
+                        AppUtils.getInstance().getUserId()) {
                     rPopupWindow = new ResourcePopupWindow(
                             context, R.layout.right_message_pop);
                 } else {
@@ -232,8 +234,8 @@ public class TextMessageEntity extends MessageEntity {
 
     @Override
     protected View inflateView(Context context) {
-        if (textMessage.getUserFrom().equals(
-                AppUtils.getInstance().getUserId())) {
+        if (textMessage.getUserFrom() ==
+                AppUtils.getInstance().getUserId()) {
             return LayoutInflater.from(context).inflate(
                     R.layout.chatting_item_msg_text_right, null);
         } else {
@@ -258,7 +260,7 @@ public class TextMessageEntity extends MessageEntity {
             public void handle(Boolean result) {
                 // 发送融云广播
                 Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
-                send_Intent.putExtra("MessageID", String.valueOf(lastId));
+                send_Intent.putExtra("messageId", String.valueOf(lastId));
                 send_Intent.putExtra("chatType", "single");
                 context.sendOrderedBroadcast(send_Intent, null);
                 // 本地会话广播
@@ -283,7 +285,7 @@ public class TextMessageEntity extends MessageEntity {
         sessionDao.addSession(session);
         Intent session_intent = new Intent(Actions.ACTION_SESSION);
         Bundle bundle = new Bundle();
-        bundle.putString("targetId", session.getTargetId());
+        bundle.putLong("targetId", session.getTargetId());
         session_intent.putExtras(bundle);
         context.sendOrderedBroadcast(session_intent, null);
     }

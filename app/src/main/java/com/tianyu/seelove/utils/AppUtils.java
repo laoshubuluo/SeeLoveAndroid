@@ -8,6 +8,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 
 /**
  * 设置一些系统偏好参数sp
+ *
  * @author shisheng.zhao
  * @date 2016-11-14 17:57:12
  */
@@ -21,6 +22,7 @@ public class AppUtils {
 
     /**
      * 获取一个单例
+     *
      * @return
      */
     public static synchronized AppUtils getInstance() {
@@ -32,6 +34,7 @@ public class AppUtils {
 
     /**
      * 构造方法
+     *
      * @param context
      */
     private AppUtils(Context context) {
@@ -46,6 +49,7 @@ public class AppUtils {
 
     /**
      * 初始化
+     *
      * @param context
      * @return
      */
@@ -66,6 +70,7 @@ public class AppUtils {
 
     /**
      * 获取当前应用版本
+     *
      * @return
      */
     public int getCurrentVersion() {
@@ -74,10 +79,11 @@ public class AppUtils {
 
     /**
      * 保存用户的ID
+     *
      * @param userId
      */
-    public void setUserId(String userId) {
-        sharedPreferences.edit().putString("userId", userId).commit();
+    public void setUserId(Long userId) {
+        sharedPreferences.edit().putLong("userId", userId).commit();
     }
 
     /**
@@ -85,8 +91,8 @@ public class AppUtils {
      *
      * @return
      */
-    public String getUserId() {
-        return sharedPreferences.getString("userId", "1000");
+    public Long getUserId() {
+        return sharedPreferences.getLong("userId", 0L);
     }
 
     /**
@@ -105,14 +111,6 @@ public class AppUtils {
      */
     public String getUserToken() {
         return sharedPreferences.getString("userToken", "");
-    }
-
-    /**
-     * 更新系统文章版本
-     */
-    public void setJniServiceVersion(boolean jniServiceVersion) {
-        String key = "jniService_" + getCurrentVersion();;
-        sharedPreferences.edit().putBoolean(key, jniServiceVersion).commit();
     }
 
 }

@@ -23,13 +23,16 @@ import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
+import com.tianyu.seelove.dao.UserDao;
+import com.tianyu.seelove.dao.impl.UserDaoImpl;
+import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.video.VideoInfo;
-import com.tianyu.seelove.ui.activity.base.BaseActivity;
+import com.tianyu.seelove.service.MessageSendService;
 import com.tianyu.seelove.ui.activity.user.MyInfoActivity;
-import com.tianyu.seelove.ui.activity.user.UserInfoActivity;
 import com.tianyu.seelove.ui.activity.video.VideoListActivity;
-import com.tianyu.seelove.utils.ImageUtil;
+import com.tianyu.seelove.utils.AppUtils;
+import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
@@ -51,10 +54,13 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
     private View view = null;
     private UserController controller;
     public Handler handler;
-    private String userName = "天宇";
+    private SLUser slUser;
     private Long userId;
-    private ImageView headView;
-    private TextView titleView, nameView;
+    private ImageView bigImage, headUrl;
+    private TextView titleView, userName, videoCount, followCount, followedCount;
+    private GridView videoGridView;
+    private LinearLayout loginLayout, userLayout;
+    private UserDao userDao;
 
     @Override
     public void onAttach(Activity activity) {
@@ -67,8 +73,10 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
         super.onCreate(savedInstanceState);
         LogUtil.d("ManageFragment____onCreate");
         handler = new Handler(this);
+        userDao = new UserDaoImpl();
         promptDialog = new PromptDialog(getActivity());
         controller = new UserController(getActivity(), handler);
+        slUser = userDao.getUserByUserId(AppUtils.getInstance().getUserId());
     }
 
     @Override
@@ -82,69 +90,92 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
         } else {
             view = inflater.inflate(R.layout.fragment_manage, container, false);
             initView(view);
+            initData(slUser);
         }
         return view;
     }
 
     private void initView(View view) {
         titleView = (TextView) view.findViewById(R.id.titleView);
+        loginLayout = (LinearLayout) view.findViewById(R.id.loginLayout);
+        userLayout = (LinearLayout) view.findViewById(R.id.userLayout);
+        bigImage = (ImageView) view.findViewById(R.id.bigImage);
+        headUrl = (ImageView) view.findViewById(R.id.headUrl);
+        userName = (TextView) view.findViewById(R.id.userName);
+        videoCount = (TextView) view.findViewById(R.id.videoCount);
+        followCount = (TextView) view.findViewById(R.id.followCount);
+        followedCount = (TextView) view.findViewById(R.id.followedCount);
         RelativeLayout userInfoLayout = (RelativeLayout) view.findViewById(R.id.userInfoLayout);
         LinearLayout videoLayout = (LinearLayout) view.findViewById(R.id.videoLayout);
-        userInfoLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(view.getContext(), MyInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-        videoLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(view.getContext(), VideoListActivity.class);
-                startActivity(intent);
-            }
-        });
+        userInfoLayout.setOnClickListener(this);
+        videoLayout.setOnClickListener(this);
         titleView.setText(R.string.manager);
-        GridView gridView = (GridView) view.findViewById(R.id.videoGridView);
-        videoInfos = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            VideoInfo videoInfo = new VideoInfo();
-            videoInfo.setVideoTitle("00" + i);
-            videoInfos.add(videoInfo);
-        }
-        int size = videoInfos.size();
-        int length = 120;
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        float density = dm.density;
-        int gridviewWidth = (int) (size * (length + 4) * density);
-        int itemWidth = (int) (length * density);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                gridviewWidth, LinearLayout.LayoutParams.FILL_PARENT);
-        gridView.setLayoutParams(params); // 设置GirdView布局参数,横向布局的关键
-        gridView.setColumnWidth(itemWidth); // 设置列表项宽
-        gridView.setHorizontalSpacing(5); // 设置列表项水平间距
-        gridView.setStretchMode(GridView.NO_STRETCH);
-        gridView.setNumColumns(size); // 设置列数量=列表集合数
-        gridView.setAdapter(new VideoGridAdapter(getActivity(), videoInfos));
+        videoGridView = (GridView) view.findViewById(R.id.videoGridView);
         Button qqLoginBtn = (Button) view.findViewById(R.id.qqLoginBtn);
         Button wechatLoginBtn = (Button) view.findViewById(R.id.wechatLoginBtn);
         Button registBtn = (Button) view.findViewById(R.id.registBtn);
         Button loginBtn = (Button) view.findViewById(R.id.loginBtn);
-        headView = (ImageView) view.findViewById(R.id.headView);
-        nameView = (TextView) view.findViewById(R.id.nameView);
         qqLoginBtn.setOnClickListener(this);
         wechatLoginBtn.setOnClickListener(this);
         registBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
     }
 
+    private void initData(SLUser slUser) {
+        if (0 == AppUtils.getInstance().getUserId() || null == slUser || 0 == slUser.getUserId()) {
+            userLayout.setVisibility(View.GONE);
+            loginLayout.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            userLayout.setVisibility(View.VISIBLE);
+            loginLayout.setVisibility(View.GONE);
+            ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), bigImage, ImageLoaderUtil.getDefaultDisplayOptions());
+            ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), headUrl, ImageLoaderUtil.getHeadUrlImageOptions());
+            userName.setText(slUser.getNickName());
+            videoCount.setText(slUser.getVideoCount() + "");
+            followCount.setText(slUser.getFollowCount() + "");
+            followedCount.setText(slUser.getFollowedCount() + "");
+            videoInfos = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                VideoInfo videoInfo = new VideoInfo();
+                videoInfo.setVideoTitle("00" + i);
+                videoInfo.setVideoImg(slUser.getHeadUrl());
+                videoInfos.add(videoInfo);
+            }
+            int size = videoInfos.size();
+            int length = 120;
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            float density = dm.density;
+            int gridviewWidth = (int) (size * (length + 4) * density);
+            int itemWidth = (int) (length * density);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    gridviewWidth, LinearLayout.LayoutParams.FILL_PARENT);
+            videoGridView.setLayoutParams(params); // 设置GirdView布局参数,横向布局的关键
+            videoGridView.setColumnWidth(itemWidth); // 设置列表项宽
+            videoGridView.setHorizontalSpacing(5); // 设置列表项水平间距
+            videoGridView.setStretchMode(GridView.NO_STRETCH);
+            videoGridView.setNumColumns(size); // 设置列数量=列表集合数
+            videoGridView.setAdapter(new VideoGridAdapter(getActivity(), videoInfos));
+        }
+    }
+
     @Override
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
+            case R.id.userInfoLayout: {
+                intent = new Intent();
+                intent.setClass(view.getContext(), MyInfoActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.videoLayout: {
+                intent = new Intent();
+                intent.setClass(view.getContext(), VideoListActivity.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.qqLoginBtn: {
                 customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
                 customProgressDialog.show();
@@ -162,7 +193,7 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
             case R.id.registBtn: {
                 customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
                 customProgressDialog.show();
-                controller.create(userName, "我是从微信返回的字段");
+                controller.regist("测试帐号", "我是从微信返回的字段");
                 break;
             }
             case R.id.loginBtn: {
@@ -192,14 +223,13 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
         String code;
         String message;
         switch (msg.what) {
-            case MessageSignConstant.USER_CREATE_SUCCESS:
+            case MessageSignConstant.USER_REGIST_SUCCESS:
                 user = (SLUser) msg.getData().getSerializable("user");
                 userId = user.getUserId();
                 titleView.setText(user.getNickName());
-                nameView.setText("创建token:" + user.getToken4RongCloud());
                 Toast.makeText(getActivity(), "创建成功：" + user.toString(), Toast.LENGTH_LONG).show();
                 break;
-            case MessageSignConstant.USER_CREATE_FAILURE:
+            case MessageSignConstant.USER_REGIST_FAILURE:
                 code = msg.getData().getString("code");
                 message = msg.getData().getString("message");
                 promptDialog.initData(getString(R.string.user_create_failure), message);
@@ -207,9 +237,8 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
                 break;
             case MessageSignConstant.USER_LOGIN_SUCCESS:
                 user = (SLUser) msg.getData().getSerializable("user");
-                titleView.setText(user.getNickName());
-                nameView.setText("登录获取token:" + user.getToken4RongCloud());
-                ImageLoader.getInstance().displayImage(user.getHeadUrl(), headView, ImageUtil.getImageOptions());
+                initData(user);
+                initService();
                 Toast.makeText(getActivity(), "登录成功：" + user.toString(), Toast.LENGTH_LONG).show();
                 break;
             case MessageSignConstant.USER_LOGIN_FAILURE:
@@ -231,6 +260,14 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
         return false;
     }
 
+
+    private void initService(){
+        Intent intent;
+        // 启动发送消息Service
+        intent = IntentManager.createIntent(getActivity(), MessageSendService.class);
+        getActivity().startService(intent);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -241,6 +278,8 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
     public void onStart() {
         super.onStart();
         LogUtil.d("ManageFragment____onStart");
+        slUser = userDao.getUserByUserId(AppUtils.getInstance().getUserId());
+        initData(slUser);
     }
 
     @Override
