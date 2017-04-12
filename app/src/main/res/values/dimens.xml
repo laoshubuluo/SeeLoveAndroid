@@ -23,6 +23,7 @@
     <dimen name="layout_15dp">15dp</dimen>
     <dimen name="layout_20dp">20dp</dimen>
     <dimen name="layout_30dp">30dp</dimen>
+    <dimen name="layout_35dp">35dp</dimen>
     <dimen name="layout_40dp">40dp</dimen>
     <dimen name="layout_45dp">45dp</dimen>
     <dimen name="layout_50dp">50dp</dimen>
