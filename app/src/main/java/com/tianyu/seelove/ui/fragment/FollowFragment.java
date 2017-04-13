@@ -2,20 +2,22 @@ package com.tianyu.seelove.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
 
 /**
  * Fragmengt(关注)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
-public class FollowFragment extends Fragment {
+public class FollowFragment extends BaseFragment {
 
     @Override
     public void onAttach(Activity activity) {

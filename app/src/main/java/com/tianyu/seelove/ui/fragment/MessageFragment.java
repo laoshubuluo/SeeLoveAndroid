@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.SessionAdapter;
 import com.tianyu.seelove.common.Actions;
@@ -31,18 +31,21 @@ import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.SessionType;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
 import com.tianyu.seelove.ui.activity.system.NetworkConnectActivity;
+import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.dialog.SureDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Fragmengt(交流)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
-public class MessageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class MessageFragment extends BaseFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private TextView titleView;
     private SessionDao sessionDao;
     private SessionReciver reciver;

@@ -17,4 +17,10 @@ public class MessageSignConstant {
 
     public static final int USER_LOGIN_SUCCESS = 1003;
     public static final int USER_LOGIN_FAILURE = 1004;
+
+    public static final int USER_FIND_ALL_SUCCESS = 1005;
+    public static final int USER_FIND_ALL_FAILURE = 1006;
+
+    public static final int VIDEO_FIND_BY_USER_SUCCESS = 1007;
+    public static final int VIDEO_FIND_BY_USER_FAILURE = 1008;
 }

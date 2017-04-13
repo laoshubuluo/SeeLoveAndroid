@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
-import com.tianyu.seelove.model.entity.video.VideoInfo;
+import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.ui.activity.video.VideoPlayActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 
@@ -23,9 +23,9 @@ import com.tianyu.seelove.utils.ImageLoaderUtil;
  */
 public class VideoGridAdapter extends BaseAdapter {
     LayoutInflater inflater = null;
-    ArrayList<VideoInfo> listInfo;
+    ArrayList<SLVideo> listInfo;
 
-    public VideoGridAdapter(Context context, ArrayList<VideoInfo> listInfo) {
+    public VideoGridAdapter(Context context, ArrayList<SLVideo> listInfo) {
         inflater = LayoutInflater.from(context);
         this.listInfo = listInfo;
     }
@@ -58,7 +58,7 @@ public class VideoGridAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        VideoInfo videoInfo = listInfo.get(position);
+        SLVideo videoInfo = listInfo.get(position);
         ImageLoader.getInstance().displayImage(videoInfo.getVideoImg(), holder.imageView, ImageLoaderUtil.getSmallImageOptions());
         holder.textView.setText(videoInfo.getVideoTitle());
         holder.gridViewItem.setOnClickListener(new View.OnClickListener() {

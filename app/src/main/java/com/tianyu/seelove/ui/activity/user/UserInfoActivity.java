@@ -7,24 +7,28 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
-import com.tianyu.seelove.model.entity.video.VideoInfo;
+import com.tianyu.seelove.model.entity.user.SLUser;
+import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
+
 import java.util.ArrayList;
 
 /**
  * 个人信息界面
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 22:50
  */
 public class UserInfoActivity extends BaseActivity {
     private VideoGridAdapter gridAdapter;
-    private ArrayList<VideoInfo> videoInfos;
-    private String userName = "";
+    private ArrayList<SLVideo> videoInfos;
+    private SLUser user;
     private TextView titleView;
     private ImageView bigImage;
 
@@ -32,7 +36,10 @@ public class UserInfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userinfo);
-        userName = getIntent().getStringExtra("userName");
+        user = (SLUser) getIntent().getSerializableExtra("user");
+        if (null == user) {
+            user = new SLUser(-1, "未成功获取到user信息，本地模拟");
+        }
         initView();
         initData();
     }
@@ -43,7 +50,7 @@ public class UserInfoActivity extends BaseActivity {
         ImageView rightBtn = (ImageView) findViewById(R.id.rightBtn);
         bigImage = (ImageView) findViewById(R.id.bigImage);
         Button sendMessage = (Button) findViewById(R.id.sendMessage);
-        titleView.setText(userName);
+        titleView.setText(user.getNickName());
         leftBtn.setOnClickListener(this);
         leftBtn.setVisibility(View.VISIBLE);
         rightBtn.setVisibility(View.VISIBLE);
@@ -53,11 +60,11 @@ public class UserInfoActivity extends BaseActivity {
     }
 
     private void initData() {
-        ImageLoader.getInstance().displayImage("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=673651839,1464649612&fm=111&gp=0.jpg", bigImage, ImageLoaderUtil.getSmallImageOptions());
+        ImageLoader.getInstance().displayImage(user.getHeadUrl(), bigImage, ImageLoaderUtil.getSmallImageOptions());
         GridView gridView = (GridView) findViewById(R.id.videoGridView);
         videoInfos = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            VideoInfo videoInfo = new VideoInfo();
+            SLVideo videoInfo = new SLVideo();
             videoInfo.setVideoTitle("00" + i);
             videoInfos.add(videoInfo);
         }

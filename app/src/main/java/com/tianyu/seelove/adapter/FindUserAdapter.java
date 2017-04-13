@@ -7,14 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 发现显示自定义adapter
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 17:52
  */
@@ -31,7 +35,23 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
     // 定义构造方法，默认传入上下文和数据源
     public FindUserAdapter(Context context, List<SLUser> data) {
         mContext = context;
+        if (null == data) {
+            data = new ArrayList<SLUser>();
+        }
         mData = data;
+    }
+
+    public void updateData(List<SLUser> data, boolean isClean) {
+        if (null == data) {
+            data = new ArrayList<SLUser>();
+        }
+        if (isClean) {
+            mData.clear();
+            mData = data;
+        } else {
+            mData.addAll(data);
+        }
+        notifyDataSetChanged();
     }
 
     @Override  // 将ItemView渲染进来，创建ViewHolder
@@ -63,6 +83,7 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView userAvatar;
         public TextView userName;
+
         public ViewHolder(View itemView) {
             super(itemView);
             userAvatar = (ImageView) itemView.findViewById(R.id.user_avatar);

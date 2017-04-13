@@ -2,9 +2,11 @@ package com.tianyu.seelove.controller;
 
 import android.content.Context;
 import android.os.Handler;
+
 import com.tianyu.seelove.network.VolleyManager;
-import com.tianyu.seelove.network.request.UserRegistRequest;
+import com.tianyu.seelove.network.request.UserFindAllRequest;
 import com.tianyu.seelove.network.request.UserLoginRequest;
+import com.tianyu.seelove.network.request.UserRegistRequest;
 
 /**
  * author : L.jinzhu
@@ -22,6 +24,7 @@ public class UserController {
 
     /**
      * 用户注册
+     *
      * @param userName
      * @param dataFromOtherPlatform
      */
@@ -32,12 +35,21 @@ public class UserController {
 
     /**
      * 用户登录
+     *
      * @param userId
      * @param userName
      * @param password
      */
     public void login(Long userId, String userName, String password) {
         UserLoginRequest request = new UserLoginRequest(handler, context, userId, userName, password);
+        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
+    }
+
+    /**
+     * 获取所有用户
+     */
+    public void findAll() {
+        UserFindAllRequest request = new UserFindAllRequest(handler, context);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 }

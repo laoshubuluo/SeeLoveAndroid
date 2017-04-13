@@ -5,14 +5,15 @@ package com.tianyu.seelove.model.entity.video;
  * @author shisheng.zhao
  * @date 2017-03-31 17:56
  */
-public class VideoInfo {
+public class SLVideo {
     private long videoId; // 短视频id
     private long userId; // 用户id
     private String videoTitle; // 短视频标题
     private String videoTime; // 短视频时长
-    private int isDefault; // 是否为默认展示短视频 1是;0否
+    private String isDefault; // 是否为默认展示短视频 1是;0否
     private String videoImg; // 短视频封皮
     private String videoUrl; // 短视频播放地址
+    private String videoPlayTime;// 视频播放次数
     private String remark; // 保留域
 
     public void setVideoId(long videoId) {
@@ -47,11 +48,11 @@ public class VideoInfo {
         this.videoTime = videoTime;
     }
 
-    public int getIsDefault() {
+    public String getIsDefault() {
         return isDefault;
     }
 
-    public void setIsDefault(int isDefault) {
+    public void setIsDefault(String isDefault) {
         this.isDefault = isDefault;
     }
 
@@ -79,9 +80,17 @@ public class VideoInfo {
         return remark;
     }
 
+    public String getVideoPlayTime() {
+        return videoPlayTime;
+    }
+
+    public void setVideoPlayTime(String videoPlayTime) {
+        this.videoPlayTime = videoPlayTime;
+    }
+
     @Override
     public String toString() {
-        return "VideoInfo{" +
+        return "Video{" +
                 "videoId=" + videoId +
                 ", userId=" + userId +
                 ", videoTitle='" + videoTitle + '\'' +

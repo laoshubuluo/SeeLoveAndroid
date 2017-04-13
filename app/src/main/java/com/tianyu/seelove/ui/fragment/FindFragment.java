@@ -3,7 +3,7 @@ package com.tianyu.seelove.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -11,24 +11,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FindUserAdapter;
+import com.tianyu.seelove.common.MessageSignConstant;
+import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.ui.activity.user.UserInfoActivity;
+import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
-import java.util.ArrayList;
+import com.tianyu.seelove.view.dialog.CustomProgressDialog;
+import com.tianyu.seelove.view.dialog.PromptDialog;
+
 import java.util.List;
 
 /**
  * Fragmengt(发现)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
-public class FindFragment extends Fragment implements View.OnClickListener{
+public class FindFragment extends BaseFragment {
     private View view = null;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private FindUserAdapter mAdapter;
+    private UserController controller;
+
+    private List<SLUser> userList;
 
     @Override
     public void onAttach(Activity activity) {
@@ -39,6 +49,7 @@ public class FindFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        controller = new UserController(getActivity(), handler);
         LogUtil.d("FindFragment____onCreate");
     }
 
@@ -57,7 +68,7 @@ public class FindFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
-    private void initView(View view){
+    private void initView(View view) {
         TextView titleView = (TextView) view.findViewById(R.id.titleView);
         ImageView rightView = (ImageView) view.findViewById(R.id.rightBtn);
         titleView.setText(R.string.find);
@@ -67,23 +78,28 @@ public class FindFragment extends Fragment implements View.OnClickListener{
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         //mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 5, false));
-        mAdapter = new FindUserAdapter(getActivity(), buildData());
+        mAdapter = new FindUserAdapter(getActivity(), userList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new FindUserAdapter.OnRecyclerViewItemClickListener() {
             @Override
-            public void onItemClick(View view, SLUser data) {
+            public void onItemClick(View view, SLUser user) {
                 Intent intent = new Intent();
-                intent.putExtra("userName",data.getNickName());
+                intent.putExtra("user", user);
                 intent.setClass(view.getContext(), UserInfoActivity.class);
                 startActivity(intent);
             }
         });
+
+        // 请求服务器
+        customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
+        customProgressDialog.show();
+        controller.findAll();
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.rightBtn:
                 break;
             default:
@@ -91,25 +107,43 @@ public class FindFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    // 测试数据
-    private List<SLUser> buildData() {
-        String[] names = {"邓紫棋", "范冰冰", "杨幂", "Angelababy", "唐嫣", "柳岩"};
-        String[] imgUrs = {"https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1849074283,1272897972&fm=111&gp=0.jpg",
-                "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1477122795&di=f740bd484870f9bcb0cafe454a6465a2&src=http://tpic.home.news.cn/xhCloudNewsPic/xhpic1501/M08/28/06/wKhTlVfs1h2EBoQfAAAAAF479OI749.jpg",
-                "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=673651839,1464649612&fm=111&gp=0.jpg",
-                "https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=fd90a83e900a304e4d22a7fae1c9a7c3/d01373f082025aafa480a2f1fcedab64034f1a5d.jpg",
-                "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1849074283,1272897972&fm=111&gp=0.jpg",
-                "https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=005560fc8b5494ee982208191df4e0e1/c2fdfc039245d68827b453e7a3c27d1ed21b243b.jpg",
-        };
-        List<SLUser> userInfoList = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            SLUser userInfo = new SLUser();
-            userInfo.setHeadUrl(imgUrs[i]);
-            userInfo.setNickName(names[i]);
-            userInfoList.add(userInfo);
+    /**
+     * Handler发送message的逻辑处理方法
+     *
+     * @param msg
+     * @return
+     */
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (customProgressDialog != null)
+            customProgressDialog.dismiss();
+        if (promptDialog == null || promptDialog.isShowing())
+            promptDialog = new PromptDialog(getActivity());
+        String code;
+        String message;
+        switch (msg.what) {
+            case MessageSignConstant.USER_FIND_ALL_SUCCESS:
+                userList = (List<SLUser>) msg.getData().getSerializable("userList");
+                mAdapter.updateData(userList, true);
+                break;
+            case MessageSignConstant.USER_FIND_ALL_FAILURE:
+                code = msg.getData().getString("code");
+                message = msg.getData().getString("message");
+                promptDialog.initData(getString(R.string.user_find_all_failure), message);
+                promptDialog.show();
+                break;
+            case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
+                promptDialog.initData("", msg.getData().getString("message"));
+                promptDialog.show();
+                break;
+            case MessageSignConstant.UNKNOWN_ERROR:
+                promptDialog.initData("", getString(R.string.unknown_error));
+                promptDialog.show();
+                break;
         }
-        return userInfoList;
+        return false;
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

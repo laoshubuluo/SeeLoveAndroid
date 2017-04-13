@@ -1,22 +1,21 @@
 package com.tianyu.seelove.model.entity.user;
 
-import com.tianyu.seelove.model.enums.SexType;
-
 import java.io.Serializable;
 
 /**
  * 用户实体类
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 18:07
  */
-public class SLUser implements Serializable{
+public class SLUser implements Serializable {
     // 用户基本信息
     private long userId; // 用户id,唯一标示
     private String headUrl; // 用户头像
     private String nickName; // 用户昵称
     private int accountType = 0; // 0:未知;1:微信;2:QQ
     private int age = 0; // 用户年龄
-    private String sex ;//性别 0:未知;1男;2女
+    private String sex;//性别 0:未知;1男;2女
     private String bigImg; // 用户信息默认大图
     private int cityCode; // 城市编号
     private String cityName; // 城市名称
@@ -37,6 +36,14 @@ public class SLUser implements Serializable{
     private int videoCount; // 视频数
     private int followCount; // 关注数
     private int followedCount; // 被关注数
+
+    public SLUser() {
+    }
+
+    public SLUser(long userId, String nickName) {
+        this.userId = userId;
+        this.nickName = nickName;
+    }
 
     public int getFollowedCount() {
         return followedCount;

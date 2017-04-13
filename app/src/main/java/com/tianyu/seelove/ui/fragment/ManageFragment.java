@@ -3,9 +3,7 @@ package com.tianyu.seelove.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +25,11 @@ import com.tianyu.seelove.dao.UserDao;
 import com.tianyu.seelove.dao.impl.UserDaoImpl;
 import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUser;
-import com.tianyu.seelove.model.entity.video.VideoInfo;
+import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.service.MessageSendService;
 import com.tianyu.seelove.ui.activity.user.MyInfoActivity;
 import com.tianyu.seelove.ui.activity.video.VideoListActivity;
+import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.LogUtil;
@@ -47,13 +46,10 @@ import java.util.ArrayList;
  * @author shisheng.zhao
  * @date 2017-03-29 15:03
  */
-public class ManageFragment extends Fragment implements View.OnClickListener, Handler.Callback {
-    ArrayList<VideoInfo> videoInfos;
-    public CustomProgressDialog customProgressDialog;
-    public PromptDialog promptDialog;
+public class ManageFragment extends BaseFragment {
+    ArrayList<SLVideo> videoInfos;
     private View view = null;
     private UserController controller;
-    public Handler handler;
     private SLUser slUser;
     private Long userId;
     private ImageView bigImage, headUrl;
@@ -72,9 +68,7 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtil.d("ManageFragment____onCreate");
-        handler = new Handler(this);
         userDao = new UserDaoImpl();
-        promptDialog = new PromptDialog(getActivity());
         controller = new UserController(getActivity(), handler);
         slUser = userDao.getUserByUserId(AppUtils.getInstance().getUserId());
     }
@@ -137,7 +131,7 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
             followedCount.setText(slUser.getFollowedCount() + "");
             videoInfos = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
-                VideoInfo videoInfo = new VideoInfo();
+                SLVideo videoInfo = new SLVideo();
                 videoInfo.setVideoTitle("00" + i);
                 videoInfo.setVideoImg(slUser.getHeadUrl());
                 videoInfos.add(videoInfo);
@@ -256,12 +250,11 @@ public class ManageFragment extends Fragment implements View.OnClickListener, Ha
                 promptDialog.show();
                 break;
         }
-        // 加载效果关闭
         return false;
     }
 
 
-    private void initService(){
+    private void initService() {
         Intent intent;
         // 启动发送消息Service
         intent = IntentManager.createIntent(getActivity(), MessageSendService.class);
