@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
@@ -18,17 +17,13 @@ import android.widget.GridLayout;
 /**
  * @author shisheng.zhao
  * @Description: 管理所有的Plugin
- * @date 2015-09-01 下午18:13:26
+ * @date 2017-04-13 22:26
  */
 public class PluginManager {
-    public static final int CHATTYPE_GROUP = 2;
-    public static final int CHATTYPE_PERSONAL = 1;
     /**
      * 聊天对象
      */
     private long target;
-
-    private String targetGroup;
     /**
      * 上下文对象
      */
@@ -45,14 +40,6 @@ public class PluginManager {
      * 插件入口父ui对象
      */
     private ViewPager entranceBox;
-
-    public String getTargetGroup() {
-        return targetGroup;
-    }
-
-    public void setTargetGroup(String targetGroup) {
-        this.targetGroup = targetGroup;
-    }
 
     public void setTarget(long target) {
         this.target = target;

@@ -120,7 +120,7 @@ public class SessionAdapter extends BaseAdapter {
         } else {
             viewHoder = (ViewHoder) convertView.getTag();
         }
-        viewHoder.message_tv_who.setText(FaceConversionUtils.getInstace().getExpressionString(convertView.getContext(), TextUtils.StringFilter(sessions.get(position).getSessionName())));
+        viewHoder.message_tv_who.setText(FaceConversionUtils.getInstace().getExpressionString(convertView.getContext(), TextUtils.StringFilter("天宇")));
         if (sessions.get(position).getSessionType() == SessionType.CHAT) {
             ImageLoader.getInstance().displayImage(sessions.get(position).getSessionIcon(), viewHoder.message_img_photo, ImageLoaderUtil.getSmallImageOptions());
         }

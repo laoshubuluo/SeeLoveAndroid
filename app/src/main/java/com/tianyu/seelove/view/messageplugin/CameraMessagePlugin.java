@@ -3,10 +3,8 @@ package com.tianyu.seelove.view.messageplugin;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.manager.DirectoryManager;
 import com.tianyu.seelove.manager.IntentManager;
@@ -14,14 +12,13 @@ import com.tianyu.seelove.ui.activity.message.ImageSendActivity;
 import com.tianyu.seelove.utils.BitmapUtils;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.utils.StringUtils;
-
 import java.io.File;
 import java.util.ArrayList;
 
 /**
  * @author shisheng.zhao
  * @Description: 图片消息Plugin
- * @date 2015-09-01 下午18:09:43
+ * @date 2017-04-13 22:28
  */
 public class CameraMessagePlugin extends MessagePlugin {
     public static File file = null;
@@ -61,16 +58,10 @@ public class CameraMessagePlugin extends MessagePlugin {
                                     }
                                 }
                                 if (StringUtils.isNotBlank(pathString)) {
-                                    Intent intentc = IntentManager.createIntent(
-                                            manager.getContext(),
-                                            ImageSendActivity.class);
-                                    Bundle bundlec = new Bundle();
-                                    bundlec.putString("images", pathString);
-                                    bundlec.putLong("target", manager.getTarget());
-                                    bundlec.putString("targetGroup",
-                                            manager.getTargetGroup());
-                                    intentc.putExtras(bundlec);
-                                    manager.getContext().startActivity(intentc);
+                                    Intent intent = IntentManager.createIntent(manager.getContext(), ImageSendActivity.class);
+                                    intent.putExtra("images", pathString);
+                                    intent.putExtra("target", manager.getTarget());
+                                    manager.getContext().startActivity(intent);
                                 } else {
 //                                    ((Activity) manager.getContext()).finish();
                                 }

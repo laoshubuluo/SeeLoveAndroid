@@ -1,12 +1,12 @@
 package com.tianyu.seelove.dao.impl;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import com.tianyu.seelove.dao.SessionDao;
 import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.model.entity.message.SLSession;
 import com.tianyu.seelove.model.enums.MessageType;
 import com.tianyu.seelove.model.enums.SessionType;
+import com.tianyu.seelove.utils.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,33 +16,40 @@ import java.util.List;
  * @date 2017-04-05 19:42
  */
 public class SessionDaoImpl implements SessionDao {
-    private static final String GET_LATEST_SESSIONS = "SELECT DISTINCT * FROM SESSIONINFO ORDER BY priority DESC LIMIT ?";
-    private static final String GET_SESSION_BY_TARGETID = "SELECT DISTINCT * FROM SESSIONINFO WHERE targetId = ?";
-    private static final String DELETE_SESSION = "DELETE FROM SESSIONINFO WHERE targetId = ?";
-    private static final String UPDATE_SESSIONNAME_BY_TARGETID = "UPDATE SESSIONINFO SET sessionName = ? WHERE targetId = ?";
-    private static final String UPDATE_SESSIONCONTENT_BY_TARGETID = "UPDATE SESSIONINFO SET sessionContent = ? WHERE targetId = ?";
-    private static final String UPDATE_SESSIONCONTENT_AND_SESSIONNAME_BY_TARGETID = "UPDATE SESSIONINFO SET sessionName = ?,sessionIcon = ? WHERE targetId = ?";
+    private static final String ADD_SESSION = "INSERT INTO SESSIONINFO(TargetId,SessionType,LastMessageId,Priority," +
+            "SessionIcon,MessageType,SessionName,SessionContent,SessionIsRead) VALUES(?,?,?,?,?,?,?,?,?)";
+    private static final String GET_LATEST_SESSIONS = "SELECT DISTINCT * FROM SESSIONINFO ORDER BY Priority DESC LIMIT ?";
+    private static final String GET_SESSION_BY_TARGETID = "SELECT DISTINCT * FROM SESSIONINFO WHERE TargetId = ?";
+    private static final String DELETE_SESSION = "DELETE FROM SESSIONINFO WHERE TargetId = ?";
+    private static final String UPDATE_SESSIONNAME_BY_TARGETID = "UPDATE SESSIONINFO SET SessionName = ? WHERE TargetId = ?";
+    private static final String UPDATE_SESSIONCONTENT_BY_TARGETID = "UPDATE SESSIONINFO SET SessionContent = ? WHERE TargetId = ?";
+    private static final String UPDATE_SESSIONCONTENT_AND_SESSIONNAME_BY_TARGETID = "UPDATE SESSIONINFO SET SessionName = ?,SessionIcon = ? WHERE TargetId = ?";
 
     @Override
-    public synchronized void addSession(SLSession session) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("TargetId", session.getTargetId());
-        contentValues.put("SessionType", session.getSessionType().toString());
-        contentValues.put("LastMessageId", session.getLastMessageId());
-        contentValues.put("Priority", session.getPriority());
-        contentValues.put("SessionIcon", session.getSessionIcon());
-        contentValues.put("MessageType", session.getMessageType().toString());
-        contentValues.put("SessionName", session.getSessionName());
-        contentValues.put("SessionContent", session.getSessionContent());
-        contentValues.put("SessionIsRead", session.getSessionIsRead());
-        DbConnectionManager.getInstance().getConnection().beginTransaction();
+    public void addSession(SLSession session) {
+        if (null == session) {
+            return;
+        }
+        if (null == getSessionByTargetId(session.getTargetId())) {
+            insertSession(session);
+        } else {
+            deleteSession(session.getTargetId());
+            insertSession(session);
+        }
+    }
+
+    private boolean insertSession(SLSession session) {
         try {
-            DbConnectionManager.getInstance().getConnection()
-                    .replace("SESSIONINFO", null, contentValues);
-            DbConnectionManager.getInstance().getConnection()
-                    .setTransactionSuccessful();
-        } finally {
-            DbConnectionManager.getInstance().getConnection().endTransaction();
+            DbConnectionManager.getInstance().getConnection().execSQL(ADD_SESSION,
+                    new String[]{String.valueOf(session.getTargetId()), session.getSessionType().toString(),
+                            session.getLastMessageId(), String.valueOf(session.getPriority()),
+                            session.getSessionIcon(), session.getMessageType().toString(),
+                            session.getSessionName(), session.getSessionContent(), String.valueOf(session.getSessionIsRead())});
+            LogUtil.i("db execute sql success： " + ADD_SESSION);
+            return true;
+        } catch (Exception ex) {
+            LogUtil.e("db execute sql error： " + ADD_SESSION, ex);
+            return false;
         }
     }
 

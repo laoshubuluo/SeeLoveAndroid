@@ -77,29 +77,17 @@ import java.util.List;
  */
 public class MapMessageActivity extends BaseActivity {
     private static Context mContext;
-    @ControlInjection(R.id.topLayout)
     private RelativeLayout topLayout;
-    @ControlInjection(R.id.titleView)
     private TextView titleView;
-    @ControlInjection(R.id.ibMLLocate)
     private ImageButton ibMLLocate;
-    @ControlInjection(R.id.etMLCityPoi)
     private EditText etMLCityPoi;
-    @ControlInjection(R.id.tvShowLocation)
     private TextView tvShowLocation;
-    @ControlInjection(R.id.lvPoiList)
     private ListView lvAroundPoi;
-    @ControlInjection(R.id.lvMLCityPoi)
     private ListView lvSearchPoi;
-    @ControlInjection(R.id.ivMLPLoading)
     private ImageView ivMLPLoading;
-    @ControlInjection(R.id.btMapZoomIn)
     private Button btMapZoomIn;
-    @ControlInjection(R.id.btMapZoomOut)
     private Button btMapZoomOut;
-    @ControlInjection(R.id.llMLMain)
     private LinearLayout llMLMain;
-    @ControlInjection(R.id.mMapView)
     private MapView mMapView;
     private LocationBean mLocationBean;
     // 定位poi地名信息数据源
@@ -134,7 +122,22 @@ public class MapMessageActivity extends BaseActivity {
     }
 
     private void initView() {
+        topLayout = (RelativeLayout) findViewById(R.id.topLayout);
+        titleView = (TextView) findViewById(R.id.titleView);
+        ImageView backBtn = (ImageView) findViewById(R.id.leftBtn);
         titleView.setText(getString(R.string.meet_fellowship_position));
+        backBtn.setVisibility(View.VISIBLE);
+        backBtn.setOnClickListener(this);
+        ibMLLocate = (ImageButton) findViewById(R.id.ibMLLocate);
+        etMLCityPoi = (EditText) findViewById(R.id.etMLCityPoi);
+        tvShowLocation = (TextView) findViewById(R.id.tvShowLocation);
+        lvAroundPoi = (ListView) findViewById(R.id.lvPoiList);
+        lvSearchPoi = (ListView) findViewById(R.id.lvMLCityPoi);
+        ivMLPLoading = (ImageView) findViewById(R.id.ivMLPLoading);
+        btMapZoomIn = (Button) findViewById(R.id.btMapZoomIn);
+        btMapZoomOut = (Button) findViewById(R.id.btMapZoomOut);
+        llMLMain = (LinearLayout) findViewById(R.id.llMLMain);
+        mMapView = (MapView) findViewById(R.id.mMapView);
         // 地图初始化
         BaiduMapUtilByRacer.goneMapViewChild(mMapView, true, true);
         mBaiduMap = mMapView.getMap();
@@ -144,6 +147,16 @@ public class MapMessageActivity extends BaseActivity {
         mBaiduMap.getUiSettings().setZoomGesturesEnabled(false);// 缩放手势
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
+    }
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        switch (view.getId()){
+            case R.id.leftBtn:
+                finish();
+                break;
+        }
     }
 
     // 显示地图界面亦或搜索结果界面

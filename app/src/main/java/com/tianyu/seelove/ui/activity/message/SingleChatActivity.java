@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.ChatMsgViewAdapter;
 import com.tianyu.seelove.common.Actions;
@@ -36,8 +38,10 @@ import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.utils.PublicMessageSendUtils;
+import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.utils.ViewUtils;
 import com.tianyu.seelove.view.MessageSender;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -94,11 +98,14 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
 
     public void initView() {
         titleView = (TextView) findViewById(R.id.titleView);
+        ImageView leftBtn = (ImageView) findViewById(R.id.leftBtn);
         messageSender = (MessageSender) findViewById(R.id.message_sender);
         inputMessage = (EditText) findViewById(R.id.inputMessage);
         listView = (ListView) findViewById(R.id.message_listview);
         pluginBox = (RelativeLayout) findViewById(R.id.message_plugin_box);
-        titleView.setText(user.getNickName());
+        titleView.setText(StringUtils.isNotBlank(user.getNickName()) ? user.getNickName() : String.valueOf(userId));
+        leftBtn.setVisibility(View.VISIBLE);
+        leftBtn.setOnClickListener(this);
 //        messageSender.setTarget(user.getUserId());
 //        messageSender.setTargetName(user.getNickName());
         // todo shishengzhao
@@ -154,7 +161,7 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
     }
 
     public void initData() {
-        slMessageList = messageDao.getMessageByPage(AppUtils.getInstance().getUserId(), user.getUserId(), 0, 15);
+        slMessageList = messageDao.getMessageByPage(AppUtils.getInstance().getUserId(), userId, 0, 15);
         if (slMessageList.size() < 15) {
             btLoad.setVisibility(View.GONE);
         }
@@ -194,6 +201,9 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
                 }, 2000);
                 break;
             }
+            case R.id.leftBtn:
+                finish();
+                break;
             default:
                 break;
         }
