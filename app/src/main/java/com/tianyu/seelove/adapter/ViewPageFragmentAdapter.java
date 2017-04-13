@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -26,13 +25,12 @@ import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.dialog.TransProgressDialog;
 import com.tianyu.seelove.view.photoview.PhotoView;
 import com.tianyu.seelove.view.photoview.PhotoViewAttacher;
-
 import java.util.List;
 
 /**
  * @author shisheng.zhao
  * @Description: 轮播多张图片Adapter
- * @date 2016-03-09 下午16:19:51
+ * @date 2017-04-13 23:20
  */
 public class ViewPageFragmentAdapter extends FragmentStatePagerAdapter {
     private Context context;
@@ -61,7 +59,6 @@ public class ViewPageFragmentAdapter extends FragmentStatePagerAdapter {
         System.out.println("position Destory" + position);
         super.destroyItem(container, position, object);
     }
-
 
     @Override
     public Fragment getItem(int arg0) {

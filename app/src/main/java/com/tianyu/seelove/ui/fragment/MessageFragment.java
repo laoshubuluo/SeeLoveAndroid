@@ -142,8 +142,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         SLSession session = (SLSession) adapterView.getAdapter().getItem(position);
-        if (session.getSessionType()
-                .equals(SessionType.CHAT)) {
+        if (session.getSessionType().equals(SessionType.CHAT)) {
             Intent intent = new Intent();
             intent.setClass(getActivity(), SingleChatActivity.class);
             intent.putExtra("userId", session.getTargetId());

@@ -1,6 +1,7 @@
 package com.tianyu.seelove.application;
 
 import android.app.Application;
+import com.baidu.mapapi.SDKInitializer;
 import com.tianyu.seelove.manager.CrashHandlerManager;
 import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.manager.DirectoryManager;
@@ -27,6 +28,8 @@ public class SeeLoveApplication extends Application {
         CrashHandlerManager crashHandler = CrashHandlerManager.getInstance();
         crashHandler.init(getApplicationContext());
         Thread.setDefaultUncaughtExceptionHandler(crashHandler);
+        // 注意该方法要再setContentView方法之前实现
+        SDKInitializer.initialize(this);
         // 初始化目录管理
         DirectoryManager.init(this);
         // 初始化本地数据库连接管理

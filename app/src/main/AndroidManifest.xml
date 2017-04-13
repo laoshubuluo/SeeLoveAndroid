@@ -106,14 +106,28 @@
             android:theme="@android:style/Theme.NoDisplay"
             android:excludeFromRecents="true"></activity>
         <!--发送图片activity-->
-        <activity android:name=".ui.activity.message.AlbumImageActivity"
+        <activity
+            android:name=".ui.activity.message.AlbumImageActivity"
             android:screenOrientation="portrait"></activity>
-
+        <!--发送位置activity-->
+        <activity
+            android:name=".ui.activity.message.MapMessageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <!--发送拍照照片activity-->
+        <activity
+            android:name=".ui.activity.message.ImageSendActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <!--图片消息浏览activity-->
+        <activity
+            android:name=".ui.fragment.ViewPageFragment"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!-- 发送message service -->
         <service
             android:name=".service.MessageSendService"
             android:enabled="true" />
-
 
         <!-- 融云SDK begin 测试环境：8luwapkv8tr4l 生产环境：pgyu6atqyr7fu-->
         <meta-data

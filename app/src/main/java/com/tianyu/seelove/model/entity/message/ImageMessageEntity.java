@@ -208,7 +208,6 @@ public class ImageMessageEntity extends MessageEntity {
                 intent.putExtra("viewPageImages", (Serializable) list);
                 intent.putExtra("selectImage", getSelectImage(imageMessage));
                 v.getContext().startActivity(intent);
-//                ((Activity) v.getContext()).overridePendingTransition(R.anim.magnify_fade_in, R.anim.magnify_fade_out);
             }
         });
         viewHolder.getHeader().setOnClickListener(new View.OnClickListener() {

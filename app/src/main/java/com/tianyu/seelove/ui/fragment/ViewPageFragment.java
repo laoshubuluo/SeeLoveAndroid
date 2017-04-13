@@ -4,18 +4,16 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Window;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.ViewPageFragmentAdapter;
 import com.tianyu.seelove.model.entity.message.ViewPageImage;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author shisheng.zhao
  * @Description: 用于轮播多张图片
- * @date 2016-03-09 上午11:29:13
+ * @date 2017-04-13 23:19
  */
 public class ViewPageFragment extends FragmentActivity {
     private ViewPager viewPager;

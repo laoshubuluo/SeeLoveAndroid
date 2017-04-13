@@ -3,6 +3,7 @@ package com.tianyu.seelove.dao.impl;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+
 import com.tianyu.seelove.dao.MessageDao;
 import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.model.entity.message.SLAudioMessage;
@@ -12,6 +13,7 @@ import com.tianyu.seelove.model.entity.message.SLMessage;
 import com.tianyu.seelove.model.entity.message.SLTextMessage;
 import com.tianyu.seelove.model.enums.MessageType;
 import com.tianyu.seelove.utils.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,25 +24,6 @@ import java.util.List;
  * @date 2017-04-01 10:32
  */
 public class MessageDaoImpl implements MessageDao {
-    protected static final String ADD_MESSAGE = "insert into messageinfo(messageId," +
-            "userFrom,userTo,content,timestamp,groupId,isRead,isVisible,isDelay,state,type,prayId) " +
-            "values(?,?,?,?,?,?,?,?,?,?,?,?)";
-    protected static final String GET_MESSAGE_BY_ID = "select * from messageinfo where messageId=?";
-    protected static final String GET_GROUPMESSAGE_BY_PAGE =
-            "SELECT * FROM (select * from messageinfo where groupId=? and isVisible != '1' order by _id desc limit ?,?) as t0 order by _id";
-    protected static final String GET_GROUPIMAGEMESSAGE =
-            "SELECT * FROM (select * from messageinfo where groupId=? and isVisible != '1' and type = 'IMAGE' order by _id desc) as t0 order by _id";
-
-
-    public static final String sqlInsertMessageInfo = "insert into messageinfo(messageId,userFrom,userTo,content,timestamp," +
-            "groupId,isRead,isVisible,isDelay,state,type,audiolength,lng,lat,address,volumeId,chapterId,sectionId,prayId,thumUrl," +
-            "articleId,title,imageUrl,url,articleType,userId,userName,headUrl,userTemp) " +
-            "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-
-    // 分页查询单聊消息
-    private final static String GET_MESSAGE_BY_PAGE = "SELECT * FROM (SELECT * FROM MESSAGEINFO WHERE (UserFrom = ? AND UserTo = ?) OR (UserTo = ? AND UserFrom = ?) " +
-            "AND IsVisable !=1 ORDER BY _ID DESC LIMIT ?,?) AS T1 ORDER BY _ID";
     // 设置单聊消息为已读
     private final static String SET_ALL_READ = "UPDATE MESSAGEINFO SET IsRead = '1' WHERE (UserFrom = ? AND UserTo = ?) OR (UserTo = ? AND UserFrom = ?)";
     // 获取单聊图片消息
@@ -64,7 +47,6 @@ public class MessageDaoImpl implements MessageDao {
     private final static String SELECT_ALL_UNREAD_MESSAGE_COUNT = "SELECT COUNT(*) CT FROM MESSAGEINFO WHERE IsRead = 0";
     // 根据消息ID删除当前消息
     private final static String DELETE_MESSAGE_BY_MESSAGEID = "DELETE FROM MESSAGEINFO WHERE MessageId = ?";
-
 
     private HashMap<MessageType, MessageDaoImpl> map = new HashMap<MessageType, MessageDaoImpl>();
 
@@ -96,8 +78,10 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public List<SLMessage> getMessageByPage(long userFrom, long userTo, int start, int count) {
-        Cursor cursor = DbConnectionManager.getInstance().getConnection().rawQuery(GET_MESSAGE_BY_PAGE,
-                new String[]{String.valueOf(userFrom), String.valueOf(userTo), String.valueOf(userFrom), String.valueOf(userTo), start + "", count + ""});
+        String sql = "SELECT * FROM (SELECT * FROM MESSAGEINFO WHERE (UserFrom = " + userFrom + " " +
+                "AND UserTo = " + userTo + ") OR (UserTo = " + userFrom + " AND UserFrom = " + userTo + ") " +
+                "AND IsVisable !=1 ORDER BY _ID DESC LIMIT " + start + "," + count + ") AS T1 ORDER BY _ID";
+        Cursor cursor = DbConnectionManager.getInstance().getConnection().rawQuery(sql, null);
         List<SLMessage> messages = new ArrayList<SLMessage>();
         try {
             while (cursor.moveToNext()) {
@@ -112,8 +96,10 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public List<SLMessage> getImageMessage(long userFrom, long userTo) {
-        Cursor cursor = DbConnectionManager.getInstance().getConnection().rawQuery(GET_IMAG_MESSAGE,
-                new String[]{String.valueOf(userFrom), String.valueOf(userTo), String.valueOf(userFrom), String.valueOf(userTo)});
+        String sql = "SELECT * FROM (SELECT * FROM MESSAGEINFO WHERE (UserFrom = " + userFrom + " AND UserTo = " + userTo + " " +
+                "AND MessageType = 'IMAGE') OR (UserTo = " + userFrom + " AND UserFrom = " + userTo + " " +
+                "AND MessageType = 'IMAGE') AND IsVisable != '1' ORDER BY _ID DESC) AS T1 ORDER BY _ID";
+        Cursor cursor = DbConnectionManager.getInstance().getConnection().rawQuery(sql, null);
         List<SLMessage> messages = new ArrayList<SLMessage>();
         try {
             while (cursor.moveToNext()) {
@@ -222,6 +208,7 @@ public class MessageDaoImpl implements MessageDao {
     private final static String sqlCreateMessageInfo = "CREATE TABLE MESSAGEINFO(_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             "MessageId,UserFrom,UserTo,MessageContent,TimeStamp,IsRead DEFAULT '0',IsVisable DEFAULT '0',IsDelay DEFALUT '1'," +
             "SendStatue DEFAULT '0',MessageType,ThumUrl,AudioLength,Lng,Lat,Address)";
+
     public static SQLiteStatement bindData(SQLiteStatement stat, SLMessage slMessage) {
         if (MessageType.TEXT.equals(slMessage.getMessageType())) {
             SLTextMessage message = (SLTextMessage) slMessage;
