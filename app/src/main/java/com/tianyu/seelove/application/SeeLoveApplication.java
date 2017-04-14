@@ -8,6 +8,8 @@ import com.tianyu.seelove.manager.DirectoryManager;
 import com.tianyu.seelove.manager.RongCloudManager;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
+import com.yixia.camera.VCamera;
+import java.io.File;
 import io.rong.imlib.RongIMClient;
 
 /**
@@ -17,6 +19,7 @@ import io.rong.imlib.RongIMClient;
  */
 public class SeeLoveApplication extends Application {
     public static String deviceMode = "";
+    public static String VIDEO_PATH = "/sdcard/SeeLoveRecordedDemo/";
 
     @Override
     public void onCreate() {
@@ -39,6 +42,24 @@ public class SeeLoveApplication extends Application {
         RongIMClient.init(this);
         RongCloudManager.getInstance().init(this);
         deviceMode = getDeviceModel();
+        initVCamera();
+    }
+
+    /**
+     * 初始化VCamera
+     */
+    private void initVCamera() {
+        VIDEO_PATH += String.valueOf(System.currentTimeMillis());
+        File file = new File(VIDEO_PATH);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        // 设置视频缓存路径
+        VCamera.setVideoCachePath(VIDEO_PATH);
+        // 开启log输出,ffmpeg输出logcat
+        VCamera.setDebugMode(true);
+        // 初始化拍摄SDK,必须进行初始化
+        VCamera.initialize(this);
     }
 
     private String getDeviceModel() {

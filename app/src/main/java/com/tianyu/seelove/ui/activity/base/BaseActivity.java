@@ -8,12 +8,20 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.tianyu.seelove.R;
+import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 
@@ -32,6 +40,7 @@ public class BaseActivity extends FragmentActivity implements Handler.Callback, 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getDisplay();
         handler = new Handler(this);
         promptDialog = new PromptDialog(BaseActivity.this);
         imageLoader = ImageLoader.getInstance();
@@ -81,5 +90,53 @@ public class BaseActivity extends FragmentActivity implements Handler.Callback, 
     @Override
     public boolean handleMessage(Message message) {
         return false;
+    }
+
+    public void getDisplay() {
+        WindowManager windowManager = getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        Constant.screenWidth = display.getWidth();
+        Constant.screenHeight = display.getHeight();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (null != customProgressDialog) {
+            customProgressDialog.dismiss();
+        }
+        if (null != promptDialog) {
+            promptDialog.dismiss();
+        }
+        super.onDestroy();
+    }
+
+    private AlertDialog progressDialog;
+
+    public TextView showProgressDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        View view = View.inflate(this, R.layout.dialog_loading, null);
+        builder.setView(view);
+        ProgressBar pb_loading = (ProgressBar) view.findViewById(R.id.pb_loading);
+        TextView tv_hint = (TextView) view.findViewById(R.id.tv_hint);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            pb_loading.setIndeterminateTintList(ContextCompat.getColorStateList(this, R.color.dialog_pro_color));
+        }
+        tv_hint.setText("视频编译中");
+        progressDialog = builder.create();
+        progressDialog.show();
+
+        return tv_hint;
+    }
+
+    public void closeProgressDialog() {
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
