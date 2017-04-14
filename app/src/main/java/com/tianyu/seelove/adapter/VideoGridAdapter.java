@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.video.SLVideo;
-import com.tianyu.seelove.ui.activity.video.VideoPlayActivity;
+import com.tianyu.seelove.ui.activity.video.VideoRecordActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 
 /**
@@ -65,7 +65,7 @@ public class VideoGridAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(view.getContext(), VideoPlayActivity.class);
+                intent.setClass(view.getContext(), VideoRecordActivity.class);
                 view.getContext().startActivity(intent);
             }
         });

@@ -97,8 +97,6 @@ public class AudioMessageEntity extends MessageEntity {
         // 设置头像
         if (audioMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getHeader().setImageResource(R.mipmap.default_head);
-            // viewHolder.
-            // .setTag(doctor.getHeader());
             if (self != null && self.getHeadUrl() != null
                     && self.getHeadUrl().length() > 0) {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);

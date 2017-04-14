@@ -45,6 +45,11 @@
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -89,9 +94,20 @@
             android:name=".ui.activity.video.VideoListActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"></activity>
+        <!--视频录制activity-->
+        <activity
+            android:name=".ui.activity.video.VideoRecordActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"></activity>
+        <!--视频编辑activity-->
+        <activity
+            android:name=".ui.activity.video.EditVideoActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"></activity>
+        <!--视频播放activity-->
         <activity
             android:name=".ui.activity.video.VideoPlayActivity"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="screenSize|orientation"
             android:screenOrientation="portrait"></activity>
         <!-- 单聊Activity-->
         <activity
@@ -102,9 +118,9 @@
         <!--透明activity-->
         <activity
             android:name=".ui.activity.system.TranslateActivity"
+            android:excludeFromRecents="true"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.NoDisplay"
-            android:excludeFromRecents="true"></activity>
+            android:theme="@android:style/Theme.NoDisplay"></activity>
         <!--发送图片activity-->
         <activity
             android:name=".ui.activity.message.AlbumImageActivity"

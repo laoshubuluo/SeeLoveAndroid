@@ -81,7 +81,7 @@ public class TextMessageEntity extends MessageEntity {
         viewHolder.setImageAuth((ImageView) convertView
                 .findViewById(R.id.user_recognise));
         convertView.setTag(viewHolder);
-//        viewHolder.getContent().setMaxWidth(Constant.screenWidth - DimensionUtils.convertDipToPixels(context.getResources(), 100));
+        viewHolder.getContent().setMaxWidth(Constant.screenWidth - DimensionUtils.convertDipToPixels(context.getResources(), 100));
         // 设置头像 姓名
         if (textMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             if (self != null && self.getHeadUrl() != null && self.getHeadUrl().length() > 0) {
