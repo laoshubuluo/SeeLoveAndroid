@@ -40,19 +40,13 @@ public class CameraMessagePlugin extends MessagePlugin {
                         try {
                             if (file != null) {
                                 ArrayList<String> list_camera = new ArrayList<String>();
-                                list_camera.add(file
-                                        .getAbsolutePath());
+                                list_camera.add(file.getAbsolutePath());
                                 String pathString = list_camera.get(0);
                                 try {
-                                    pathString = BitmapUtils.saveBitmapToFile(BitmapUtils
-                                            .getImageFromFileWithHighResolution(
-                                                    list_camera.get(0), 1000, 1000));
+                                    pathString = BitmapUtils.saveBitmapToFile(BitmapUtils.getImageFromFileWithHighResolution(list_camera.get(0), 1000, 1000));
                                 } catch (OutOfMemoryError ex) {
                                     try {
-                                        pathString = BitmapUtils.saveBitmapToFile(BitmapUtils
-                                                .getImageFromFileWithHighResolution(
-                                                        list_camera.get(0), 500,
-                                                        500));
+                                        pathString = BitmapUtils.saveBitmapToFile(BitmapUtils.getImageFromFileWithHighResolution(list_camera.get(0), 500, 500));
                                     } catch (OutOfMemoryError error) {
                                         ex.printStackTrace();
                                     }
@@ -83,13 +77,10 @@ public class CameraMessagePlugin extends MessagePlugin {
     @Override
     public void onEntranceClick() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        file = new File(DirectoryManager.getDirectory(DirectoryManager.DIR.IMAGE),
-                StringUtils.generateGUID()
-                        + "c.jpg");
+        file = new File(DirectoryManager.getDirectory(DirectoryManager.DIR.IMAGE), StringUtils.generateGUID() + "c.jpg");
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        ((Activity) manager.getContext()).startActivityForResult(intent,
-                IMAGE_FROM_CAMERA);
+        ((Activity) manager.getContext()).startActivityForResult(intent, IMAGE_FROM_CAMERA);
     }
 
     @Override

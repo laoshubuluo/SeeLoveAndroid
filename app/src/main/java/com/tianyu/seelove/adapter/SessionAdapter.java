@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.message.SLSession;
@@ -20,13 +19,11 @@ import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.ListSortUtil;
 import com.tianyu.seelove.utils.TextUtils;
 import com.tianyu.seelove.view.RedDotView;
-
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * 发现显示自定义adapter
- *
  * @author shisheng.zhao
  * @date 2017-03-31 17:52
  */
@@ -73,7 +70,7 @@ public class SessionAdapter extends BaseAdapter {
             sessions.add(session);
         }
         ListSortUtil<SLSession> listSortUtil = new ListSortUtil<SLSession>();
-        listSortUtil.sort(sessions, "priority", "desc");
+        listSortUtil.sort(sessions, "Priority", "DESC");
         notifyDataSetChanged();
     }
 
@@ -120,9 +117,12 @@ public class SessionAdapter extends BaseAdapter {
         } else {
             viewHoder = (ViewHoder) convertView.getTag();
         }
-        viewHoder.message_tv_who.setText(FaceConversionUtils.getInstace().getExpressionString(convertView.getContext(), TextUtils.StringFilter("天宇")));
+        viewHoder.message_tv_who.setText(FaceConversionUtils.getInstace().getExpressionString(convertView.getContext(),
+                TextUtils.StringFilter(String.valueOf(sessions.get(position).getTargetId()))));
         if (sessions.get(position).getSessionType() == SessionType.CHAT) {
-            ImageLoader.getInstance().displayImage(sessions.get(position).getSessionIcon(), viewHoder.message_img_photo, ImageLoaderUtil.getSmallImageOptions());
+            // todo shisheng.zhao 测试icon
+            sessions.get(position).setSessionIcon("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1849074283,1272897972&fm=111&gp=0.jpg");
+            ImageLoader.getInstance().displayImage(sessions.get(position).getSessionIcon(), viewHoder.message_img_photo, ImageLoaderUtil.getHeadUrlImageOptions());
         }
         viewHoder.message_tv_time.setText(DateUtils.getPastDate(sessions.get(position).getPriority()));
         if (sessions.get(position).getMessageType().equals(MessageType.AUDIO)) {

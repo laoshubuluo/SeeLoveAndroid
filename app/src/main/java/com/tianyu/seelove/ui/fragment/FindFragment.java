@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FindUserAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
@@ -22,12 +21,10 @@ import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
-
 import java.util.List;
 
 /**
  * Fragmengt(发现)
- *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */

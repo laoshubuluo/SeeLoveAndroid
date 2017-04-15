@@ -109,6 +109,9 @@
             android:name=".ui.activity.video.VideoPlayActivity"
             android:configChanges="screenSize|orientation"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.activity.video.FullVideoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <!-- 单聊Activity-->
         <activity
             android:name=".ui.activity.message.SingleChatActivity"

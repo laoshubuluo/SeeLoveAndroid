@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="2dp"
-            android:background="@color/bg_white_ff"></View>
+            android:background="@color/white"></View>
 
         <Button
             android:id="@+id/btn_pop_repeat"
@@ -36,7 +36,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="2dp"
-            android:background="@color/bg_white_ff"></View>
+            android:background="@color/white"></View>
 
         <Button
             android:id="@+id/btn_pop_delete"

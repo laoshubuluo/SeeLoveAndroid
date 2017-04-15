@@ -16,6 +16,8 @@
     <string name="my_information">我的资料</string>
 
     <!--消息-->
+    <string name="send">发送</string>
+    <string name="send_image">发送照片</string>
     <string name="message_no_connect">消息(未连接)</string>
     <string name="message_connecting">正在连接...</string>
     <string name="message_failed_connect">网络连接异常</string>
@@ -75,4 +77,5 @@
     <string name="user_login_failure">用户登录失败</string>
     <string name="user_create_failure">用户创建失败</string>
     <string name="user_find_all_failure">获取所有用户失败</string>
+    <string name="video_error">视频播放错误，请重试!</string>
 </resources>

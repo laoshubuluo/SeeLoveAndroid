@@ -112,11 +112,11 @@ public class SessionDaoImpl implements SessionDao {
     public SLSession getSessionByCursor(Cursor cursor) {
         SLSession session = new SLSession();
         session.setTargetId(cursor.getLong(cursor.getColumnIndex("TargetId")));
-        session.setSessionType(SessionType.CHAT);
+        session.setSessionType(SessionType.valueOf(cursor.getString(cursor.getColumnIndex("SessionType"))));
         session.setLastMessageId(cursor.getString(cursor.getColumnIndex("LastMessageId")));
-        session.setPriority(cursor.getInt(cursor.getColumnIndex("Priority")));
+        session.setPriority(cursor.getLong(cursor.getColumnIndex("Priority")));
         session.setSessionIcon(cursor.getString(cursor.getColumnIndex("SessionIcon")));
-        session.setMessageType(MessageType.TEXT);
+        session.setMessageType(MessageType.valueOf(cursor.getString(cursor.getColumnIndex("MessageType"))));
         session.setSessionName(cursor.getString(cursor.getColumnIndex("SessionName")));
         session.setSessionContent(cursor.getString(cursor.getColumnIndex("SessionContent")));
         session.setSessionIsRead(cursor.getInt(cursor.getColumnIndex("SessionIsRead")));

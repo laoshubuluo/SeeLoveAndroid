@@ -397,6 +397,15 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        messageSender.notifyResultChanged(requestCode, resultCode, data);
+        if (data == null) {
+            return;
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (mAdapter != null) {
