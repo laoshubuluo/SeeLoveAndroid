@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.tianyu.seelove.R;
@@ -35,12 +34,16 @@ import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.dialog.SureDialog;
 import com.tianyu.seelove.view.image.BubbleImageView;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author shisheng.zhao
+ * @Description: 图片消息自定义view
+ * @date 2017-04-15 16:04
+ */
 public class ImageMessageEntity extends MessageEntity {
     SLImageMessage imageMessage;
     String imagePath = "";

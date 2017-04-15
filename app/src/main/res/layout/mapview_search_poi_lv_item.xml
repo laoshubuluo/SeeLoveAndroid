@@ -3,7 +3,7 @@
     android:id="@+id/rlMLPIItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bg_white_ff"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="5dp">
 

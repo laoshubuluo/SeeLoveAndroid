@@ -8,8 +8,9 @@
 
     <FrameLayout
         android:id="@+id/headLayout"
-        android:layout_width="@dimen/layout_60dp"
-        android:layout_height="@dimen/layout_60dp">
+        android:layout_width="@dimen/layout_65dp"
+        android:layout_height="@dimen/layout_65dp"
+        android:layout_marginLeft="@dimen/layout_5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -17,12 +18,11 @@
 
             <ImageView
                 android:id="@+id/message_img_photo"
-                android:layout_width="@dimen/layout_50dp"
-                android:layout_height="@dimen/layout_50dp"
+                android:layout_width="@dimen/layout_55dp"
+                android:layout_height="@dimen/layout_55dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:background="@mipmap/ic_launcher"
-                android:scaleType="fitCenter" />
+                android:scaleType="centerCrop" />
 
             <com.tianyu.seelove.view.RedDotView
                 android:id="@+id/redDot"

@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -16,6 +16,7 @@ import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
+import com.tianyu.seelove.view.MyGridView;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public class UserInfoActivity extends BaseActivity {
     private SLUser user;
     private TextView titleView;
     private ImageView bigImage;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class UserInfoActivity extends BaseActivity {
         titleView = (TextView) findViewById(R.id.titleView);
         ImageView leftBtn = (ImageView) findViewById(R.id.leftBtn);
         ImageView rightBtn = (ImageView) findViewById(R.id.rightBtn);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
         bigImage = (ImageView) findViewById(R.id.bigImage);
         Button sendMessage = (Button) findViewById(R.id.sendMessage);
         titleView.setText(user.getNickName());
@@ -61,7 +64,7 @@ public class UserInfoActivity extends BaseActivity {
 
     private void initData() {
         ImageLoader.getInstance().displayImage(user.getHeadUrl(), bigImage, ImageLoaderUtil.getSmallImageOptions());
-        GridView gridView = (GridView) findViewById(R.id.videoGridView);
+        MyGridView gridView = (MyGridView) findViewById(R.id.videoGridView);
         videoInfos = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             SLVideo videoInfo = new SLVideo();
@@ -70,6 +73,12 @@ public class UserInfoActivity extends BaseActivity {
         }
         gridAdapter = new VideoGridAdapter(this, videoInfos);
         gridView.setAdapter(gridAdapter);
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.scrollTo(0, 0);
+            }
+        });
     }
 
     @Override

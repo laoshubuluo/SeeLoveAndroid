@@ -34,6 +34,7 @@ import com.tianyu.seelove.ui.activity.system.NetworkConnectActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
+import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.dialog.SureDialog;
 
 import java.util.ArrayList;
@@ -226,7 +227,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
             SLUser slUser = userDao.getUserByUserId(slSession.getTargetId());
             if (null != slUser) {
                 slSession.setSessionIcon(slUser.getHeadUrl());
-                slSession.setSessionName(slUser.getNickName());
+                slSession.setSessionName(StringUtils.isNotBlank(slUser.getNickName()) ? slUser.getNickName() : String.valueOf(slUser.getUserId()));
                 sessionDao.updateSessionName(slUser.getNickName(), String.valueOf(slUser.getUserId()));
             }
         }

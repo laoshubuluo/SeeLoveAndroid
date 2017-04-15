@@ -34,7 +34,8 @@
                 android:paddingBottom="10dp"
                 android:text="1/4"
                 android:textColor="@color/bg_white_f9"
-                android:textSize="@dimen/font_20sp" />
+                android:textSize="@dimen/font_20sp"
+                android:visibility="gone"/>
         </RelativeLayout>
     </FrameLayout>
 </LinearLayout>
