@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
+import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.ui.activity.video.FullVideoActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 
@@ -33,7 +34,7 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
 
     // 自定义interface
     public interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view, SLUser data);
+        void onItemClick(View view, SLUserDetail data);
     }
 
     // 定义构造方法，默认传入上下文和数据源
@@ -70,14 +71,18 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         SLUserDetail userDetailInfo = mData.get(position);
         SLUser userInfo = userDetailInfo.getUser();
+        final SLVideo defaultVideo = userDetailInfo.getDefultVideo();
+
         ImageLoader.getInstance().displayImage(userInfo.getHeadUrl(), viewHolder.userAvatar, ImageLoaderUtil.getSmallImageOptions());
         viewHolder.userAvatar.getLayoutParams().height = 550; // 从数据源中获取图片高度，动态设置到控件上
         viewHolder.userName.setText(userInfo.getNickName());
         viewHolder.itemView.setTag(mData.get(position));
+        // viewHolder.mPlayBtnView.setTag(R.id.tag_defaultVideo, defaultVideo);
         viewHolder.mPlayBtnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 全屏播放
+                //SLVideo video = (SLVideo) view.getTag(R.id.tag_defaultVideo);
                 Intent intent = new Intent(new Intent(mContext, FullVideoActivity.class));
                 intent.putExtra("videoUrl", videoUrl);
                 mContext.startActivity(intent);
@@ -112,7 +117,7 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
     @Override
     public void onClick(View view) {
         if (null != mOnItemClickListener) {
-            mOnItemClickListener.onItemClick(view, (SLUser) view.getTag());
+            mOnItemClickListener.onItemClick(view, (SLUserDetail) view.getTag());
         }
     }
 

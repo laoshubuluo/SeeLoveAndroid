@@ -21,6 +21,21 @@ public class MessageSignConstant {
     public static final int USER_FIND_ALL_SUCCESS = 1005;
     public static final int USER_FIND_ALL_FAILURE = 1006;
 
-    public static final int VIDEO_FIND_BY_USER_SUCCESS = 1007;
-    public static final int VIDEO_FIND_BY_USER_FAILURE = 1008;
+    public static final int USER_UPDATE_SUCCESS = 1007;
+    public static final int USER_UPDATE_FAILURE = 1008;
+
+    public static final int USER_FIND_DETAIL_SUCCESS = 1009;
+    public static final int USER_FIND_DETAIL_FAILURE = 1010;
+
+    public static final int VIDEO_CREATE_SUCCESS = 1011;
+    public static final int VIDEO_CREATE_FAILURE = 1012;
+
+    public static final int FOLLOW_SUCCESS = 1013;
+    public static final int FOLLOW_FAILURE = 1014;
+
+    public static final int FOLLOW_FIND_ALL_BY_USER_SUCCESS = 1015;
+    public static final int FOLLOW_FIND_ALL_BY_USER_FAILURE = 1016;
+
+    public static final int FOLLOW_FIND_ALL_BY_FOLLOWED_USER_SUCCESS = 1015;
+    public static final int FOLLOW_FIND_ALL_BY_FOLLOWED_USER_FAILURE = 1016;
 }

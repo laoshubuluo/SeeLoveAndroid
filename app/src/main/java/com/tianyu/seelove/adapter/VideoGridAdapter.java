@@ -1,6 +1,5 @@
 package com.tianyu.seelove.adapter;
 
-import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,14 +9,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.ui.activity.video.VideoRecordActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 
+import java.util.ArrayList;
+
 /**
  * 视频显示自定义adapter
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 17:50
  */
@@ -27,6 +30,9 @@ public class VideoGridAdapter extends BaseAdapter {
 
     public VideoGridAdapter(Context context, ArrayList<SLVideo> listInfo) {
         inflater = LayoutInflater.from(context);
+        if (null == listInfo) {
+            listInfo = new ArrayList<SLVideo>();
+        }
         this.listInfo = listInfo;
     }
 

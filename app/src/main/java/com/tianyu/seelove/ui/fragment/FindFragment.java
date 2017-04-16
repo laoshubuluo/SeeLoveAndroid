@@ -16,7 +16,6 @@ import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FindUserAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
-import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.activity.user.UserInfoActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
@@ -84,9 +83,9 @@ public class FindFragment extends BaseFragment {
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new FindUserAdapter.OnRecyclerViewItemClickListener() {
             @Override
-            public void onItemClick(View view, SLUser user) {
+            public void onItemClick(View view, SLUserDetail user) {
                 Intent intent = new Intent();
-                intent.putExtra("user", user);
+                intent.putExtra("user", user.getUser());
                 intent.setClass(view.getContext(), UserInfoActivity.class);
                 startActivity(intent);
             }
@@ -95,7 +94,7 @@ public class FindFragment extends BaseFragment {
         // 请求服务器
         customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
         customProgressDialog.show();
-        controller.findAll(1, 100, "", "");
+        controller.findAll(1, 33, "1", "111");
     }
 
     @Override
@@ -144,7 +143,6 @@ public class FindFragment extends BaseFragment {
         }
         return false;
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

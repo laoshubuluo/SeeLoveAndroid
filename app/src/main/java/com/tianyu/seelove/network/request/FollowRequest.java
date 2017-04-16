@@ -9,40 +9,35 @@ import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
 import com.tianyu.seelove.common.WebConstant;
-import com.tianyu.seelove.model.entity.network.request.UserFindAllActionInfo;
+import com.tianyu.seelove.model.entity.network.request.FollowActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
-import com.tianyu.seelove.model.entity.network.response.UserFindAllRspInfo;
+import com.tianyu.seelove.model.entity.network.response.FollowRspInfo;
+import com.tianyu.seelove.model.entity.user.SLFollow;
 import com.tianyu.seelove.network.request.base.PostJsonRequest;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
 
 import org.json.JSONObject;
 
-import java.io.Serializable;
-
 /**
  * author : L.jinzhu
  * date : 2015/9/11
- * introduce : 获取所有用户请求request
+ * introduce : 关注请求request
  */
-public class UserFindAllRequest extends PostJsonRequest {
-    private int ageStart = 0;
-    private int ageEnd = 0;
-    private String sex;
-    private String cityCode;
+public class FollowRequest extends PostJsonRequest {
+    private SLFollow follow;
+    private int type;
 
-    public UserFindAllRequest(Handler handler, Context context, int ageStart, int ageEnd, String sex, String cityCode) {
+    public FollowRequest(Handler handler, Context context, SLFollow follow, int type) {
         this.handler = handler;
         this.context = context;
-        this.ageStart = ageStart;
-        this.ageEnd = ageEnd;
-        this.sex = sex;
-        this.cityCode = cityCode;
+        this.follow = follow;
+        this.type = type;
     }
 
     @Override
     protected String getParamsJson() {
-        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, ageStart, ageEnd, sex, cityCode);
+        FollowActionInfo actionInfo = new FollowActionInfo(RequestCode.FOLLOW, type, follow);
         RequestInfo requestInfo = new RequestInfo(context, actionInfo);
         return GsonUtil.toJson(requestInfo);
     }
@@ -63,11 +58,10 @@ public class UserFindAllRequest extends PostJsonRequest {
         Message msg = new Message();
         try {
             LogUtil.i("response success json: [" + requestTag() + "]: " + response.toString());
-            UserFindAllRspInfo info = GsonUtil.fromJson(response.toString(), UserFindAllRspInfo.class);
+            FollowRspInfo info = GsonUtil.fromJson(response.toString(), FollowRspInfo.class);
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
-                b.putSerializable("userList", (Serializable) info.getUserDetailList());
-                msg.what = MessageSignConstant.USER_FIND_ALL_SUCCESS;
+                msg.what = MessageSignConstant.FOLLOW_SUCCESS;
                 msg.setData(b);
                 handler.sendMessage(msg);
                 LogUtil.i(requestTag() + " success");
@@ -76,7 +70,7 @@ public class UserFindAllRequest extends PostJsonRequest {
             else {
                 b.putInt("code", info.getStatusCode());
                 b.putString("message", info.getStatusMsg());
-                msg.what = MessageSignConstant.USER_FIND_ALL_FAILURE;
+                msg.what = MessageSignConstant.FOLLOW_FAILURE;
                 msg.setData(b);
                 handler.sendMessage(msg);
                 LogUtil.i(requestTag() + " error, code: " + info.getStatusCode() + " message: " + info.getStatusMsg());
