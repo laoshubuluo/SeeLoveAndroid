@@ -93,7 +93,6 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView userName;
         public View videoView;
-        public VideoPlayer mVideoViewLayout;
         public ImageView mPlayBtnView;
         public ImageView userAvatar;
 
@@ -102,7 +101,6 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
             userName = (TextView) itemView.findViewById(R.id.user_name);
             videoView = itemView.findViewById(R.id.item_video_view);
             userAvatar = (ImageView) videoView.findViewById(R.id.user_avatar);
-            mVideoViewLayout = (VideoPlayer) videoView.findViewById(R.id.video);
             mPlayBtnView = (ImageView) videoView.findViewById(R.id.play_btn);
         }
     }

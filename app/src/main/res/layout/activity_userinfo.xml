@@ -6,10 +6,26 @@
         android:id="@+id/topLayout"
         layout="@layout/public_top_view"></include>
 
+    <Button
+        android:id="@+id/sendMessage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/layout_10dp"
+        android:layout_marginLeft="@dimen/layout_15dp"
+        android:layout_marginRight="@dimen/layout_15dp"
+        android:layout_marginTop="@dimen/layout_10dp"
+        android:background="@drawable/shape_corners_button_red_7a"
+        android:gravity="center"
+        android:text="发送消息"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_18sp" />
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/sendMessage"
         android:layout_below="@id/topLayout"
         android:scrollbars="none">
 
@@ -122,29 +138,15 @@
                     android:id="@+id/videoGridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_60dp"
                     android:columnWidth="100dp"
                     android:gravity="center"
                     android:horizontalSpacing="10dp"
                     android:numColumns="3"
                     android:stretchMode="columnWidth"
-                    android:layout_marginBottom="@dimen/layout_60dp"
-                    android:verticalSpacing="10dp"/>
+                    android:verticalSpacing="10dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/sendMessage"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/layout_10dp"
-        android:layout_marginLeft="@dimen/layout_15dp"
-        android:layout_marginRight="@dimen/layout_15dp"
-        android:layout_marginTop="@dimen/layout_10dp"
-        android:background="@drawable/shape_corners_button_red_7a"
-        android:gravity="center"
-        android:text="发送消息"
-        android:textColor="@color/white"
-        android:textSize="@dimen/font_18sp" />
 </RelativeLayout>

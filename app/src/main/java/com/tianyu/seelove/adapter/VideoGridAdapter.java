@@ -59,7 +59,8 @@ public class VideoGridAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         SLVideo videoInfo = listInfo.get(position);
-        ImageLoader.getInstance().displayImage(videoInfo.getVideoImg(), holder.imageView, ImageLoaderUtil.getSmallImageOptions());
+        String imageUrl = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1849074283,1272897972&fm=111&gp=0.jpg";
+        ImageLoader.getInstance().displayImage(imageUrl, holder.imageView, ImageLoaderUtil.getSmallImageOptions());
         holder.textView.setText(videoInfo.getVideoTitle());
         holder.gridViewItem.setOnClickListener(new View.OnClickListener() {
             @Override

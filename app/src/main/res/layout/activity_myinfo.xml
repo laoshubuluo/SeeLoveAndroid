@@ -1,60 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/root_layout"
     android:orientation="vertical">
 
     <include layout="@layout/public_top_view"></include>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="85dp"
+        android:layout_height="@dimen/layout_80dp"
         android:background="@color/white">
 
         <ImageView
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="@dimen/layout_65dp"
+            android:layout_height="@dimen/layout_65dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_marginLeft="@dimen/layout_15dp" />
 
         <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:background="@mipmap/arrow_icon" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="@dimen/layout_50dp"
+        android:layout_marginTop="@dimen/layout_1dp"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/layout_15dp"
             android:text="昵称"
             android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/userNameNext"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:background="@mipmap/arrow_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/layout_5dp"
             android:layout_toLeftOf="@id/userNameNext"
             android:text="天宇"
             android:textColor="@color/black" />
@@ -62,32 +60,32 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="@dimen/layout_50dp"
+        android:layout_marginTop="@dimen/layout_1dp"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/layout_15dp"
             android:text="年龄"
             android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/ageNext"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:background="@mipmap/arrow_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/layout_5dp"
             android:layout_toLeftOf="@id/ageNext"
             android:text="26"
             android:textColor="@color/black" />
@@ -95,32 +93,32 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="@dimen/layout_50dp"
+        android:layout_marginTop="@dimen/layout_1dp"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/layout_15dp"
             android:text="职业"
             android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/workNext"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:background="@mipmap/arrow_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/layout_5dp"
             android:layout_toLeftOf="@id/workNext"
             android:text="工程师"
             android:textColor="@color/black" />
@@ -128,32 +126,32 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="@dimen/layout_50dp"
+        android:layout_marginTop="@dimen/layout_1dp"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/layout_15dp"
             android:text="学历"
             android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/studyNext"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:background="@mipmap/arrow_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/layout_5dp"
             android:layout_toLeftOf="@id/studyNext"
             android:text="本科"
             android:textColor="@color/black" />
@@ -161,32 +159,32 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="@dimen/layout_50dp"
+        android:layout_marginTop="@dimen/layout_1dp"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/layout_15dp"
             android:text="居住地"
             android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/addressNext"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:background="@mipmap/arrow_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/layout_5dp"
             android:layout_toLeftOf="@id/addressNext"
             android:text="北京市"
             android:textColor="@color/black" />
@@ -194,32 +192,32 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="@dimen/layout_50dp"
+        android:layout_marginTop="@dimen/layout_1dp"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/layout_15dp"
             android:text="住房情况"
             android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/houseNext"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:background="@mipmap/arrow_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/layout_5dp"
             android:layout_toLeftOf="@id/houseNext"
             android:text="已购房"
             android:textColor="@color/black" />
@@ -227,35 +225,34 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="@dimen/layout_50dp"
+        android:layout_marginTop="@dimen/layout_1dp"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/layout_15dp"
             android:text="婚姻状况"
             android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/marraryNext"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:background="@mipmap/arrow_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/layout_5dp"
             android:layout_toLeftOf="@id/marraryNext"
             android:text="未婚"
             android:textColor="@color/black" />
     </RelativeLayout>
-
 </LinearLayout>
