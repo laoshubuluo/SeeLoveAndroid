@@ -1,8 +1,7 @@
 package com.tianyu.seelove.model.entity.network.response;
 
 import com.tianyu.seelove.model.entity.network.response.base.ResponseInfo;
-import com.tianyu.seelove.model.entity.user.SLUser;
-import com.tianyu.seelove.model.entity.video.SLVideo;
+import com.tianyu.seelove.model.entity.user.SLUserDetail;
 
 import java.util.List;
 
@@ -12,13 +11,13 @@ import java.util.List;
  * introduce : 响应实体
  */
 public class UserFindAllRspInfo extends ResponseInfo {
-    private List<SLUser> userList;
+    private List<SLUserDetail> userDetailList;
 
-    public List<SLUser> getUserList() {
-        return userList;
+    public List<SLUserDetail> getUserDetailList() {
+        return userDetailList;
     }
 
-    public void setUserList(List<SLUser> userList) {
-        this.userList = userList;
+    public void setUserDetailList(List<SLUserDetail> userDetailList) {
+        this.userDetailList = userDetailList;
     }
 }

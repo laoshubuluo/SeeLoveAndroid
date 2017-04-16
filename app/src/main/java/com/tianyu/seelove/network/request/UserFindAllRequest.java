@@ -26,15 +26,23 @@ import java.io.Serializable;
  * introduce : 获取所有用户请求request
  */
 public class UserFindAllRequest extends PostJsonRequest {
+    private int ageStart = 0;
+    private int ageEnd = 0;
+    private String sex;
+    private String cityCode;
 
-    public UserFindAllRequest(Handler handler, Context context) {
+    public UserFindAllRequest(Handler handler, Context context, int ageStart, int ageEnd, String sex, String cityCode) {
         this.handler = handler;
         this.context = context;
+        this.ageStart = ageStart;
+        this.ageEnd = ageEnd;
+        this.sex = sex;
+        this.cityCode = cityCode;
     }
 
     @Override
     protected String getParamsJson() {
-        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL);
+        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL,ageStart,ageEnd,sex,cityCode);
         RequestInfo requestInfo = new RequestInfo(context, actionInfo);
         return GsonUtil.toJson(requestInfo);
     }
@@ -58,7 +66,7 @@ public class UserFindAllRequest extends PostJsonRequest {
             UserFindAllRspInfo info = GsonUtil.fromJson(response.toString(), UserFindAllRspInfo.class);
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
-                b.putSerializable("userList", (Serializable) info.getUserList());
+                b.putSerializable("userList", (Serializable) info.getUserDetailList());
                 msg.what = MessageSignConstant.USER_FIND_ALL_SUCCESS;
                 msg.setData(b);
                 handler.sendMessage(msg);

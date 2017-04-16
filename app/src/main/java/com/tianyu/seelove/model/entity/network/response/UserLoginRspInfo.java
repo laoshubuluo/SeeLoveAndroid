@@ -22,7 +22,7 @@ public class UserLoginRspInfo extends ResponseInfo {
 
     @Override
     public String toString() {
-        return "UserCreateRspInfo{" +
+        return "UserLoginRspInfo{" +
                 "actionId=" + actionId +
                 ", statusCode=" + statusCode +
                 ", statusMsg='" + statusMsg + '\'' +

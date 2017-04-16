@@ -11,20 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FindUserAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.model.entity.user.SLUser;
+import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.activity.user.UserInfoActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+
 import java.util.List;
 
 /**
  * Fragmengt(发现)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
@@ -35,7 +39,7 @@ public class FindFragment extends BaseFragment {
     private FindUserAdapter mAdapter;
     private UserController controller;
 
-    private List<SLUser> userList;
+    private List<SLUserDetail> userList;
 
     @Override
     public void onAttach(Activity activity) {
@@ -91,7 +95,7 @@ public class FindFragment extends BaseFragment {
         // 请求服务器
         customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
         customProgressDialog.show();
-        controller.findAll();
+        controller.findAll(1, 100, "", "");
     }
 
     @Override
@@ -120,7 +124,7 @@ public class FindFragment extends BaseFragment {
         String message;
         switch (msg.what) {
             case MessageSignConstant.USER_FIND_ALL_SUCCESS:
-                userList = (List<SLUser>) msg.getData().getSerializable("userList");
+                userList = (List<SLUserDetail>) msg.getData().getSerializable("userList");
                 mAdapter.updateData(userList, true);
                 break;
             case MessageSignConstant.USER_FIND_ALL_FAILURE:

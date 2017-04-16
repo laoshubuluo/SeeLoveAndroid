@@ -17,18 +17,19 @@ public class SLUser implements Serializable {
     private int age = 0; // 用户年龄
     private String sex;//性别 0:未知;1男;2女
     private String bigImg; // 用户信息默认大图
-    private int cityCode; // 城市编号
+    private String cityCode; // 城市编号
     private String cityName; // 城市名称
-    private int workCode; // 职业编号
+    private String workCode; // 职业编号
     private String workName; // 职业名称
-    private int educationCode; // 学历编号
+    private String educationCode; // 学历编号
     private String educationName; // 学历名称
-    private int houseCode; // 住房状况编号
+    private String houseCode; // 住房状况编号
     private String houseName; // 住房状况名称
-    private int marriageCode; // 婚姻状况编号
+    private String marriageCode; // 婚姻状况编号
     private String marriageName; // 婚姻状况名称
     private String introduce; // 一句话介绍
     private String remark; // 保留域
+
     // 其他参数
     private String token4RongCloud;// 融云token
 
@@ -43,14 +44,6 @@ public class SLUser implements Serializable {
     public SLUser(long userId, String nickName) {
         this.userId = userId;
         this.nickName = nickName;
-    }
-
-    public int getFollowedCount() {
-        return followedCount;
-    }
-
-    public void setFollowedCount(int followedCount) {
-        this.followedCount = followedCount;
     }
 
     public long getUserId() {
@@ -109,11 +102,11 @@ public class SLUser implements Serializable {
         this.bigImg = bigImg;
     }
 
-    public int getCityCode() {
+    public String getCityCode() {
         return cityCode;
     }
 
-    public void setCityCode(int cityCode) {
+    public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
     }
 
@@ -125,11 +118,11 @@ public class SLUser implements Serializable {
         this.cityName = cityName;
     }
 
-    public int getWorkCode() {
+    public String getWorkCode() {
         return workCode;
     }
 
-    public void setWorkCode(int workCode) {
+    public void setWorkCode(String workCode) {
         this.workCode = workCode;
     }
 
@@ -141,11 +134,11 @@ public class SLUser implements Serializable {
         this.workName = workName;
     }
 
-    public int getEducationCode() {
+    public String getEducationCode() {
         return educationCode;
     }
 
-    public void setEducationCode(int educationCode) {
+    public void setEducationCode(String educationCode) {
         this.educationCode = educationCode;
     }
 
@@ -157,11 +150,11 @@ public class SLUser implements Serializable {
         this.educationName = educationName;
     }
 
-    public int getHouseCode() {
+    public String getHouseCode() {
         return houseCode;
     }
 
-    public void setHouseCode(int houseCode) {
+    public void setHouseCode(String houseCode) {
         this.houseCode = houseCode;
     }
 
@@ -173,11 +166,11 @@ public class SLUser implements Serializable {
         this.houseName = houseName;
     }
 
-    public int getMarriageCode() {
+    public String getMarriageCode() {
         return marriageCode;
     }
 
-    public void setMarriageCode(int marriageCode) {
+    public void setMarriageCode(String marriageCode) {
         this.marriageCode = marriageCode;
     }
 
@@ -205,6 +198,14 @@ public class SLUser implements Serializable {
         this.remark = remark;
     }
 
+    public String getToken4RongCloud() {
+        return token4RongCloud;
+    }
+
+    public void setToken4RongCloud(String token4RongCloud) {
+        this.token4RongCloud = token4RongCloud;
+    }
+
     public int getVideoCount() {
         return videoCount;
     }
@@ -221,21 +222,40 @@ public class SLUser implements Serializable {
         this.followCount = followCount;
     }
 
-    public String getToken4RongCloud() {
-        return token4RongCloud;
+    public int getFollowedCount() {
+        return followedCount;
     }
 
-    public void setToken4RongCloud(String token4RongCloud) {
-        this.token4RongCloud = token4RongCloud;
+    public void setFollowedCount(int followedCount) {
+        this.followedCount = followedCount;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", nickName='" + nickName + '\'' +
-                ", token4RongCloud='" + token4RongCloud + '\'' +
                 ", headUrl='" + headUrl + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", accountType=" + accountType +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", bigImg='" + bigImg + '\'' +
+                ", cityCode=" + cityCode +
+                ", cityName='" + cityName + '\'' +
+                ", workCode=" + workCode +
+                ", workName='" + workName + '\'' +
+                ", educationCode=" + educationCode +
+                ", educationName='" + educationName + '\'' +
+                ", houseCode=" + houseCode +
+                ", houseName='" + houseName + '\'' +
+                ", marriageCode=" + marriageCode +
+                ", marriageName='" + marriageName + '\'' +
+                ", introduce='" + introduce + '\'' +
+                ", remark='" + remark + '\'' +
+                ", token4RongCloud='" + token4RongCloud + '\'' +
+                ", videoCount=" + videoCount +
+                ", followCount=" + followCount +
+                ", followedCount=" + followedCount +
                 '}';
     }
 }

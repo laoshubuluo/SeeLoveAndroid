@@ -3,9 +3,6 @@ package com.tianyu.seelove.controller;
 import android.content.Context;
 import android.os.Handler;
 
-import com.tianyu.seelove.network.VolleyManager;
-import com.tianyu.seelove.network.request.VideoFindByUserRequest;
-
 /**
  * author : L.jinzhu
  * date : 2015/8/24
@@ -20,11 +17,11 @@ public class VideoController {
         this.handler = h;
     }
 
-    /**
-     * 获取用户视频
-     */
-    public void findByUser() {
-        VideoFindByUserRequest request = new VideoFindByUserRequest(handler, context);
-        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
-    }
+//    /**
+//     * 获取用户视频
+//     */
+//    public void findByUser() {
+//        VideoFindByUserRequest request = new VideoFindByUserRequest(handler, context);
+//        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
+//    }
 }

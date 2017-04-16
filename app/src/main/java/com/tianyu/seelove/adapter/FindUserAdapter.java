@@ -8,23 +8,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.user.SLUser;
+import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.activity.video.FullVideoActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
-import com.tianyu.seelove.view.video.VideoPlayer;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 发现显示自定义adapter
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 17:52
  */
 public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHolder> implements View.OnClickListener {
     private Context mContext;
-    private List<SLUser> mData; //定义数据源
+    private List<SLUserDetail> mData; //定义数据源
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
     String videoUrl = "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4";
 
@@ -34,17 +37,17 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
     }
 
     // 定义构造方法，默认传入上下文和数据源
-    public FindUserAdapter(Context context, List<SLUser> data) {
+    public FindUserAdapter(Context context, List<SLUserDetail> data) {
         mContext = context;
         if (null == data) {
-            data = new ArrayList<SLUser>();
+            data = new ArrayList<SLUserDetail>();
         }
         mData = data;
     }
 
-    public void updateData(List<SLUser> data, boolean isClean) {
+    public void updateData(List<SLUserDetail> data, boolean isClean) {
         if (null == data) {
-            data = new ArrayList<SLUser>();
+            data = new ArrayList<SLUserDetail>();
         }
         if (isClean) {
             mData.clear();
@@ -65,7 +68,8 @@ public class FindUserAdapter extends RecyclerView.Adapter<FindUserAdapter.ViewHo
 
     @Override  // 将数据源的数据绑定到相应控件上
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
-        SLUser userInfo = mData.get(position);
+        SLUserDetail userDetailInfo = mData.get(position);
+        SLUser userInfo = userDetailInfo.getUser();
         ImageLoader.getInstance().displayImage(userInfo.getHeadUrl(), viewHolder.userAvatar, ImageLoaderUtil.getSmallImageOptions());
         viewHolder.userAvatar.getLayoutParams().height = 550; // 从数据源中获取图片高度，动态设置到控件上
         viewHolder.userName.setText(userInfo.getNickName());

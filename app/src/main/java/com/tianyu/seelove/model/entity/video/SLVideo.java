@@ -2,6 +2,7 @@ package com.tianyu.seelove.model.entity.video;
 
 /**
  * 短视频实体类
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 17:56
  */
