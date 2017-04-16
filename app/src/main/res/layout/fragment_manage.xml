@@ -217,7 +217,7 @@
         <LinearLayout
             android:id="@+id/videoLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_150dp"
+            android:layout_height="@dimen/layout_165dp"
             android:layout_marginTop="@dimen/layout_5dp"
             android:background="@color/white"
             android:orientation="vertical">
