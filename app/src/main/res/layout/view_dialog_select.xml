@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:background="@drawable/dialog_bg"
+    android:gravity="center"
+    android:minWidth="280dp"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/titleTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="性别"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="@dimen/layout_30dp"
+            android:layout_margin="@dimen/layout_15dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_corners_button_red_7a"
+            android:gravity="center"
+            android:text="全部"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15sp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="@dimen/layout_30dp"
+            android:layout_margin="@dimen/layout_15dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_corners_button_red_7a"
+            android:gravity="center"
+            android:text="男"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15sp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="@dimen/layout_30dp"
+            android:layout_margin="@dimen/layout_15dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_corners_button_red_7a"
+            android:gravity="center"
+            android:text="女"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/contentTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="年龄"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_16sp" />
+
+    <com.tianyu.seelove.view.RangeSeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/cityTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="城市"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:id="@+id/cityName"
+            android:layout_width="@dimen/layout_130dp"
+            android:layout_height="@dimen/layout_30dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/shape_help_category_tv_bg"
+            android:drawableRight="@mipmap/icon_down"
+            android:gravity="center"
+            android:text="请选择父类别"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_16sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/bg_grey_da"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/cancelTV"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/layout_5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_16sp" />
+
+        <View
+            android:id="@+id/line_layout"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/bg_grey_da" />
+
+        <TextView
+            android:id="@+id/sureTV"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/layout_5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/sure"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_16sp" />
+    </LinearLayout>
+</LinearLayout>

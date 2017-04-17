@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FindUserAdapter;
@@ -22,6 +23,7 @@ import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+import com.tianyu.seelove.view.dialog.SelectDialog;
 
 import java.util.List;
 
@@ -101,6 +103,8 @@ public class FindFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rightBtn:
+                SelectDialog selectDialog = new SelectDialog(getContext());
+                selectDialog.show();
                 break;
             default:
                 break;

@@ -68,6 +68,7 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
     public MessageBroadcastReceiver messageBroadcastReceiver;
     private UserDao userDao;
     private long userId = 0l;
+    private String userName = "";
     private SLUser user;
     private List<SLMessage> tempList = new ArrayList<SLMessage>();
     // ListView 底部View
@@ -84,6 +85,7 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
         userDao = new UserDaoImpl();
         messageBroadcastReceiver = new MessageBroadcastReceiver();
         userId = getIntent().getLongExtra("userId", 0l);
+        getIntent().getStringExtra("userName");
         user = userDao.getUserByUserId(userId);
         try {
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -106,11 +108,8 @@ public class SingleChatActivity extends BaseActivity implements AbsListView.OnSc
         titleView.setText(StringUtils.isNotBlank(user.getNickName()) ? user.getNickName() : String.valueOf(userId));
         leftBtn.setVisibility(View.VISIBLE);
         leftBtn.setOnClickListener(this);
-//        messageSender.setTarget(user.getUserId());
-//        messageSender.setTargetName(user.getNickName());
-        // todo shishengzhao
         messageSender.setTarget(userId);
-        messageSender.setTargetName("天宇");
+        messageSender.setTargetName(userName);
         // 实例化底部布局
         moreView = getLayoutInflater().inflate(R.layout.moredata, null);
         btLoad = (TextView) moreView.findViewById(R.id.bt_load);

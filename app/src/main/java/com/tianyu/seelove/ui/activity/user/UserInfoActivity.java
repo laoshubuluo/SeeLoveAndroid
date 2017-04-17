@@ -101,7 +101,8 @@ public class UserInfoActivity extends BaseActivity {
             case R.id.sendMessage: {
                 intent = new Intent();
                 intent.setClass(UserInfoActivity.this, SingleChatActivity.class);
-                intent.putExtra("userId", 6634l);
+                intent.putExtra("userId", user.getUserId());
+                intent.putExtra("userName", user.getNickName());
                 startActivity(intent);
                 break;
             }

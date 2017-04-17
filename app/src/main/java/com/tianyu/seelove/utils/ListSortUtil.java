@@ -7,10 +7,8 @@ import java.util.List;
 
 /**
  * List按照指定字段排序工具类
- *
  * @param <T>
  */
-
 public class ListSortUtil<T> {
     /**
      * @param targetList 目标排序List

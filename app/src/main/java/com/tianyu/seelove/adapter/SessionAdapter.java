@@ -70,7 +70,7 @@ public class SessionAdapter extends BaseAdapter {
             sessions.add(session);
         }
         ListSortUtil<SLSession> listSortUtil = new ListSortUtil<SLSession>();
-        listSortUtil.sort(sessions, "Priority", "DESC");
+        listSortUtil.sort(sessions, "Priority", "desc");
         notifyDataSetChanged();
     }
 
