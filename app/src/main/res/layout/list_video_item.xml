@@ -11,15 +11,14 @@
         <RelativeLayout
             android:id="@+id/icon_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/user_avatar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:scaleType="centerCrop"
-                android:visibility="visible" />
+                android:scaleType="centerCrop" />
 
             <ImageView
                 android:id="@+id/play_btn"

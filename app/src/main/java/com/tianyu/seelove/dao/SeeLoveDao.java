@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.tianyu.seelove.database.DataBaseHelper;
+import com.tianyu.seelove.model.entity.Province;
 import com.tianyu.seelove.model.entity.message.ChatEmoji;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,5 +72,38 @@ public class SeeLoveDao {
         chatEmoji.setMapKey(cursor.getString(cursor
                 .getColumnIndex("utf16")));
         return chatEmoji;
+    }
+
+    /**
+     * 获取省份列表
+     * @return
+     */
+    public List<Province> getProvinceList() {
+        List<Province> list = new ArrayList<Province>();
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase database = getDataBase();
+            String sql = "select * from t_provinces";
+            cursor = database.rawQuery(sql, null);
+            while (cursor.moveToNext()) {
+                list.add(getProvinceByCursor(cursor));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return list;
+    }
+
+    public Province getProvinceByCursor(Cursor cursor) {
+        Province province = new Province();
+        province.setCountryId(cursor.getString(cursor.getColumnIndex("country_id")));
+        province.setProvinceId(cursor.getString(cursor.getColumnIndex("province_id")));
+        province.setProvinceName(cursor.getString(cursor.getColumnIndex("province_name")));
+        province.setProvinceShowName(cursor.getString(cursor.getColumnIndex("province_show_name")));
+        return province;
     }
 }

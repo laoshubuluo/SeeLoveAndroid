@@ -94,7 +94,7 @@
             android:background="@drawable/shape_help_category_tv_bg"
             android:drawableRight="@mipmap/icon_down"
             android:gravity="center"
-            android:text="请选择父类别"
+            android:text="请选择城市"
             android:textColor="@color/black"
             android:textSize="@dimen/font_16sp" />
     </RelativeLayout>

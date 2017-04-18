@@ -8,16 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.activity.video.FullVideoActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 发现显示自定义adapter
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 17:52
  */
@@ -25,6 +28,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
     private Context mContext;
     private List<SLUserDetail> userDetailList;
     String videoUrl = "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4";
+    String headUrl = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1849074283,1272897972&fm=111&gp=0.jpg";
 
     // 定义构造方法，默认传入上下文和数据源
     public FollowAdapter(Context context, List<SLUserDetail> slUserDetailList) {
@@ -57,7 +61,8 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
 
     @Override  // 将数据源的数据绑定到相应控件上
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
-        ImageLoader.getInstance().displayImage(videoUrl, viewHolder.userAvatar, ImageLoaderUtil.getSmallImageOptions());
+        ImageLoader.getInstance().displayImage(headUrl, viewHolder.userIcon, ImageLoaderUtil.getHeadUrlImageOptions());
+        ImageLoader.getInstance().displayImage(headUrl, viewHolder.userAvatar, ImageLoaderUtil.getSmallImageOptions());
         viewHolder.itemView.setTag(userDetailList.get(position));
         // viewHolder.mPlayBtnView.setTag(R.id.tag_defaultVideo, defaultVideo);
         viewHolder.mPlayBtnView.setOnClickListener(new View.OnClickListener() {
