@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/userIcon"
+            android:layout_width="@dimen/layout_60dp"
+            android:layout_height="@dimen/layout_60dp"
+            android:layout_marginBottom="@dimen/layout_5dp"
+            android:layout_marginLeft="@dimen/layout_15dp"
+            android:layout_marginTop="@dimen/layout_10dp"
+            android:background="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/layout_5dp"
+            android:layout_toRightOf="@id/userIcon"
+            android:text="天宇"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_15sp" />
+
+        <ImageView
+            android:id="@+id/followStatue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/layout_15dp"
+            android:background="@mipmap/follow_add_icon" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/layout_15dp"
+        android:layout_marginRight="@dimen/layout_15dp">
+
+        <TextView
+            android:id="@+id/videoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layout_5dp"
+            android:layout_marginTop="@dimen/layout_5dp"
+            android:text="我的爱情观！"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_15sp" />
+
+        <TextView
+            android:id="@+id/videoTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="01:45"
+            android:textColor="@color/gray_73"
+            android:textSize="@dimen/font_12sp" />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/item_video_view"
+        layout="@layout/list_video_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
