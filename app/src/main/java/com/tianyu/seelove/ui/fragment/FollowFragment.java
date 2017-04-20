@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +16,23 @@ import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
+import com.tianyu.seelove.view.SpaceItemDecoration;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import java.util.List;
 
 /**
- * Fragmengt(关注)
+ * Fragmengt(动态)
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
 public class FollowFragment extends BaseFragment {
     private FollowAdapter adapter;
-    private RecyclerView followRecylerView;
+    private RecyclerView recylerView;
     private View view = null;
     private UserController controller;
     private List<SLUserDetail> userList;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public void onAttach(Activity activity) {
@@ -61,9 +64,13 @@ public class FollowFragment extends BaseFragment {
     private void initView(View view) {
         TextView titleView = (TextView) view.findViewById(R.id.titleView);
         titleView.setText(R.string.follow);
-        followRecylerView = (RecyclerView) view.findViewById(R.id.followRecylerView);
+        recylerView = (RecyclerView) view.findViewById(R.id.recylerView);
+        mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         adapter = new FollowAdapter(getActivity(), userList);
-        followRecylerView.setAdapter(adapter);
+        recylerView.setLayoutManager(mLayoutManager);
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.layout_15dp);
+        recylerView.addItemDecoration(new SpaceItemDecoration(spacingInPixels));
+        recylerView.setAdapter(adapter);
         // 请求服务器
         customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
         customProgressDialog.show();

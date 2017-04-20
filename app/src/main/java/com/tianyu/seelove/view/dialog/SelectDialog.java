@@ -11,6 +11,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.dao.SeeLoveDao;
+import com.tianyu.seelove.model.entity.Province;
 import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.RangeSeekBar;
 import com.tianyu.seelove.view.SpinerPopWindow;
@@ -35,8 +37,8 @@ public class SelectDialog extends Dialog{
     public View lineView;
     private RangeSeekBar seekBar;
     private SpinerPopWindow<String> mSpinerPopWindow;
-    private List<String> list;
     private TextView cityName;
+    private List<Province> provinceList;
 
     public SelectDialog(Context context) {
         super(context, R.style.WinDialog);
@@ -49,6 +51,12 @@ public class SelectDialog extends Dialog{
         cancelTV = (TextView) findViewById(R.id.cancelTV);
         isCheck = (CheckBox) findViewById(R.id.isChexkBox);
         lineView = findViewById(R.id.line_layout);
+        sureTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SelectDialog.this.dismiss();
+            }
+        });
         cancelTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +79,7 @@ public class SelectDialog extends Dialog{
                 setTextImage(R.mipmap.icon_up);
             }
         });
-        mSpinerPopWindow = new SpinerPopWindow<String>(context, list,itemClickListener);
+        mSpinerPopWindow = new SpinerPopWindow<String>(context, provinceList,itemClickListener);
         mSpinerPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -88,7 +96,7 @@ public class SelectDialog extends Dialog{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mSpinerPopWindow.dismiss();
-            cityName.setText(list.get(position));
+            cityName.setText(provinceList.get(position).getProvinceShowName());
         }
     };
 
@@ -97,10 +105,7 @@ public class SelectDialog extends Dialog{
      * 初始化数据
      */
     private void initData() {
-        list = new ArrayList<String>();
-        for (int i = 0; i < 20; i++) {
-            list.add("test:" + i);
-        }
+        provinceList = new SeeLoveDao(mContext).getProvinceList();
     }
 
     /**
