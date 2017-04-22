@@ -5,6 +5,7 @@
     <color name="gray_b2">#b2b2b2</color>
     <!--用户信息文字颜色-->
     <color name="gray_73">#6a6a73</color>
+    <color name="gray_aa">#a2a7aa</color>
     <!--主页底部tab背景色-->
     <color name="white_f8">#f7f7f8</color>
     <color name="white">#ffffff</color>
@@ -24,7 +25,6 @@
     <color name="font_grey">#666666</color>//字体灰色
     <color name="font_grey_ad">#adadad</color>//字体淡灰色
     <color name="font_grey_light">#999999</color>//字体淡灰色
-    <color name="font_green">#71aa00</color>//字体绿色
     <color name="font_green_43c">#a0c43c</color>//字体绿色
     <color name="font_green_57">#57bd77</color>//字体绿色
     <color name="font_white_f9">#f9ffed</color>//字体白色
@@ -60,9 +60,5 @@
     <color name="color5">#21AE58</color>
     <color name="blue">#3394EC</color>
     <color name="gray">#ddd</color>
-
-    <color name="content_color">#666666</color>
-    <color name="white_normal">#ffffffff</color>
-    <color name="login_button_background">#71c297</color>
 
 </resources>

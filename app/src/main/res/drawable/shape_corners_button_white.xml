@@ -3,8 +3,4 @@
     <!-- 填充的颜色 -->
     <solid android:color="@color/white" />
     <corners android:radius="@dimen/layout_5dp" />
-    <!-- 设置边框 -->
-    <stroke
-        android:width="@dimen/layout_1dp"
-        android:color="@color/red_7a" />
 </shape>

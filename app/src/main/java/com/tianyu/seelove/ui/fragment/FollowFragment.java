@@ -1,22 +1,23 @@
 package com.tianyu.seelove.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.tianyu.seelove.R;
-import com.tianyu.seelove.adapter.FollowAdapter;
+import com.tianyu.seelove.adapter.FollowListAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
+import com.tianyu.seelove.ui.activity.video.VideoRecordActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
-import com.tianyu.seelove.view.SpaceItemDecoration;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import java.util.List;
@@ -27,12 +28,11 @@ import java.util.List;
  * @date 2017-03-29 15:15
  */
 public class FollowFragment extends BaseFragment {
-    private FollowAdapter adapter;
-    private RecyclerView recylerView;
+    private FollowListAdapter adapter;
+    private ListView followListView;
     private View view = null;
     private UserController controller;
     private List<SLUserDetail> userList;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public void onAttach(Activity activity) {
@@ -64,17 +64,30 @@ public class FollowFragment extends BaseFragment {
     private void initView(View view) {
         TextView titleView = (TextView) view.findViewById(R.id.titleView);
         titleView.setText(R.string.follow);
-        recylerView = (RecyclerView) view.findViewById(R.id.recylerView);
-        mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        adapter = new FollowAdapter(getActivity(), userList);
-        recylerView.setLayoutManager(mLayoutManager);
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.layout_15dp);
-        recylerView.addItemDecoration(new SpaceItemDecoration(spacingInPixels));
-        recylerView.setAdapter(adapter);
+        ImageView rightView = (ImageView) view.findViewById(R.id.rightBtn);
+        rightView.setVisibility(View.VISIBLE);
+        rightView.setBackgroundResource(R.mipmap.create_video_cion);
+        rightView.setOnClickListener(this);
+        followListView = (ListView) view.findViewById(R.id.followListView);
+        adapter = new FollowListAdapter(getActivity(), userList);
+        followListView.setAdapter(adapter);
         // 请求服务器
         customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
         customProgressDialog.show();
         controller.findAll(1, 33, "1", "111");
+    }
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        switch (view.getId()) {
+            case R.id.rightBtn: {
+                Intent intent = new Intent();
+                intent.setClass(view.getContext(), VideoRecordActivity.class);
+                view.getContext().startActivity(intent);
+                break;
+            }
+        }
     }
 
     /**

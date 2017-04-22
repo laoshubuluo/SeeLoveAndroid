@@ -13,9 +13,9 @@ import com.tianyu.seelove.R;
 public class RangeSeekBar extends TextView {
     private float lineWidth = 15.0f;
     private float textSize = 40.0f;
-    private int inRangeColor = 0xffff0000;
-    private int outRangeColor = 0xff777777;
-    private int textColor = 0xff0000ff;
+    private int inRangeColor = 0xfff5537a;
+    private int outRangeColor = 0xffa2a7aa;
+    private int textColor = 0xffa2a7aa;
     private int textMarginBottom = 5;
     private int lowerCenterX;
     private int upperCenterX;

@@ -120,9 +120,9 @@ public class BaseActivity extends FragmentActivity implements Handler.Callback, 
         builder.setView(view);
         ProgressBar pb_loading = (ProgressBar) view.findViewById(R.id.pb_loading);
         TextView tv_hint = (TextView) view.findViewById(R.id.tv_hint);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            pb_loading.setIndeterminateTintList(ContextCompat.getColorStateList(this, R.color.dialog_pro_color));
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            pb_loading.setIndeterminateTintList(ContextCompat.getColorStateList(this, R.color.dialog_pro_color));
+//        }
         tv_hint.setText("视频编译中");
         progressDialog = builder.create();
         progressDialog.show();

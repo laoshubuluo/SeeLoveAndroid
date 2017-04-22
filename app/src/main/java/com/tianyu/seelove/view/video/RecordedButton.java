@@ -9,19 +9,16 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 import com.tianyu.seelove.R;
 
 /**
  * 拍摄button的自定义view
- * Created by zhaoshuang on 17/2/8.
+ * @author shisheng.zhao
+ * @date 2017-03-29 22:50
  */
-
 public class RecordedButton extends View {
-
     private int measuredWidth = -1;
     private Paint paint;
     private int colorGray;
@@ -56,14 +53,11 @@ public class RecordedButton extends View {
     }
 
     private void init() {
-
         dp5 = (int) getResources().getDimension(R.dimen.dp5);
         colorGray = getResources().getColor(R.color.gray);
-        colorBlue = getResources().getColor(R.color.blue);
-
+        colorBlue = getResources().getColor(R.color.red_7a);
         paint = new Paint();
         paint.setAntiAlias(true);
-
         paintProgress = new Paint();
         paintProgress.setAntiAlias(true);
         paintProgress.setColor(colorBlue);
@@ -78,15 +72,15 @@ public class RecordedButton extends View {
         void onOver();
     }
 
-    public void setOnGestureListener(OnGestureListener onGestureListener){
+    public void setOnGestureListener(OnGestureListener onGestureListener) {
         this.onGestureListener = onGestureListener;
     }
 
-    private Handler myHandler = new Handler(){
+    private Handler myHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if(onGestureListener != null) {
-                startAnim(0, 1-zoom);
+            if (onGestureListener != null) {
+                startAnim(0, 1 - zoom);
                 onGestureListener.onLongClick();
                 closeMode = true;
             }
@@ -95,7 +89,7 @@ public class RecordedButton extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 myHandler.sendEmptyMessageDelayed(0, animTime);
                 downX = event.getX();
@@ -107,12 +101,12 @@ public class RecordedButton extends View {
             case MotionEvent.ACTION_CANCEL:
                 float upX = event.getX();
                 float upY = event.getY();
-                if(myHandler.hasMessages(0)){
+                if (myHandler.hasMessages(0)) {
                     myHandler.removeMessages(0);
                     if (Math.abs(upX - downX) < dp5 && Math.abs(upY - downY) < dp5) {
-                        if(onGestureListener != null) onGestureListener.onClick();
+                        if (onGestureListener != null) onGestureListener.onClick();
                     }
-                }else if(onGestureListener != null && closeMode){
+                } else if (onGestureListener != null && closeMode) {
                     onGestureListener.onLift();
                     closeButton();
                 }
@@ -121,9 +115,8 @@ public class RecordedButton extends View {
         return true;
     }
 
-    public void closeButton(){
-
-        if(closeMode) {
+    public void closeButton() {
+        if (closeMode) {
             closeMode = false;
             startAnim(1 - zoom, 0);
             girth = 0;
@@ -131,8 +124,7 @@ public class RecordedButton extends View {
         }
     }
 
-    private void startAnim(float start, float end){
-
+    private void startAnim(float start, float end) {
         ValueAnimator va = ValueAnimator.ofFloat(start, end).setDuration(animTime);
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -146,51 +138,43 @@ public class RecordedButton extends View {
         va.start();
     }
 
-    public void setMax(int max){
+    public void setMax(int max) {
         this.max = max;
     }
 
-    public void setProgress(float progress){
-
-        float ratio = progress/max;
-        girth = 370*ratio;
+    public void setProgress(float progress) {
+        float ratio = progress / max;
+        girth = 370 * ratio;
         invalidate();
-
-        if(ratio >= 1){
-            if(onGestureListener != null) onGestureListener.onOver();
+        if (ratio >= 1) {
+            if (onGestureListener != null) onGestureListener.onOver();
         }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        if(measuredWidth == -1) {
+        if (measuredWidth == -1) {
             measuredWidth = getMeasuredWidth();
-
-            radius1 = measuredWidth* zoom /2;
-            radius2 = measuredWidth* zoom /2.5f;
-
+            radius1 = measuredWidth * zoom / 2;
+            radius2 = measuredWidth * zoom / 2.5f;
             //设置绘制大小
             oval = new RectF();
-            oval.left = dp5/2;
-            oval.top = dp5/2;
-            oval.right = measuredWidth-dp5/2;
-            oval.bottom = measuredWidth-dp5/2;
+            oval.left = dp5 / 2;
+            oval.top = dp5 / 2;
+            oval.right = measuredWidth - dp5 / 2;
+            oval.bottom = measuredWidth - dp5 / 2;
         }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-
         //绘制外圈圆 radius1代表绘制半径
         paint.setColor(colorGray);
-        canvas.drawCircle(measuredWidth/2, measuredWidth/2, radius1, paint);
-
+        canvas.drawCircle(measuredWidth / 2, measuredWidth / 2, radius1, paint);
         //绘制内圈圆 radius2代表绘制半径
         paint.setColor(Color.WHITE);
-        canvas.drawCircle(measuredWidth/2, measuredWidth/2, radius2, paint);
-
+        canvas.drawCircle(measuredWidth / 2, measuredWidth / 2, radius2, paint);
         //绘制进度 270表示以圆的270度为起点, 绘制girth长度的弧线
         canvas.drawArc(oval, 270, girth, false, paintProgress);
     }

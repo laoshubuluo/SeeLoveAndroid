@@ -2,90 +2,122 @@ package com.tianyu.seelove.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.dao.SeeLoveDao;
 import com.tianyu.seelove.model.entity.Province;
-import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.RangeSeekBar;
 import com.tianyu.seelove.view.SpinerPopWindow;
-
-import java.util.ArrayList;
 import java.util.List;
-
-
 
 /**
  * @author shisheng.zhao
  * @Description: 自定义Dialog
  * @date 2015-10-28 上午11:17:26
  */
-public class SelectDialog extends Dialog{
+public class SelectDialog extends Dialog implements View.OnClickListener ,RangeSeekBar.OnRangeChangedListener{
     private Context mContext;
-    private TextView titleTV;
-    private TextView contentTV;
-    public TextView sureTV;
-    public TextView cancelTV;
-    public CheckBox isCheck;
-    public View lineView;
+    private Button allSexBtn, manSexBtn, womenSexBtn;
+    public TextView sureTV, cancelTV, cityName;
     private RangeSeekBar seekBar;
     private SpinerPopWindow<String> mSpinerPopWindow;
-    private TextView cityName;
     private List<Province> provinceList;
 
     public SelectDialog(Context context) {
         super(context, R.style.WinDialog);
         setContentView(R.layout.view_dialog_select);
         mContext = context;
-        titleTV = (TextView) findViewById(R.id.titleTV);
-        contentTV = (TextView) findViewById(R.id.contentTV);
-        seekBar = (RangeSeekBar) findViewById(R.id.seekBar);
-        sureTV = (TextView) findViewById(R.id.sureTV);
-        cancelTV = (TextView) findViewById(R.id.cancelTV);
-        isCheck = (CheckBox) findViewById(R.id.isChexkBox);
-        lineView = findViewById(R.id.line_layout);
-        sureTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SelectDialog.this.dismiss();
-            }
-        });
-        cancelTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectDialog.this.dismiss();
-            }
-        });
-        seekBar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener() {
-            @Override
-            public void onRangeChanged(float lowerRange, float upperRange) {
-
-            }
-        });
+        initView();
         initData();
+    }
+
+    private void initView() {
+        allSexBtn = (Button) findViewById(R.id.allSex);
+        manSexBtn = (Button) findViewById(R.id.manSex);
+        womenSexBtn = (Button) findViewById(R.id.womenSex);
+        seekBar = (RangeSeekBar) findViewById(R.id.seekBar);
         cityName = (TextView) findViewById(R.id.cityName);
-        cityName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mSpinerPopWindow.setWidth(cityName.getWidth());
-                mSpinerPopWindow.showAsDropDown(cityName);
-                setTextImage(R.mipmap.icon_up);
-            }
-        });
-        mSpinerPopWindow = new SpinerPopWindow<String>(context, provinceList,itemClickListener);
+        cancelTV = (TextView) findViewById(R.id.cancelTV);
+        sureTV = (TextView) findViewById(R.id.sureTV);
+        allSexBtn.setOnClickListener(this);
+        manSexBtn.setOnClickListener(this);
+        womenSexBtn.setOnClickListener(this);
+        cityName.setOnClickListener(this);
+        cancelTV.setOnClickListener(this);
+        sureTV.setOnClickListener(this);
+        seekBar.setOnRangeChangedListener(this);
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initData() {
+        allSexBtn.setBackgroundResource(R.drawable.shape_corners_button_red_7a);
+        allSexBtn.setTextColor(mContext.getResources().getColor(R.color.white));
+        manSexBtn.setBackgroundResource(R.drawable.shape_corners_button_white);
+        manSexBtn.setTextColor(mContext.getResources().getColor(R.color.black_37));
+        womenSexBtn.setBackgroundResource(R.drawable.shape_corners_button_white);
+        womenSexBtn.setTextColor(mContext.getResources().getColor(R.color.black_37));
+        provinceList = new SeeLoveDao(mContext).getProvinceList();
+        mSpinerPopWindow = new SpinerPopWindow<String>(mContext, provinceList, itemClickListener);
         mSpinerPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 setTextImage(R.mipmap.icon_down);
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.allSex:
+                allSexBtn.setBackgroundResource(R.drawable.shape_corners_button_red_7a);
+                allSexBtn.setTextColor(mContext.getResources().getColor(R.color.white));
+                manSexBtn.setBackgroundResource(R.drawable.shape_corners_button_white);
+                manSexBtn.setTextColor(mContext.getResources().getColor(R.color.black_37));
+                womenSexBtn.setBackgroundResource(R.drawable.shape_corners_button_white);
+                womenSexBtn.setTextColor(mContext.getResources().getColor(R.color.black_37));
+                break;
+            case R.id.manSex:
+                allSexBtn.setBackgroundResource(R.drawable.shape_corners_button_white);
+                allSexBtn.setTextColor(mContext.getResources().getColor(R.color.black_37));
+                manSexBtn.setBackgroundResource(R.drawable.shape_corners_button_red_7a);
+                manSexBtn.setTextColor(mContext.getResources().getColor(R.color.white));
+                womenSexBtn.setBackgroundResource(R.drawable.shape_corners_button_white);
+                womenSexBtn.setTextColor(mContext.getResources().getColor(R.color.black_37));
+                break;
+            case R.id.womenSex:
+                allSexBtn.setBackgroundResource(R.drawable.shape_corners_button_white);
+                allSexBtn.setTextColor(mContext.getResources().getColor(R.color.black_37));
+                manSexBtn.setBackgroundResource(R.drawable.shape_corners_button_white);
+                manSexBtn.setTextColor(mContext.getResources().getColor(R.color.black_37));
+                womenSexBtn.setBackgroundResource(R.drawable.shape_corners_button_red_7a);
+                womenSexBtn.setTextColor(mContext.getResources().getColor(R.color.white));
+                break;
+            case R.id.cityName:
+                mSpinerPopWindow.setWidth(cityName.getWidth());
+                mSpinerPopWindow.showAsDropDown(cityName);
+                setTextImage(R.mipmap.icon_up);
+                break;
+            case R.id.sureTV:
+                SelectDialog.this.dismiss();
+                break;
+            case R.id.cancelTV:
+                SelectDialog.this.dismiss();
+                break;
+        }
+    }
+
+    @Override
+    public void onRangeChanged(float lowerRange, float upperRange) {
+
     }
 
     /**
@@ -102,19 +134,12 @@ public class SelectDialog extends Dialog{
 
 
     /**
-     * 初始化数据
-     */
-    private void initData() {
-        provinceList = new SeeLoveDao(mContext).getProvinceList();
-    }
-
-    /**
      * 给TextView右边设置图片
      * @param resId
      */
     private void setTextImage(int resId) {
         Drawable drawable = mContext.getResources().getDrawable(resId);
-        drawable.setBounds(0, 0, drawable.getMinimumWidth(),drawable.getMinimumHeight());// 必须设置图片大小，否则不显示
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());// 必须设置图片大小，否则不显示
         cityName.setCompoundDrawables(null, null, drawable, null);
     }
 
@@ -126,42 +151,5 @@ public class SelectDialog extends Dialog{
     @Override
     public void dismiss() {
         super.dismiss();
-    }
-
-    public void initData(String title, String content) {
-        if (!StringUtils.isNullOrBlank(title)) {
-            titleTV.setText(title);
-            titleTV.setVisibility(View.VISIBLE);
-        }
-        contentTV.setText(content);
-        contentTV.setVisibility(View.VISIBLE);
-    }
-
-    public TextView getTitleTV() {
-        return titleTV;
-    }
-
-    public TextView getContentTV() {
-        return contentTV;
-    }
-
-    public TextView getSureTV() {
-        return sureTV;
-    }
-
-    public TextView getCancelTV() {
-        return cancelTV;
-    }
-
-    public CheckBox getIsCheck() {
-        return isCheck;
-    }
-
-    public View getLineView() {
-        return lineView;
-    }
-
-    public void setSureTVData(String data) {
-        sureTV.setText(data);
     }
 }

@@ -1,45 +1,36 @@
 package com.tianyu.seelove.ui.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.tianyu.seelove.R;
-import com.tianyu.seelove.adapter.FindUserAdapter;
+import com.tianyu.seelove.adapter.FindUserListAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
-import com.tianyu.seelove.ui.activity.user.UserInfoActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import com.tianyu.seelove.view.dialog.SelectDialog;
-
 import java.util.List;
 
 /**
  * Fragmengt(发现)
- *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
 public class FindFragment extends BaseFragment {
     private View view = null;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private FindUserAdapter mAdapter;
+    private GridView userGridView;
+    private FindUserListAdapter mAdapter;
     private UserController controller;
-
     private List<SLUserDetail> userList;
 
     @Override
@@ -61,8 +52,9 @@ public class FindFragment extends BaseFragment {
         // 防止onCreateView被多次调用
         if (null != view) {
             ViewGroup parent = (ViewGroup) view.getParent();
-            if (null != parent)
+            if (null != parent) {
                 parent.removeView(view);
+            }
         } else {
             view = inflater.inflate(R.layout.fragment_find, container, false);
             initView(view);
@@ -77,33 +69,20 @@ public class FindFragment extends BaseFragment {
         rightView.setVisibility(View.VISIBLE);
         rightView.setBackgroundResource(R.mipmap.find_select_btn);
         rightView.setOnClickListener(this);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        //mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 5, false));
-        mAdapter = new FindUserAdapter(getActivity(), userList);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new FindUserAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, SLUserDetail user) {
-                Intent intent = new Intent();
-                intent.putExtra("user", user.getUser());
-                intent.setClass(view.getContext(), UserInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        userGridView = (GridView) view.findViewById(R.id.userGridView);
+        mAdapter = new FindUserListAdapter(getActivity(), userList);
+        userGridView.setAdapter(mAdapter);
         // 请求服务器
         customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
         customProgressDialog.show();
-        controller.findAll(1, 33, "1", "111");
+        controller.findAll(18, 50, "1", "111");
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rightBtn:
-                SelectDialog selectDialog = new SelectDialog(getContext());
+                SelectDialog selectDialog = new SelectDialog(getActivity());
                 selectDialog.show();
                 break;
             default:
@@ -113,7 +92,6 @@ public class FindFragment extends BaseFragment {
 
     /**
      * Handler发送message的逻辑处理方法
-     *
      * @param msg
      * @return
      */

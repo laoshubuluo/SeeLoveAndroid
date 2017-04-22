@@ -5,8 +5,8 @@
 
     <include layout="@layout/public_top_view"></include>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recylerView"
+    <ListView
+        android:id="@+id/followListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" />

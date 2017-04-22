@@ -143,6 +143,23 @@
             android:name=".ui.fragment.ViewPageFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <!--设置activity-->
+        <activity android:name=".ui.activity.system.SettingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <!-- 选择头像Activity -->
+        <activity
+            android:name=".ui.activity.system.SelectHeadActivity"
+            android:theme="@style/MyDialogStyleBottom"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!-- 选择头像Activity -->
+        <activity
+            android:name=".ui.activity.system.SignleAlbumActivity"
+            android:screenOrientation="portrait" />
+        <!--关注用户列表-->
+        <activity
+            android:name=".ui.activity.user.FollowUserListActivity"
+            android:screenOrientation="portrait"></activity>
         <!-- 发送message service -->
         <service
             android:name=".service.MessageSendService"
