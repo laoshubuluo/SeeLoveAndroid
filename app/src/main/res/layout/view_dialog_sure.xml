@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textColor="@color/font_black"
-        android:textSize="@dimen/font_18sp"
+        android:textSize="@dimen/font_16sp"
         android:visibility="gone" />
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textColor="@color/font_black"
-        android:textSize="@dimen/font_18sp"
+        android:textSize="@dimen/font_16sp"
         android:visibility="gone" />
 
     <CheckBox
@@ -58,8 +58,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/cancel"
-            android:textColor="@color/font_green"
-            android:textSize="@dimen/font_18sp" />
+            android:textColor="@color/red_7a"
+            android:textSize="@dimen/font_16sp" />
 
         <View
             android:id="@+id/line_layout"
@@ -74,7 +74,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/sure"
-            android:textColor="@color/font_green"
-            android:textSize="@dimen/font_18sp" />
+            android:textColor="@color/red_7a"
+            android:textSize="@dimen/font_16sp" />
     </LinearLayout>
 </LinearLayout>

@@ -5,10 +5,8 @@
 
     <include layout="@layout/public_top_view"></include>
 
-    <GridView
-        android:id="@+id/userGridView"
+    <ListView
+        android:id="@+id/userListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="2"
-        android:scrollbars="none" />
+        android:layout_height="wrap_content"></ListView>
 </LinearLayout>

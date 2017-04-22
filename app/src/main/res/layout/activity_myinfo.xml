@@ -6,6 +6,7 @@
     <include layout="@layout/public_top_view"></include>
 
     <RelativeLayout
+        android:id="@+id/headLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_80dp"
         android:background="@color/white">

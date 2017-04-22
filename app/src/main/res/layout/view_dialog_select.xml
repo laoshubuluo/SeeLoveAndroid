@@ -12,7 +12,6 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/titleTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -23,12 +22,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/gray">
 
         <Button
+            android:id="@+id/allSex"
             android:layout_width="0dp"
             android:layout_height="@dimen/layout_30dp"
-            android:layout_margin="@dimen/layout_15dp"
+            android:layout_margin="@dimen/layout_10dp"
             android:layout_weight="1"
             android:background="@drawable/shape_corners_button_red_7a"
             android:gravity="center"
@@ -37,9 +38,10 @@
             android:textSize="@dimen/font_15sp" />
 
         <Button
+            android:id="@+id/manSex"
             android:layout_width="0dp"
             android:layout_height="@dimen/layout_30dp"
-            android:layout_margin="@dimen/layout_15dp"
+            android:layout_margin="@dimen/layout_10dp"
             android:layout_weight="1"
             android:background="@drawable/shape_corners_button_red_7a"
             android:gravity="center"
@@ -48,9 +50,10 @@
             android:textSize="@dimen/font_15sp" />
 
         <Button
+            android:id="@+id/womenSex"
             android:layout_width="0dp"
             android:layout_height="@dimen/layout_30dp"
-            android:layout_margin="@dimen/layout_15dp"
+            android:layout_margin="@dimen/layout_10dp"
             android:layout_weight="1"
             android:background="@drawable/shape_corners_button_red_7a"
             android:gravity="center"
@@ -60,7 +63,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/contentTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -78,9 +80,9 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/cityTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:text="城市"
             android:textColor="@color/font_black"
@@ -88,15 +90,19 @@
 
         <TextView
             android:id="@+id/cityName"
-            android:layout_width="@dimen/layout_130dp"
+            android:layout_width="@dimen/layout_100dp"
             android:layout_height="@dimen/layout_30dp"
             android:layout_alignParentRight="true"
-            android:background="@drawable/shape_help_category_tv_bg"
+            android:layout_marginBottom="@dimen/layout_8dp"
+            android:layout_marginRight="@dimen/layout_5dp"
+            android:layout_marginTop="@dimen/layout_8dp"
+            android:background="@drawable/shape_corners_button_gray"
             android:drawableRight="@mipmap/icon_down"
             android:gravity="center"
+            android:paddingRight="@dimen/layout_10dp"
             android:text="请选择城市"
-            android:textColor="@color/black"
-            android:textSize="@dimen/font_16sp" />
+            android:textColor="@color/gray_73"
+            android:textSize="@dimen/font_14sp" />
     </RelativeLayout>
 
     <View

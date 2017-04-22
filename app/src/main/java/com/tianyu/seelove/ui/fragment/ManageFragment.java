@@ -27,6 +27,8 @@ import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.service.MessageSendService;
+import com.tianyu.seelove.ui.activity.system.SettingActivity;
+import com.tianyu.seelove.ui.activity.user.FollowUserListActivity;
 import com.tianyu.seelove.ui.activity.user.MyInfoActivity;
 import com.tianyu.seelove.ui.activity.video.VideoListActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
@@ -91,18 +93,28 @@ public class ManageFragment extends BaseFragment {
 
     private void initView(View view) {
         titleView = (TextView) view.findViewById(R.id.titleView);
+        ImageView rightView = (ImageView) view.findViewById(R.id.rightBtn);
+        rightView.setVisibility(View.VISIBLE);
+        rightView.setBackgroundResource(R.mipmap.setting_icon);
+        rightView.setOnClickListener(this);
         loginLayout = (LinearLayout) view.findViewById(R.id.loginLayout);
         userLayout = (LinearLayout) view.findViewById(R.id.userLayout);
         bigImage = (ImageView) view.findViewById(R.id.bigImage);
         headUrl = (ImageView) view.findViewById(R.id.headUrl);
         userName = (TextView) view.findViewById(R.id.userName);
+        LinearLayout videoLayout = (LinearLayout) view.findViewById(R.id.videoLayout);
+        LinearLayout followLayout = (LinearLayout) view.findViewById(R.id.followLayout);
+        LinearLayout followedLayout = (LinearLayout) view.findViewById(R.id.followedLayout);
         videoCount = (TextView) view.findViewById(R.id.videoCount);
         followCount = (TextView) view.findViewById(R.id.followCount);
         followedCount = (TextView) view.findViewById(R.id.followedCount);
         RelativeLayout userInfoLayout = (RelativeLayout) view.findViewById(R.id.userInfoLayout);
-        LinearLayout videoLayout = (LinearLayout) view.findViewById(R.id.videoLayout);
+        LinearLayout videoItemLayout = (LinearLayout) view.findViewById(R.id.videoItemLayout);
         userInfoLayout.setOnClickListener(this);
         videoLayout.setOnClickListener(this);
+        followLayout.setOnClickListener(this);
+        followedLayout.setOnClickListener(this);
+        videoItemLayout.setOnClickListener(this);
         titleView.setText(R.string.manager);
         videoGridView = (GridView) view.findViewById(R.id.videoGridView);
         Button qqLoginBtn = (Button) view.findViewById(R.id.qqLoginBtn);
@@ -158,6 +170,12 @@ public class ManageFragment extends BaseFragment {
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
+            case R.id.rightBtn: {
+                intent = new Intent();
+                intent.setClass(view.getContext(), SettingActivity.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.userInfoLayout: {
                 intent = new Intent();
                 intent.setClass(view.getContext(), MyInfoActivity.class);
@@ -165,6 +183,24 @@ public class ManageFragment extends BaseFragment {
                 break;
             }
             case R.id.videoLayout: {
+                intent = new Intent();
+                intent.setClass(view.getContext(), VideoListActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.followLayout: {
+                intent = new Intent();
+                intent.setClass(view.getContext(), FollowUserListActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.followedLayout: {
+                intent = new Intent();
+                intent.setClass(view.getContext(), FollowUserListActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.videoItemLayout: {
                 intent = new Intent();
                 intent.setClass(view.getContext(), VideoListActivity.class);
                 startActivity(intent);

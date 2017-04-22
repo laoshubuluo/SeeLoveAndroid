@@ -22,7 +22,8 @@
     <string name="message_connecting">正在连接...</string>
     <string name="message_failed_connect">网络连接异常</string>
     <string name="sure_delete_message">确定要删除此消息吗?</string>
-
+    <!--视频-->
+    <string name="record_long_click_tips">长按录制视频</string>
     <string name="network_connect_fail">当前网络不可用,请检查你的网络设置</string>
     <string name="network_connect">未能连接到互联网</string>
     <string name="network_connect_tip0">你的设备未启用移动网络或无线局域网</string>
@@ -31,7 +32,14 @@
     <string name="network_connect_tip3">● 检查手机是否已接入移动网络,并且手机没有被停机</string>
     <string name="network_connect_tip4">如果你已接入无线局域网:</string>
     <string name="network_connect_tip5">● 请检查你所连接的无线局域网热点是否已接入互联网或者该热点以允许你的设备访问互联网</string>
+    <string name="video_play">播放视频</string>
 
+    <!--设置-->
+    <string name="take_photo">拍照</string>
+    <string name="select_image">从相册选择</string>
+    <string name="setting">设置</string>
+    <string name="exit_login">退出当前帐号</string>
+    <string name="exit_login_tips">是否退出当前帐号？</string>
     <!--第三方登录注册-->
     <string name="token_from_weixin_success">微信开放平台获取数据成功</string>
     <string name="token_from_weixin_failure">微信开放平台获取数据失败</string>

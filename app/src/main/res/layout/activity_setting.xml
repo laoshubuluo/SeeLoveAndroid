@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/root_layout"
+    android:orientation="vertical">
+
+    <include layout="@layout/public_top_view"></include>
+
+    <TextView
+        android:id="@+id/exitLogin"
+        android:layout_width="@dimen/layout_200dp"
+        android:layout_height="@dimen/layout_35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/layout_100dp"
+        android:background="@drawable/shape_corners_button_red_7a"
+        android:gravity="center"
+        android:text="@string/exit_login"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_18sp" />
+</LinearLayout>
