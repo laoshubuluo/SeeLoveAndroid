@@ -104,7 +104,7 @@ public class ImageMessageEntity extends MessageEntity {
                 ImageLoader.getInstance().displayImage(
                         ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()),
                         viewHolder.getHeader(),
-                        ImageLoaderUtil.getSmallImageOptions());
+                        ImageLoaderUtil.getHeadUrlImageOptions());
             } else {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);
                 viewHolder.getUsername().setVisibility(View.GONE);
@@ -117,7 +117,7 @@ public class ImageMessageEntity extends MessageEntity {
                 ImageLoader.getInstance().displayImage(
                         ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()),
                         viewHolder.getHeader(),
-                        ImageLoaderUtil.getSmallImageOptions());
+                        ImageLoaderUtil.getHeadUrlImageOptions());
 
             } else {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);

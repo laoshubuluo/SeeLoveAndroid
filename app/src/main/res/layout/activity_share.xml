@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <GridView
+            android:id="@+id/shareGridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/bottom_bg"
+            android:horizontalSpacing="@dimen/layout_10dp"
+            android:numColumns="4"
+            android:paddingBottom="@dimen/layout_10dp"
+            android:paddingTop="@dimen/layout_10dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="@dimen/layout_10dp" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_50dp"
+            android:layout_marginTop="@dimen/layout_10dp"
+            android:background="@mipmap/bottom_bg"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/font_18sp" />
+    </LinearLayout>
+</RelativeLayout>

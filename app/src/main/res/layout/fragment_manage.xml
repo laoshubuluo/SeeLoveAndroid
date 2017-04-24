@@ -109,7 +109,7 @@
                     android:layout_height="@dimen/layout_60dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/layout_40dp"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/userName"
@@ -247,32 +247,17 @@
                     android:background="@mipmap/arrow_icon" />
             </RelativeLayout>
 
-            <LinearLayout
+            <com.tianyu.seelove.view.MyGridView
+                android:id="@+id/videoGridView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/layout_5dp"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/layout_10dp"
-                        android:orientation="horizontal">
-
-                        <GridView
-                            android:id="@+id/videoGridView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:horizontalSpacing="@dimen/layout_10dp"
-                            android:numColumns="auto_fit"
-                            android:verticalSpacing="@dimen/layout_10dp"></GridView>
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_15dp"
+                android:layout_marginLeft="@dimen/layout_10dp"
+                android:layout_marginRight="@dimen/layout_10dp"
+                android:gravity="center"
+                android:horizontalSpacing="@dimen/layout_10dp"
+                android:numColumns="3"
+                android:verticalSpacing="@dimen/layout_10dp" />
         </LinearLayout>
 
         <RelativeLayout

@@ -9,15 +9,15 @@
     <Button
         android:id="@+id/sendMessage"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_40dp"
+        android:layout_height="@dimen/layout_45dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/layout_10dp"
-        android:layout_marginLeft="@dimen/layout_15dp"
-        android:layout_marginRight="@dimen/layout_15dp"
+        android:layout_marginLeft="@dimen/layout_30dp"
+        android:layout_marginRight="@dimen/layout_30dp"
         android:layout_marginTop="@dimen/layout_10dp"
         android:background="@drawable/shape_corners_button_red_7a"
         android:gravity="center"
-        android:text="发送消息"
+        android:text="@string/send_message"
         android:textColor="@color/white"
         android:textSize="@dimen/font_18sp" />
 
@@ -37,7 +37,7 @@
             <FrameLayout
                 android:id="@+id/userLayout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_300dp">
+                android:layout_height="@dimen/layout_280dp">
 
                 <ImageView
                     android:id="@+id/bigImage"
@@ -63,19 +63,19 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/name"
+                                android:id="@+id/userName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:text="天宇"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/layout_15dp" />
 
                             <ImageView
+                                android:id="@+id/followBtn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="@dimen/layout_10dp"
+                                android:layout_marginLeft="@dimen/layout_15dp"
                                 android:background="@mipmap/follow_add_icon" />
                         </LinearLayout>
 
@@ -87,35 +87,33 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/userAge"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="24岁"
                                 android:textColor="@color/red_7a"
                                 android:textSize="@dimen/font_12sp" />
 
                             <TextView
+                                android:id="@+id/cityName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="/北京"
                                 android:textColor="@color/red_7a"
                                 android:textSize="@dimen/font_12sp" />
-
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/userDescript"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginRight="40dp"
+                            android:layout_marginLeft="@dimen/layout_40dp"
+                            android:layout_marginRight="@dimen/layout_40dp"
                             android:layout_marginTop="@dimen/layout_5dp"
-                            android:text="噢噢的思考角度看世界多款节省空间的开始阶段开始刷空间看到就是亟待解决的"
                             android:textColor="@color/gray_73"
                             android:textSize="@dimen/font_12sp" />
                     </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -129,8 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/layout_35dp"
                     android:layout_marginLeft="@dimen/layout_15dp"
-                    android:gravity="center_vertical"
-                    android:text="视频告白"
+                    android:gravity="center"
+                    android:text="@string/video_see_love"
                     android:textColor="@color/gray_73"
                     android:textSize="@dimen/font_15sp" />
 
@@ -138,15 +136,14 @@
                     android:id="@+id/videoGridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/layout_60dp"
-                    android:columnWidth="100dp"
+                    android:layout_marginBottom="@dimen/layout_15dp"
                     android:gravity="center"
-                    android:horizontalSpacing="10dp"
+                    android:horizontalSpacing="@dimen/layout_10dp"
                     android:numColumns="3"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="10dp" />
+                    android:layout_marginLeft="@dimen/layout_10dp"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:verticalSpacing="@dimen/layout_10dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

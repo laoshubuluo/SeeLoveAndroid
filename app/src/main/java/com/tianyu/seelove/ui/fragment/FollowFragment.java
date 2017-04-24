@@ -52,8 +52,9 @@ public class FollowFragment extends BaseFragment {
         // 防止onCreateView被多次调用
         if (null != view) {
             ViewGroup parent = (ViewGroup) view.getParent();
-            if (null != parent)
+            if (null != parent) {
                 parent.removeView(view);
+            }
         } else {
             view = inflater.inflate(R.layout.fragment_follow, container, false);
             initView(view);

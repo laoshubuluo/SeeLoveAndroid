@@ -160,6 +160,10 @@
         <activity
             android:name=".ui.activity.user.FollowUserListActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.activity.system.ShareActivity"
+            android:theme="@style/MyDialogStyleBottom"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <!-- 发送message service -->
         <service
             android:name=".service.MessageSendService"

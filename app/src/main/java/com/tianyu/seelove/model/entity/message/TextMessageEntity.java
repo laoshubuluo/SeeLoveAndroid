@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.common.Actions;
@@ -39,7 +38,6 @@ import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.TextUtils;
 import com.tianyu.seelove.view.dialog.SureDialog;
 import com.tianyu.seelove.view.pop.ResourcePopupWindow;
-
 import java.util.Date;
 
 /**
@@ -66,32 +64,25 @@ public class TextMessageEntity extends MessageEntity {
         ViewHolder viewHolder = null;
         convertView = inflateView(context);
         viewHolder = new ViewHolder();
-        viewHolder.setUsername((TextView) convertView
-                .findViewById(R.id.mc_tv_username));
-        viewHolder.setContent((TextView) convertView
-                .findViewById(R.id.mc_tv_chatcontent));
-        viewHolder.setCreateTime((TextView) convertView
-                .findViewById(R.id.mc_tv_sendtime));
-        viewHolder.setHeader((ImageView) convertView
-                .findViewById(R.id.mc_iv_userhead));
-        viewHolder.setProgress((ProgressBar) convertView
-                .findViewById(R.id.mc_progressbar));
-        viewHolder.setSendFail((TextView) convertView
-                .findViewById(R.id.mc_sendfail));
-        viewHolder.setImageAuth((ImageView) convertView
-                .findViewById(R.id.user_recognise));
+        viewHolder.setUsername((TextView) convertView.findViewById(R.id.mc_tv_username));
+        viewHolder.setContent((TextView) convertView.findViewById(R.id.mc_tv_chatcontent));
+        viewHolder.setCreateTime((TextView) convertView.findViewById(R.id.mc_tv_sendtime));
+        viewHolder.setHeader((ImageView) convertView.findViewById(R.id.mc_iv_userhead));
+        viewHolder.setProgress((ProgressBar) convertView.findViewById(R.id.mc_progressbar));
+        viewHolder.setSendFail((TextView) convertView.findViewById(R.id.mc_sendfail));
+        viewHolder.setImageAuth((ImageView) convertView.findViewById(R.id.user_recognise));
         convertView.setTag(viewHolder);
         viewHolder.getContent().setMaxWidth(Constant.screenWidth - DimensionUtils.convertDipToPixels(context.getResources(), 100));
         // 设置头像 姓名
         if (textMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             if (self != null && self.getHeadUrl() != null && self.getHeadUrl().length() > 0) {
-                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()), viewHolder.getHeader(), ImageLoaderUtil.getSmallImageOptions());
+                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()), viewHolder.getHeader(), ImageLoaderUtil.getHeadUrlImageOptions());
             }
             viewHolder.getUsername().setVisibility(View.GONE);
             viewHolder.getImageAuth().setVisibility(View.GONE);
         } else {
             if (user != null && user.getHeadUrl() != null && user.getHeadUrl().length() > 0) {
-                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()), viewHolder.getHeader(), ImageLoaderUtil.getSmallImageOptions());
+                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()), viewHolder.getHeader(), ImageLoaderUtil.getHeadUrlImageOptions());
             }
             if (viewHolder.getUsername() != null) {
                 viewHolder.getUsername().setVisibility(View.GONE);
@@ -125,8 +116,8 @@ public class TextMessageEntity extends MessageEntity {
                     @Override
                     public void onClick(View view) {
                         final SureDialog sureDialog = new SureDialog(view.getContext());
-                        sureDialog.initData("", "重发该消息？");
-                        sureDialog.getSureTV().setText("重发");
+                        sureDialog.initData("", view.getContext().getString(R.string.retry_send_message));
+                        sureDialog.getSureTV().setText(view.getContext().getString(R.string.retry));
                         sureDialog.getSureTV().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -151,8 +142,7 @@ public class TextMessageEntity extends MessageEntity {
         viewHolder.getHeader().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (textMessage.getUserFrom() ==
-                        AppUtils.getInstance().getUserId()) {
+                if (textMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
                     Intent intent = IntentManager.createIntent(v.getContext(), UserInfoActivity.class);
                     intent.putExtra("user", self);
                     v.getContext().startActivity(intent);
@@ -168,13 +158,10 @@ public class TextMessageEntity extends MessageEntity {
             @Override
             public boolean onLongClick(View view) {
                 final ResourcePopupWindow rPopupWindow;
-                if (textMessage.getUserFrom() ==
-                        AppUtils.getInstance().getUserId()) {
-                    rPopupWindow = new ResourcePopupWindow(
-                            context, R.layout.right_message_pop);
+                if (textMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
+                    rPopupWindow = new ResourcePopupWindow(context, R.layout.right_message_pop);
                 } else {
-                    rPopupWindow = new ResourcePopupWindow(
-                            context, R.layout.left_message_pop);
+                    rPopupWindow = new ResourcePopupWindow(context, R.layout.left_message_pop);
                 }
                 int[] location = new int[2];
                 view.getLocationOnScreen(location);

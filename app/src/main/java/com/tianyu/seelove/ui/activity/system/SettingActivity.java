@@ -85,6 +85,10 @@ public class SettingActivity extends BaseActivity {
         //userId和token清空
         AppUtils.getInstance().setUserId(0l);
         AppUtils.getInstance().setUserToken("");
+        AppUtils.getInstance().setStartAge(18);
+        AppUtils.getInstance().setEndAge(50);
+        AppUtils.getInstance().setSexCode("0");
+        AppUtils.getInstance().setCityCode("00");
         AppUtils.getInstance().reset();
     }
 }

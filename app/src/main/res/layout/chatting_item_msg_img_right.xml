@@ -90,6 +90,7 @@
                 android:minWidth="72dp"
                 android:paddingRight="15dp"
                 android:text=""
+                android:textColor="@color/white"
                 android:visibility="gone" />
 
         </FrameLayout>

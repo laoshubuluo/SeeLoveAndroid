@@ -3,7 +3,6 @@ package com.tianyu.seelove.model.entity.message;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.common.Actions;
@@ -34,17 +31,13 @@ import com.tianyu.seelove.utils.DateUtils;
 import com.tianyu.seelove.utils.DimensionUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.view.dialog.SureDialog;
-
 import java.util.Date;
 
 public class AudioMessageEntity extends MessageEntity {
     private SLAudioMessage audioMessage;
     private SLUser user;
     private SLUser self;
-    private AnimationDrawable aduser;
-    private AnimationDrawable adfriend;
     ViewHolder viewHolder = null;
-    private AnimationDrawable animationDrawable;
 
     public AudioMessageEntity(SLMessage message) {
         super(message);
@@ -69,41 +62,28 @@ public class AudioMessageEntity extends MessageEntity {
                                ViewGroup viewGroup) {
         convertView = inflateView(context);
         viewHolder = new ViewHolder();
-        viewHolder.setUsername((TextView) convertView
-                .findViewById(R.id.mc_tv_username));
-        viewHolder.setContent((TextView) convertView
-                .findViewById(R.id.mc_tv_chatcontent));
-        viewHolder.setCreateTime((TextView) convertView
-                .findViewById(R.id.mc_tv_sendtime));
-        viewHolder.setContentLength((TextView) convertView
-                .findViewById(R.id.mc_tv_time));
-        viewHolder.setHeader((ImageView) convertView
-                .findViewById(R.id.mc_iv_userhead));
-        viewHolder.setProgress((ProgressBar) convertView
-                .findViewById(R.id.mc_progressbar));
-        viewHolder.setSendFail((TextView) convertView
-                .findViewById(R.id.mc_sendfail));
-        viewHolder.setImageAuth((ImageView) convertView
-                .findViewById(R.id.user_recognise));
+        viewHolder.setUsername((TextView) convertView.findViewById(R.id.mc_tv_username));
+        viewHolder.setContent((TextView) convertView.findViewById(R.id.mc_tv_chatcontent));
+        viewHolder.setCreateTime((TextView) convertView.findViewById(R.id.mc_tv_sendtime));
+        viewHolder.setContentLength((TextView) convertView.findViewById(R.id.mc_tv_time));
+        viewHolder.setHeader((ImageView) convertView.findViewById(R.id.mc_iv_userhead));
+        viewHolder.setProgress((ProgressBar) convertView.findViewById(R.id.mc_progressbar));
+        viewHolder.setSendFail((TextView) convertView.findViewById(R.id.mc_sendfail));
+        viewHolder.setImageAuth((ImageView) convertView.findViewById(R.id.user_recognise));
         convertView.setTag(viewHolder);
         if (audioMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
-            viewHolder.setFrameUser((ImageView) convertView
-                    .findViewById(R.id.ivuser));
+            viewHolder.setFrameUser((ImageView) convertView.findViewById(R.id.ivuser));
         } else {
-            viewHolder.setFrameFriend((ImageView) convertView
-                    .findViewById(R.id.ivfriend));
+            viewHolder.setFrameFriend((ImageView) convertView.findViewById(R.id.ivfriend));
         }
         viewHolder.getContent().setMaxWidth(Constant.screenWidth - DimensionUtils.convertDipToPixels(context.getResources(), 100));
         // 设置头像
         if (audioMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getHeader().setImageResource(R.mipmap.default_head);
-            if (self != null && self.getHeadUrl() != null
-                    && self.getHeadUrl().length() > 0) {
+            if (self != null && self.getHeadUrl() != null && self.getHeadUrl().length() > 0) {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);
-                ImageLoader.getInstance().displayImage(
-                        ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()),
-                        viewHolder.getHeader(),
-                        ImageLoaderUtil.getSmallImageOptions());
+                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()),
+                        viewHolder.getHeader(), ImageLoaderUtil.getHeadUrlImageOptions());
             } else {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);
                 viewHolder.getUsername().setVisibility(View.GONE);
@@ -112,10 +92,8 @@ public class AudioMessageEntity extends MessageEntity {
         } else {
             viewHolder.getHeader().setImageResource(R.mipmap.default_head);
             if (user.getHeadUrl() != null && user.getHeadUrl().length() > 0) {
-                ImageLoader.getInstance().displayImage(
-                        ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()),
-                        viewHolder.getHeader(),
-                        ImageLoaderUtil.getSmallImageOptions());
+                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()),
+                        viewHolder.getHeader(), ImageLoaderUtil.getHeadUrlImageOptions());
             } else {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);
             }
@@ -193,8 +171,8 @@ public class AudioMessageEntity extends MessageEntity {
                     @Override
                     public void onClick(View view) {
                         final SureDialog sureDialog = new SureDialog(view.getContext());
-                        sureDialog.initData("", "重发该消息？");
-                        sureDialog.getSureTV().setText("重发");
+                        sureDialog.initData("", view.getContext().getString(R.string.retry_send_message));
+                        sureDialog.getSureTV().setText(view.getContext().getString(R.string.retry));
                         sureDialog.getSureTV().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

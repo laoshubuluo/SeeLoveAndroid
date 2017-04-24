@@ -15,6 +15,7 @@ import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
+import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
@@ -75,7 +76,10 @@ public class FindFragment extends BaseFragment {
         // 请求服务器
         customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
         customProgressDialog.show();
-        controller.findAll(18, 50, "1", "111");
+        // TODO shisheng.zhao 测试数据
+        controller.findAll(19, 33, "1", "111");
+//        controller.findAll(AppUtils.getInstance().getStartAge(),AppUtils.getInstance().getEndAge(),
+//                AppUtils.getInstance().getSexCode(),AppUtils.getInstance().getCityCode());
     }
 
     @Override
