@@ -22,14 +22,16 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="2dp"
-            android:background="@color/white"></View>
+            android:background="@color/white"
+            android:visibility="gone"></View>
 
         <Button
             android:id="@+id/btn_pop_repeat"
             style="@style/popTheme"
             android:layout_weight="1"
             android:paddingTop="2dp"
-            android:text="@string/message_pop_repeat" />
+            android:text="@string/message_pop_repeat"
+            android:visibility="gone"/>
 
         <View
             android:layout_width="1dp"

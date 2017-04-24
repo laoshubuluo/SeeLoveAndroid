@@ -26,7 +26,6 @@ public class FollowUserListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCurrentColor("#00000000");
         setContentView(R.layout.activity_follow_list);
         initView();
         initData();

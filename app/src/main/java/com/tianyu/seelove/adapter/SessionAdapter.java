@@ -12,7 +12,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.message.SLSession;
 import com.tianyu.seelove.model.enums.MessageType;
-import com.tianyu.seelove.model.enums.SessionType;
 import com.tianyu.seelove.utils.DateUtils;
 import com.tianyu.seelove.utils.FaceConversionUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
@@ -118,19 +117,15 @@ public class SessionAdapter extends BaseAdapter {
             viewHoder = (ViewHoder) convertView.getTag();
         }
         viewHoder.message_tv_who.setText(FaceConversionUtils.getInstace().getExpressionString(convertView.getContext(),
-                TextUtils.StringFilter(String.valueOf(sessions.get(position).getTargetId()))));
-        if (sessions.get(position).getSessionType() == SessionType.CHAT) {
-            // todo shisheng.zhao 测试icon
-            sessions.get(position).setSessionIcon("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1849074283,1272897972&fm=111&gp=0.jpg");
-            ImageLoader.getInstance().displayImage(sessions.get(position).getSessionIcon(), viewHoder.message_img_photo, ImageLoaderUtil.getHeadUrlImageOptions());
-        }
+                TextUtils.StringFilter(String.valueOf(sessions.get(position).getSessionName()))));
+        ImageLoader.getInstance().displayImage(sessions.get(position).getSessionIcon(), viewHoder.message_img_photo, ImageLoaderUtil.getHeadUrlImageOptions());
         viewHoder.message_tv_time.setText(DateUtils.getPastDate(sessions.get(position).getPriority()));
         if (sessions.get(position).getMessageType().equals(MessageType.AUDIO)) {
-            viewHoder.message_tv_content.setText("[语音]");
+            viewHoder.message_tv_content.setText(R.string.audio_message);
         } else if (sessions.get(position).getMessageType().equals(MessageType.IMAGE)) {
-            viewHoder.message_tv_content.setText("[图片]");
+            viewHoder.message_tv_content.setText(R.string.image_message);
         } else if (sessions.get(position).getMessageType().equals(MessageType.LOCATION)) {
-            viewHoder.message_tv_content.setText("[位置]");
+            viewHoder.message_tv_content.setText(R.string.location_message);
         } else if (sessions.get(position).getMessageType().equals(MessageType.TEXT)) {
             SpannableString spannableString = FaceConversionUtils.getInstace().getExpressionString(mContext, sessions.get(position).getSessionContent());
             viewHoder.message_tv_content.setText(spannableString);

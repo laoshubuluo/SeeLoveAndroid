@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.SessionAdapter;
 import com.tianyu.seelove.common.Actions;
@@ -25,7 +24,6 @@ import com.tianyu.seelove.dao.impl.MessageDaoImpl;
 import com.tianyu.seelove.dao.impl.SessionDaoImpl;
 import com.tianyu.seelove.dao.impl.UserDaoImpl;
 import com.tianyu.seelove.manager.IntentManager;
-import com.tianyu.seelove.model.entity.message.SLMessage;
 import com.tianyu.seelove.model.entity.message.SLSession;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.SessionType;
@@ -36,13 +34,11 @@ import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.dialog.SureDialog;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Fragmengt(交流)
- *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
@@ -83,8 +79,9 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         // 防止onCreateView被多次调用
         if (null != view) {
             ViewGroup parent = (ViewGroup) view.getParent();
-            if (null != parent)
+            if (null != parent) {
                 parent.removeView(view);
+            }
         } else {
             view = inflater.inflate(R.layout.fragment_message, container, false);
             initView(view);
@@ -103,7 +100,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
     }
 
     private void initData() {
-        sessionList = new ArrayList<SLSession>();
+        sessionList = new ArrayList<>();
         tempSessionList = sessionDao.getLatestSessions(1000);
         for (SLSession slSession : tempSessionList) {
             if (SessionType.CHAT.equals(slSession.getSessionType())) {
@@ -218,12 +215,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         if (null == slSession) {
             return;
         }
-        SLMessage slMessage = messageDao.getMessageById(slSession.getLastMessageId());
-        if (null == slMessage) {
-            return;
-        }
         if (SessionType.CHAT.equals(slSession.getSessionType())) {
-            slSession.setSessionContent(slMessage.getMessageContent());
             SLUser slUser = userDao.getUserByUserId(slSession.getTargetId());
             if (null != slUser) {
                 slSession.setSessionIcon(slUser.getHeadUrl());

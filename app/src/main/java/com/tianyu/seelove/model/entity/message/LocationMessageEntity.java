@@ -102,7 +102,7 @@ public class LocationMessageEntity extends MessageEntity {
                 ImageLoader.getInstance().displayImage(
                         ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()),
                         viewHolder.getHeader(),
-                        ImageLoaderUtil.getDefaultDisplayOptions());
+                        ImageLoaderUtil.getHeadUrlImageOptions());
             } else {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);
                 viewHolder.getUsername().setVisibility(View.GONE);
@@ -115,7 +115,7 @@ public class LocationMessageEntity extends MessageEntity {
                 ImageLoader.getInstance().displayImage(
                         ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()),
                         viewHolder.getHeader(),
-                        ImageLoaderUtil.getDefaultDisplayOptions());
+                        ImageLoaderUtil.getHeadUrlImageOptions());
 
             } else {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);

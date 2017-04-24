@@ -77,14 +77,14 @@ public class FollowListAdapter extends BaseAdapter {
             viewHolder.videoTitle = (TextView) convertView.findViewById(R.id.videoTitle);
             viewHolder.userName = (TextView) convertView.findViewById(R.id.userName);
             viewHolder.videoView = convertView.findViewById(R.id.item_video_view);
-            viewHolder.userAvatar = (ImageView) convertView.findViewById(R.id.user_avatar);
-            viewHolder.mPlayBtnView = (ImageView) convertView.findViewById(R.id.play_btn);
+            viewHolder.videoImg = (ImageView) convertView.findViewById(R.id.video_img);
+            viewHolder.playBtn = (ImageView) convertView.findViewById(R.id.play_btn);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         ImageLoader.getInstance().displayImage(headUrl, viewHolder.userIcon, ImageLoaderUtil.getHeadUrlImageOptions());
-        ImageLoader.getInstance().displayImage(headUrl, viewHolder.userAvatar, ImageLoaderUtil.getSmallImageOptions());
+        ImageLoader.getInstance().displayImage(headUrl, viewHolder.videoImg, ImageLoaderUtil.getSmallImageOptions());
         viewHolder.userIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +95,7 @@ public class FollowListAdapter extends BaseAdapter {
                 mContext.startActivity(intent);
             }
         });
-        viewHolder.mPlayBtnView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(new Intent(mContext, FullVideoActivity.class));
@@ -110,7 +110,7 @@ public class FollowListAdapter extends BaseAdapter {
         public ImageView userIcon, followStatue;
         public TextView userName, videoTitle, videoTime;
         public View videoView;
-        public ImageView mPlayBtnView;
-        public ImageView userAvatar;
+        public ImageView playBtn;
+        public ImageView videoImg;
     }
 }

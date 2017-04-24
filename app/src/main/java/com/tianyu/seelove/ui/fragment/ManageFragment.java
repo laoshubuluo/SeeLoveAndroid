@@ -4,25 +4,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.dao.UserDao;
+import com.tianyu.seelove.dao.VideoDao;
 import com.tianyu.seelove.dao.impl.UserDaoImpl;
+import com.tianyu.seelove.dao.impl.VideoDaoImpl;
 import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.video.SLVideo;
@@ -35,30 +34,32 @@ import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.LogUtil;
+import com.tianyu.seelove.view.MyGridView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import com.tianyu.seelove.wxapi.QQEntryActivity;
 import com.tianyu.seelove.wxapi.WXEntryActivity;
-
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragmengt(管理)
- *
  * @author shisheng.zhao
  * @date 2017-03-29 15:03
  */
 public class ManageFragment extends BaseFragment {
-    ArrayList<SLVideo> videoInfos;
+    List<SLVideo> videoInfos;
     private View view = null;
     private UserController controller;
     private SLUser slUser;
     private Long userId;
     private ImageView bigImage, headUrl;
     private TextView titleView, userName, videoCount, followCount, followedCount;
-    private GridView videoGridView;
+    private MyGridView videoGridView;
     private LinearLayout loginLayout, userLayout;
     private UserDao userDao;
+    private VideoDao videoDao;
+    private VideoGridAdapter videoGridAdapter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -71,6 +72,7 @@ public class ManageFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         LogUtil.d("ManageFragment____onCreate");
         userDao = new UserDaoImpl();
+        videoDao = new VideoDaoImpl();
         controller = new UserController(getActivity(), handler);
         slUser = userDao.getUserByUserId(AppUtils.getInstance().getUserId());
     }
@@ -81,8 +83,9 @@ public class ManageFragment extends BaseFragment {
         // 防止onCreateView被多次调用
         if (null != view) {
             ViewGroup parent = (ViewGroup) view.getParent();
-            if (null != parent)
+            if (null != parent) {
                 parent.removeView(view);
+            }
         } else {
             view = inflater.inflate(R.layout.fragment_manage, container, false);
             initView(view);
@@ -116,7 +119,10 @@ public class ManageFragment extends BaseFragment {
         followedLayout.setOnClickListener(this);
         videoItemLayout.setOnClickListener(this);
         titleView.setText(R.string.manager);
-        videoGridView = (GridView) view.findViewById(R.id.videoGridView);
+        videoGridView = (MyGridView) view.findViewById(R.id.videoGridView);
+        videoGridAdapter = new VideoGridAdapter(getActivity());
+        videoGridAdapter.updateData(new ArrayList<SLVideo>());
+        videoGridView.setAdapter(videoGridAdapter);
         Button qqLoginBtn = (Button) view.findViewById(R.id.qqLoginBtn);
         Button wechatLoginBtn = (Button) view.findViewById(R.id.wechatLoginBtn);
         Button registBtn = (Button) view.findViewById(R.id.registBtn);
@@ -141,28 +147,8 @@ public class ManageFragment extends BaseFragment {
             videoCount.setText(slUser.getVideoCount() + "");
             followCount.setText(slUser.getFollowCount() + "");
             followedCount.setText(slUser.getFollowedCount() + "");
-            videoInfos = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                SLVideo videoInfo = new SLVideo();
-                videoInfo.setVideoTitle("00" + i);
-                videoInfo.setVideoImg(slUser.getHeadUrl());
-                videoInfos.add(videoInfo);
-            }
-            int size = videoInfos.size();
-            int length = 120;
-            DisplayMetrics dm = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-            float density = dm.density;
-            int gridviewWidth = (int) (size * (length + 4) * density);
-            int itemWidth = (int) (length * density);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    gridviewWidth, LinearLayout.LayoutParams.FILL_PARENT);
-            videoGridView.setLayoutParams(params); // 设置GirdView布局参数,横向布局的关键
-            videoGridView.setColumnWidth(itemWidth); // 设置列表项宽
-            videoGridView.setHorizontalSpacing(5); // 设置列表项水平间距
-            videoGridView.setStretchMode(GridView.NO_STRETCH);
-            videoGridView.setNumColumns(size); // 设置列数量=列表集合数
-            videoGridView.setAdapter(new VideoGridAdapter(getActivity(), videoInfos));
+            videoInfos = videoDao.getVideoListByUserId(AppUtils.getInstance().getUserId());
+            videoGridAdapter.updateData(videoInfos);
         }
     }
 
@@ -239,7 +225,6 @@ public class ManageFragment extends BaseFragment {
 
     /**
      * Handler发送message的逻辑处理方法
-     *
      * @param msg
      * @return
      */

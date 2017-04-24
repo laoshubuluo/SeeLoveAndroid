@@ -49,7 +49,7 @@ public class ImageLoaderUtil {
 
     // 获取图片信息-小
     public static DisplayImageOptions getSmallImageOptions() {
-        DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.mipmap.ic_launcher).showImageOnLoading(R.mipmap.ic_launcher)
+        DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.mipmap.ic_launcher)
                 .imageScaleType(ImageScaleType.EXACTLY).showImageOnFail(R.mipmap.ic_launcher).cacheInMemory(true).cacheOnDisk(true).build();
         return options;
     }

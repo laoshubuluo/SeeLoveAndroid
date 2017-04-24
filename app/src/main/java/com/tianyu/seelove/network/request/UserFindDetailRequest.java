@@ -4,21 +4,22 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
 import com.tianyu.seelove.common.WebConstant;
+import com.tianyu.seelove.dao.UserDao;
+import com.tianyu.seelove.dao.VideoDao;
+import com.tianyu.seelove.dao.impl.UserDaoImpl;
+import com.tianyu.seelove.dao.impl.VideoDaoImpl;
 import com.tianyu.seelove.model.entity.network.request.UserFindDetailActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.UserFindDetailRspInfo;
+import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.network.request.base.PostJsonRequest;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
-
 import org.json.JSONObject;
-
-import java.io.Serializable;
 
 /**
  * author : L.jinzhu
@@ -27,11 +28,15 @@ import java.io.Serializable;
  */
 public class UserFindDetailRequest extends PostJsonRequest {
     private long userId = 0;
+    private UserDao userDao;
+    private VideoDao videoDao;
 
     public UserFindDetailRequest(Handler handler, Context context, long userId) {
         this.handler = handler;
         this.context = context;
         this.userId = userId;
+        userDao = new UserDaoImpl();
+        videoDao = new VideoDaoImpl();
     }
 
     @Override
@@ -60,8 +65,14 @@ public class UserFindDetailRequest extends PostJsonRequest {
             UserFindDetailRspInfo info = GsonUtil.fromJson(response.toString(), UserFindDetailRspInfo.class);
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
-                b.putSerializable("user", (Serializable) info.getUserDetail().getUser());
-                b.putSerializable("videoList", (Serializable) info.getUserDetail().getVideoList());
+                userDao.addUser(info.getUserDetail().getUser());
+                if (null != info.getUserDetail().getVideoList() && info.getUserDetail().getVideoList().size() > 0) {
+                    for (SLVideo slVideo : info.getUserDetail().getVideoList()) {
+                        slVideo.setUserId(userId);
+                        videoDao.addVideo(slVideo);
+                    }
+                }
+                b.putSerializable("userDetail", info.getUserDetail());
                 msg.what = MessageSignConstant.USER_FIND_DETAIL_SUCCESS;
                 msg.setData(b);
                 handler.sendMessage(msg);

@@ -1,17 +1,15 @@
 package com.tianyu.seelove.model.entity.user;
 
-
 import com.tianyu.seelove.model.entity.video.SLVideo;
-
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 短视频和用户实体类
- *
  * @author shisheng.zhao
  * @date 2017-03-31 17:56
  */
-public class SLUserDetail {
+public class SLUserDetail implements Serializable{
     private SLUser user;
     private SLVideo defultVideo;// 默认视频
     private List<SLVideo> videoList; // 用户视频列表

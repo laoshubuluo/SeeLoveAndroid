@@ -1,12 +1,9 @@
 <resources>
-
-
     <string name="app_name">视爱</string>
     <string name="find">发现</string>
     <string name="message">消息</string>
     <string name="follow">动态</string>
     <string name="manager">我的</string>
-
     <!--系统提示-->
     <string name="server_error">系统忙，请稍后重试</string>
     <string name="network_error">网络不通，请检查后重试</string>
@@ -14,14 +11,26 @@
     <string name="unknown_error">系统异常，请稍后重试</string>
     <string name="my_video">我的视频</string>
     <string name="my_information">我的资料</string>
-
+    <string name="sex">性别</string>
+    <string name="all">全部</string>
+    <string name="man">男</string>
+    <string name="women">女</string>
+    <string name="age">年龄</string>
+    <string name="city">城市</string>
+    <string name="select_city">请选择城市</string>
     <!--消息-->
     <string name="send">发送</string>
+    <string name="send_message">发送消息</string>
     <string name="send_image">发送照片</string>
     <string name="message_no_connect">消息(未连接)</string>
     <string name="message_connecting">正在连接...</string>
     <string name="message_failed_connect">网络连接异常</string>
     <string name="sure_delete_message">确定要删除此消息吗?</string>
+    <string name="audio_message">[语音]</string>
+    <string name="image_message">[图片]</string>
+    <string name="location_message">[位置]</string>
+    <string name="retry_send_message">重发消息？</string>
+    <string name="retry">重发</string>
     <!--视频-->
     <string name="record_long_click_tips">长按录制视频</string>
     <string name="network_connect_fail">当前网络不可用,请检查你的网络设置</string>
@@ -33,13 +42,19 @@
     <string name="network_connect_tip4">如果你已接入无线局域网:</string>
     <string name="network_connect_tip5">● 请检查你所连接的无线局域网热点是否已接入互联网或者该热点以允许你的设备访问互联网</string>
     <string name="video_play">播放视频</string>
-
+    <string name="video_see_love">视频表白</string>
+    <string name="add_follow">添加关注</string>
     <!--设置-->
     <string name="take_photo">拍照</string>
     <string name="select_image">从相册选择</string>
     <string name="setting">设置</string>
     <string name="exit_login">退出当前帐号</string>
     <string name="exit_login_tips">是否退出当前帐号？</string>
+    <string name="share_wechat">微信</string>
+    <string name="share_wechat_space">朋友圈</string>
+    <string name="share_qq">QQ</string>
+    <string name="share_qq_space">QQ空间</string>
+    <string name="share_sina_weibo_space">新浪微博</string>
     <!--第三方登录注册-->
     <string name="token_from_weixin_success">微信开放平台获取数据成功</string>
     <string name="token_from_weixin_failure">微信开放平台获取数据失败</string>
@@ -49,7 +64,6 @@
     <string name="weixin_code_deny">发送请求到微信开放平台：被拒绝</string>
     <string name="weixin_code_unknown">发送请求到微信开放平台：未知错误</string>
     <string name="qq_code_error">发送请求到QQ开放平台：错误</string>
-
     <string name="message_upchanle_audio">手指上滑, 取消发送</string>
     <string name="message_movechanle_audio">松开手指, 取消发送</string>
     <string name="message_pop_copy">拷贝</string>
@@ -81,7 +95,6 @@
     <string name="location_information">位置信息</string>
     <string name="pre">张</string>
     <string name="select_photos">选择照片</string>
-
     <string name="user_login_failure">用户登录失败</string>
     <string name="user_create_failure">用户创建失败</string>
     <string name="user_find_all_failure">获取所有用户失败</string>

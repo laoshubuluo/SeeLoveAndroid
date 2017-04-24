@@ -46,32 +46,34 @@
         android:textColor="@color/gray_73"
         android:textSize="@dimen/font_12sp" />
 
-    <TextView
-        android:id="@+id/message_tv_who"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/message_tv_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/layout_5dp"
         android:layout_toLeftOf="@id/message_tv_time"
-        android:maxLines="1"
-        android:paddingLeft="@dimen/layout_5dp"
-        android:textColor="@color/black_37"
-        android:textSize="@dimen/font_15sp" />
-
-    <TextView
-        android:id="@+id/message_tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/headLayout"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/message_tv_who"
-        android:layout_marginTop="@dimen/layout_5dp"
         android:layout_toRightOf="@id/headLayout"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:paddingLeft="@dimen/layout_5dp"
-        android:paddingRight="@dimen/layout_5dp"
-        android:textColor="@color/gray_73"
-        android:textSize="@dimen/font_12sp" />
+        android:orientation="vertical"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/message_tv_who"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/layout_5dp"
+            android:textColor="@color/black_37"
+            android:textSize="@dimen/font_15sp" />
+
+        <TextView
+            android:id="@+id/message_tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/layout_5dp"
+            android:paddingRight="@dimen/layout_5dp"
+            android:textColor="@color/gray_73"
+            android:textSize="@dimen/font_12sp" />
+    </LinearLayout>
 </RelativeLayout>
