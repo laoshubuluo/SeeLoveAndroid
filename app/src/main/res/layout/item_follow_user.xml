@@ -9,8 +9,7 @@
         android:id="@+id/headUrl"
         android:layout_width="@dimen/layout_45dp"
         android:layout_height="@dimen/layout_45dp"
-        android:layout_margin="@dimen/layout_10dp"
-        android:background="@mipmap/ic_launcher" />
+        android:layout_margin="@dimen/layout_10dp" />
 
     <TextView
         android:id="@+id/userName"
@@ -18,7 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/headUrl"
-        android:text="天宇"
         android:textColor="@color/gray_73"
         android:textSize="@dimen/font_15sp" />
 
@@ -28,7 +26,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/layout_10dp"
-        android:background="@mipmap/follow_add_icon" />
-
+        android:layout_marginRight="@dimen/layout_10dp" />
 </RelativeLayout>

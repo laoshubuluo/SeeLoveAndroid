@@ -81,160 +81,160 @@
             android:textSize="@dimen/font_15sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/userLayout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:scrollbars="none">
 
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/userLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_200dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-            <ImageView
-                android:id="@+id/bigImage"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="@dimen/layout_200dp">
 
                 <ImageView
-                    android:id="@+id/headUrl"
-                    android:layout_width="@dimen/layout_60dp"
-                    android:layout_height="@dimen/layout_60dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/layout_40dp"
+                    android:id="@+id/bigImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
-
-                <TextView
-                    android:id="@+id/userName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/layout_10dp"
-                    android:text="天宇"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_15sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/layout_15dp"
-                    android:layout_marginTop="@dimen/layout_15dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/headUrl"
+                        android:layout_width="@dimen/layout_60dp"
+                        android:layout_height="@dimen/layout_60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/layout_40dp"
+                        android:scaleType="centerCrop" />
+
+                    <TextView
+                        android:id="@+id/userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/layout_10dp"
+                        android:text="天宇"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_15sp" />
 
                     <LinearLayout
-                        android:id="@+id/videoLayout"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_marginBottom="@dimen/layout_15dp"
+                        android:layout_marginTop="@dimen/layout_15dp"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/videoCount"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:id="@+id/videoLayout"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="12"
-                            android:textColor="@color/white" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            <TextView
+                                android:id="@+id/videoCount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="12"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/layout_5dp"
+                                android:gravity="center_horizontal"
+                                android:text="视频"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="@dimen/layout_1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/layout_5dp"
                             android:layout_marginTop="@dimen/layout_5dp"
-                            android:gravity="center_horizontal"
-                            android:text="视频"
-                            android:textColor="@color/white" />
-                    </LinearLayout>
+                            android:background="@color/white"></View>
 
-                    <View
-                        android:layout_width="@dimen/layout_1dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/layout_5dp"
-                        android:layout_marginTop="@dimen/layout_5dp"
-                        android:background="@color/white"></View>
-
-                    <LinearLayout
-                        android:id="@+id/followLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/followCount"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:id="@+id/followLayout"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="213"
-                            android:textColor="@color/white" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            <TextView
+                                android:id="@+id/followCount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="213"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/layout_5dp"
+                                android:gravity="center_horizontal"
+                                android:text="@string/my_follow"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="@dimen/layout_1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/layout_5dp"
                             android:layout_marginTop="@dimen/layout_5dp"
-                            android:gravity="center_horizontal"
-                            android:text="关注"
-                            android:textColor="@color/white" />
-                    </LinearLayout>
+                            android:background="@color/white"></View>
 
-                    <View
-                        android:layout_width="@dimen/layout_1dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/layout_5dp"
-                        android:layout_marginTop="@dimen/layout_5dp"
-                        android:background="@color/white"></View>
-
-                    <LinearLayout
-                        android:id="@+id/followedLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/followedCount"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:id="@+id/followedLayout"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="213"
-                            android:textColor="@color/white" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/layout_5dp"
-                            android:gravity="center_horizontal"
-                            android:text="被关注"
-                            android:textColor="@color/white" />
+                            <TextView
+                                android:id="@+id/followedCount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="213"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/layout_5dp"
+                                android:gravity="center_horizontal"
+                                android:text="@string/follow_my"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/videoItemLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_165dp"
-            android:layout_marginTop="@dimen/layout_5dp"
-            android:background="@color/white"
-            android:orientation="vertical">
+            </FrameLayout>
 
             <RelativeLayout
+                android:id="@+id/userInfoLayout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_40dp">
+                android:layout_height="@dimen/layout_40dp"
+                android:layout_marginBottom="@dimen/layout_5dp"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/layout_15dp"
-                    android:text="@string/my_video"
+                    android:text="@string/my_information"
                     android:textColor="@color/gray_73"
                     android:textSize="@dimen/font_15sp" />
 
@@ -247,42 +247,47 @@
                     android:background="@mipmap/arrow_icon" />
             </RelativeLayout>
 
-            <com.tianyu.seelove.view.MyGridView
-                android:id="@+id/videoGridView"
+            <LinearLayout
+                android:id="@+id/videoItemLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/layout_15dp"
-                android:layout_marginLeft="@dimen/layout_10dp"
-                android:layout_marginRight="@dimen/layout_10dp"
-                android:gravity="center"
-                android:horizontalSpacing="@dimen/layout_10dp"
-                android:numColumns="3"
-                android:verticalSpacing="@dimen/layout_10dp" />
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_40dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/layout_15dp"
+                        android:text="@string/my_video"
+                        android:textColor="@color/gray_73"
+                        android:textSize="@dimen/font_15sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/layout_15dp"
+                        android:background="@mipmap/arrow_icon" />
+                </RelativeLayout>
+
+                <com.tianyu.seelove.view.MyGridView
+                    android:id="@+id/videoGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_15dp"
+                    android:layout_marginLeft="@dimen/layout_10dp"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="@dimen/layout_10dp"
+                    android:numColumns="3"
+                    android:verticalSpacing="@dimen/layout_10dp" />
+            </LinearLayout>
         </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/userInfoLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_40dp"
-            android:layout_marginTop="@dimen/layout_5dp"
-            android:background="@color/white">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/layout_15dp"
-                android:text="@string/my_information"
-                android:textColor="@color/gray_73"
-                android:textSize="@dimen/font_15sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/layout_15dp"
-                android:background="@mipmap/arrow_icon" />
-        </RelativeLayout>
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

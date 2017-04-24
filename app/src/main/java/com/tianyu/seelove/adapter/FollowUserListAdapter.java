@@ -1,6 +1,7 @@
 package com.tianyu.seelove.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.user.SLUser;
+import com.tianyu.seelove.ui.activity.user.UserInfoActivity;
+import com.tianyu.seelove.utils.ImageLoaderUtil;
 import java.util.List;
 
 /**
@@ -20,10 +24,12 @@ import java.util.List;
 public class FollowUserListAdapter extends BaseAdapter {
     private Context mContext;
     private List<SLUser> slUserList;
+    private int followType = 1;
 
-    public FollowUserListAdapter(Context context, List<SLUser> slUserList) {
+    public FollowUserListAdapter(Context context, List<SLUser> slUserList, int followType) {
         this.mContext = context;
         this.slUserList = slUserList;
+        this.followType = followType;
     }
 
     @Override
@@ -42,7 +48,7 @@ public class FollowUserListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null || convertView.getTag() == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_follow_user, null);
@@ -55,6 +61,21 @@ public class FollowUserListAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        ImageLoader.getInstance().displayImage(slUserList.get(position).getHeadUrl(), viewHolder.headUrl, ImageLoaderUtil.getHeadUrlImageOptions());
+        viewHolder.userName.setText(slUserList.get(position).getNickName());
+        if (1 == followType) {
+            viewHolder.followBtn.setBackgroundResource(R.mipmap.followed_icon);
+        } else if (2 == followType) {
+            viewHolder.followBtn.setBackgroundResource(R.mipmap.follow_add_icon);
+        }
+        viewHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, UserInfoActivity.class);
+                intent.putExtra("user", slUserList.get(position));
+                mContext.startActivity(intent);
+            }
+        });
         return convertView;
     }
 

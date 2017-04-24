@@ -9,6 +9,8 @@ import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
 import com.tianyu.seelove.common.WebConstant;
+import com.tianyu.seelove.dao.VideoDao;
+import com.tianyu.seelove.dao.impl.VideoDaoImpl;
 import com.tianyu.seelove.model.entity.network.request.VideoCreateActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.VideoCreateRspInfo;
@@ -25,12 +27,14 @@ import org.json.JSONObject;
  * introduce : 获取所有用户请求request
  */
 public class VideoCreateRequest extends PostJsonRequest {
+    private VideoDao videoDao;
     private SLVideo video;
 
     public VideoCreateRequest(Handler handler, Context context, SLVideo video) {
         this.handler = handler;
         this.context = context;
         this.video = video;
+        videoDao = new VideoDaoImpl();
     }
 
     @Override
@@ -59,6 +63,7 @@ public class VideoCreateRequest extends PostJsonRequest {
             VideoCreateRspInfo info = GsonUtil.fromJson(response.toString(), VideoCreateRspInfo.class);
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
+                videoDao.addVideo(video);
                 msg.what = MessageSignConstant.VIDEO_CREATE_SUCCESS;
                 msg.setData(b);
                 handler.sendMessage(msg);
