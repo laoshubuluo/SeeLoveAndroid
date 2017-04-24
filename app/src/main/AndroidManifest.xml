@@ -71,6 +71,7 @@
         <activity
             android:name=".ui.activity.system.SplashActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -144,7 +145,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!--设置activity-->
-        <activity android:name=".ui.activity.system.SettingActivity"
+        <activity
+            android:name=".ui.activity.system.SettingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!-- 选择头像Activity -->
@@ -160,10 +162,26 @@
         <activity
             android:name=".ui.activity.user.FollowUserListActivity"
             android:screenOrientation="portrait"></activity>
+        <!--分享弹出界面activity-->
         <activity
             android:name=".ui.activity.system.ShareActivity"
             android:theme="@style/MyDialogStyleBottom"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!--单行输入activity-->
+        <activity
+            android:name=".ui.activity.system.InputSingleLineActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <!--多行输入activity-->
+        <activity
+            android:name=".ui.activity.system.InputMultiLineActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <!--用户信息单项选择activity-->
+        <activity
+            android:name=".ui.activity.system.InputListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!-- 发送message service -->
         <service
             android:name=".service.MessageSendService"

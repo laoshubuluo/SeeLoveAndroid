@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/root_layout"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <include layout="@layout/public_top_view"></include>
+
+    <EditText
+        android:id="@+id/multiLineET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="top"
+        android:maxLength="140"
+        android:minLines="8"
+        android:paddingLeft="@dimen/layout_10dp"
+        android:paddingRight="@dimen/layout_10dp"
+        android:paddingTop="@dimen/layout_10dp"
+        android:textColor="@color/gray_73"
+        android:textColorHint="@color/font_grey_light"
+        android:textSize="@dimen/font_17sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/numberTV"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:text="100"
+            android:textColor="@color/red_7a" />
+    </RelativeLayout>
+</LinearLayout>

@@ -29,14 +29,5 @@
             android:text="@string/video_play"
             android:textColor="@color/white"
             android:textSize="@dimen/font_17sp" />
-
-        <ImageView
-            android:id="@+id/saveBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_20dp"
-            android:background="@mipmap/save_icon" />
     </RelativeLayout>
 </FrameLayout>

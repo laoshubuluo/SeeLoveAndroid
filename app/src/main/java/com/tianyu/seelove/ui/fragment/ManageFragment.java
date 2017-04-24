@@ -165,6 +165,7 @@ public class ManageFragment extends BaseFragment {
             case R.id.userInfoLayout: {
                 intent = new Intent();
                 intent.setClass(view.getContext(), MyInfoActivity.class);
+                intent.putExtra("user",slUser);
                 startActivity(intent);
                 break;
             }
@@ -176,12 +177,14 @@ public class ManageFragment extends BaseFragment {
             }
             case R.id.followLayout: {
                 intent = new Intent();
+                intent.putExtra("followType",1);
                 intent.setClass(view.getContext(), FollowUserListActivity.class);
                 startActivity(intent);
                 break;
             }
             case R.id.followedLayout: {
                 intent = new Intent();
+                intent.putExtra("followType",2);
                 intent.setClass(view.getContext(), FollowUserListActivity.class);
                 startActivity(intent);
                 break;

@@ -5,263 +5,352 @@
 
     <include layout="@layout/public_top_view"></include>
 
-    <RelativeLayout
-        android:id="@+id/headLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_80dp"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
-        <ImageView
-            android:id="@+id/userIcon"
-            android:layout_width="@dimen/layout_65dp"
-            android:layout_height="@dimen/layout_65dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/layout_15dp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_10dp"
-            android:background="@mipmap/arrow_icon" />
-    </RelativeLayout>
+            android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_50dp"
-        android:layout_marginTop="@dimen/layout_1dp"
-        android:background="@color/white">
+            <RelativeLayout
+                android:id="@+id/headLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_80dp"
+                android:background="@color/white">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/layout_15dp"
-            android:text="昵称"
-            android:textColor="@color/black" />
+                <ImageView
+                    android:id="@+id/userIcon"
+                    android:layout_width="@dimen/layout_65dp"
+                    android:layout_height="@dimen/layout_65dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp" />
 
-        <ImageView
-            android:id="@+id/userNameNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_10dp"
-            android:background="@mipmap/arrow_icon" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:background="@mipmap/arrow_icon" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/userName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_5dp"
-            android:layout_toLeftOf="@id/userNameNext"
-            android:text="天宇"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/userNameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_50dp"
+                android:layout_marginTop="@dimen/layout_1dp"
+                android:background="@color/white">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_50dp"
-        android:layout_marginTop="@dimen/layout_1dp"
-        android:background="@color/white">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/nick_name"
+                    android:textColor="@color/black" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/layout_15dp"
-            android:text="年龄"
-            android:textColor="@color/black" />
+                <ImageView
+                    android:id="@+id/userNameNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:background="@mipmap/arrow_icon" />
 
-        <ImageView
-            android:id="@+id/ageNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_10dp"
-            android:background="@mipmap/arrow_icon" />
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_5dp"
+                    android:layout_toLeftOf="@id/userNameNext"
+                    android:textColor="@color/red_7a" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/userAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_5dp"
-            android:layout_toLeftOf="@id/ageNext"
-            android:text="26"
-            android:textColor="@color/black" />
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_50dp"
-        android:layout_marginTop="@dimen/layout_1dp"
-        android:background="@color/white">
+            <RelativeLayout
+                android:id="@+id/userSexLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_50dp"
+                android:layout_marginTop="@dimen/layout_1dp"
+                android:background="@color/white">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/layout_15dp"
-            android:text="职业"
-            android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/sex"
+                    android:textColor="@color/black" />
 
-        <ImageView
-            android:id="@+id/workNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_10dp"
-            android:background="@mipmap/arrow_icon" />
+                <ImageView
+                    android:id="@+id/sexNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:background="@mipmap/arrow_icon" />
 
-        <TextView
-            android:id="@+id/userWork"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_5dp"
-            android:layout_toLeftOf="@id/workNext"
-            android:text="工程师"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/userSex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_5dp"
+                    android:layout_toLeftOf="@id/sexNext"
+                    android:textColor="@color/red_7a" />
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_50dp"
-        android:layout_marginTop="@dimen/layout_1dp"
-        android:background="@color/white">
+            <RelativeLayout
+                android:id="@+id/userAgeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_50dp"
+                android:layout_marginTop="@dimen/layout_1dp"
+                android:background="@color/white">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/layout_15dp"
-            android:text="学历"
-            android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/age"
+                    android:textColor="@color/black" />
 
-        <ImageView
-            android:id="@+id/studyNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_10dp"
-            android:background="@mipmap/arrow_icon" />
+                <ImageView
+                    android:id="@+id/ageNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:background="@mipmap/arrow_icon" />
 
-        <TextView
-            android:id="@+id/userEducation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_5dp"
-            android:layout_toLeftOf="@id/studyNext"
-            android:text="本科"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/userAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_5dp"
+                    android:layout_toLeftOf="@id/ageNext"
+                    android:textColor="@color/red_7a" />
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_50dp"
-        android:layout_marginTop="@dimen/layout_1dp"
-        android:background="@color/white">
+            <RelativeLayout
+                android:id="@+id/userWorkLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_50dp"
+                android:layout_marginTop="@dimen/layout_1dp"
+                android:background="@color/white">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/layout_15dp"
-            android:text="居住地"
-            android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/work"
+                    android:textColor="@color/black" />
 
-        <ImageView
-            android:id="@+id/addressNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_10dp"
-            android:background="@mipmap/arrow_icon" />
+                <ImageView
+                    android:id="@+id/workNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:background="@mipmap/arrow_icon" />
 
-        <TextView
-            android:id="@+id/userAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_5dp"
-            android:layout_toLeftOf="@id/addressNext"
-            android:text="北京市"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/userWork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_5dp"
+                    android:layout_toLeftOf="@id/workNext"
+                    android:textColor="@color/red_7a" />
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_50dp"
-        android:layout_marginTop="@dimen/layout_1dp"
-        android:background="@color/white">
+            <RelativeLayout
+                android:id="@+id/userEducationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_50dp"
+                android:layout_marginTop="@dimen/layout_1dp"
+                android:background="@color/white">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/layout_15dp"
-            android:text="住房情况"
-            android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/education"
+                    android:textColor="@color/black" />
 
-        <ImageView
-            android:id="@+id/houseNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_10dp"
-            android:background="@mipmap/arrow_icon" />
+                <ImageView
+                    android:id="@+id/studyNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:background="@mipmap/arrow_icon" />
 
-        <TextView
-            android:id="@+id/userHouse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_5dp"
-            android:layout_toLeftOf="@id/houseNext"
-            android:text="已购房"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/userEducation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_5dp"
+                    android:layout_toLeftOf="@id/studyNext"
+                    android:textColor="@color/red_7a" />
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_50dp"
-        android:layout_marginTop="@dimen/layout_1dp"
-        android:background="@color/white">
+            <RelativeLayout
+                android:id="@+id/userAddressLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_50dp"
+                android:layout_marginTop="@dimen/layout_1dp"
+                android:background="@color/white">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/layout_15dp"
-            android:text="婚姻状况"
-            android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/address"
+                    android:textColor="@color/black" />
 
-        <ImageView
-            android:id="@+id/marraryNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_10dp"
-            android:background="@mipmap/arrow_icon" />
+                <ImageView
+                    android:id="@+id/addressNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:background="@mipmap/arrow_icon" />
 
-        <TextView
-            android:id="@+id/userMarriage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_5dp"
-            android:layout_toLeftOf="@id/marraryNext"
-            android:text="未婚"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/userAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_5dp"
+                    android:layout_toLeftOf="@id/addressNext"
+                    android:textColor="@color/red_7a" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/userHouseLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_50dp"
+                android:layout_marginTop="@dimen/layout_1dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/house"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/houseNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:background="@mipmap/arrow_icon" />
+
+                <TextView
+                    android:id="@+id/userHouse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_5dp"
+                    android:layout_toLeftOf="@id/houseNext"
+                    android:textColor="@color/red_7a" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/userMarriageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_50dp"
+                android:layout_marginTop="@dimen/layout_1dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/marrary"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/marraryNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_10dp"
+                    android:background="@mipmap/arrow_icon" />
+
+                <TextView
+                    android:id="@+id/userMarriage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_5dp"
+                    android:layout_toLeftOf="@id/marraryNext"
+                    android:textColor="@color/red_7a" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/userIntroduceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_1dp"
+                android:background="@color/white">
+
+                <RelativeLayout
+                    android:id="@+id/userIntroduceTip"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_40dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/layout_15dp"
+                        android:text="@string/introduce"
+                        android:textColor="@color/black" />
+
+                    <ImageView
+                        android:id="@+id/introduceNext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/layout_10dp"
+                        android:background="@mipmap/arrow_icon" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/userIntroduce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/userIntroduceTip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="@dimen/layout_15dp"
+                    android:layout_marginLeft="@dimen/layout_20dp"
+                    android:layout_marginRight="@dimen/layout_15dp"
+                    android:textColor="@color/red_7a" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
