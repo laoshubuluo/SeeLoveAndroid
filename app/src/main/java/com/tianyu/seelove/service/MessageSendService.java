@@ -85,6 +85,12 @@ public class MessageSendService extends Service {
         registerBoradcastReceiver();
     }
 
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+
+    }
+
     public void registerBoradcastReceiver() {
         // 注册通知栏消息显示广播接收者
         IntentFilter filter = new IntentFilter();

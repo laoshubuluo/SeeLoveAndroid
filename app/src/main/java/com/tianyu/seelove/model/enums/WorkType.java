@@ -6,7 +6,7 @@ package com.tianyu.seelove.model.enums;
  * @date 2017-04-24 16:08
  */
 public enum WorkType {
-    WORK_01("01", "会计"),
+    WORK_01("01", "其他"),
     WORK_02("02", "演员"),
     WORK_03("03", "医生"),
     WORK_04("04", "护士"),
@@ -17,7 +17,7 @@ public enum WorkType {
     WORK_09("09", "老师"),
     WORK_10("10", "学生"),
     WORK_11("11", "记者"),
-    WORK_12("12", "其他");
+    WORK_12("12", "会计");
 
     private String resultCode;
     private String resultMsg;

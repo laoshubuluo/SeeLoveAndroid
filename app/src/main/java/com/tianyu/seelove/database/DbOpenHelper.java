@@ -15,8 +15,8 @@ import com.tianyu.seelove.utils.LogUtil;
 public class DbOpenHelper extends SQLiteOpenHelper {
     // 用户表
     private final static String sqlCreateUserInfo = "CREATE TABLE USERINFO(_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "UserId,HeadUrl,NickName,AccountType DEFAULT '0',Age DEFAULT '0',Sex DEFAULT '0',BigImg,CityCode DEFAULT '0'," +
-            "CityName,WorkCode DEFAULT '0',WorkName,EducationCode DEFAULT '0',EducationName,HouseCode DEFAULT '0'," +
+            "UserId,HeadUrl,NickName,AccountType DEFAULT '0',Age DEFAULT '0',Sex DEFAULT '0',BigImg,CityCode DEFAULT '01'," +
+            "CityName,WorkCode DEFAULT '01',WorkName,EducationCode DEFAULT '0',EducationName,HouseCode DEFAULT '0'," +
             "HouseName,MarriageCode DEFAULT '0',MarriageName,Introduce,Remark,VideoCount DEFAULT '0',FollowCount DEFAULT '0'," +
             "FollowedCount DEFAULT '0')";
     private final static String sqlDropUserInfo = "DROP TABLE IF EXISTS USERINFO";

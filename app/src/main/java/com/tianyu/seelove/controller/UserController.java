@@ -2,7 +2,6 @@ package com.tianyu.seelove.controller;
 
 import android.content.Context;
 import android.os.Handler;
-
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.network.VolleyManager;
 import com.tianyu.seelove.network.request.UserFindAllRequest;
@@ -27,7 +26,6 @@ public class UserController {
 
     /**
      * 用户注册
-     *
      * @param userName
      * @param dataFromOtherPlatform
      */
@@ -38,7 +36,6 @@ public class UserController {
 
     /**
      * 用户登录
-     *
      * @param userId
      * @param userName
      * @param password

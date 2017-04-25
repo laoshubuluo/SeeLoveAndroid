@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/contentTV"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/layout_50dp"
+        android:layout_height="@dimen/layout_45dp"
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
         android:text="content"

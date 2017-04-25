@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import com.tianyu.seelove.R;
-import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.service.MessageSendService;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
@@ -42,7 +41,6 @@ public class MainActivity extends BaseActivity {
         mTextviewArray = this.getResources().getStringArray(R.array.frag_text);
         initView();
         initService();
-        DbConnectionManager.getInstance().reload();
     }
 
     private void initService(){

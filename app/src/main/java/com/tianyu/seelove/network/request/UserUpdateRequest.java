@@ -4,11 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
 import com.tianyu.seelove.common.WebConstant;
+import com.tianyu.seelove.dao.UserDao;
+import com.tianyu.seelove.dao.impl.UserDaoImpl;
 import com.tianyu.seelove.model.entity.network.request.UserUpdateActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.UserUpdateRspInfo;
@@ -16,7 +17,6 @@ import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.network.request.base.PostJsonRequest;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
-
 import org.json.JSONObject;
 
 /**
@@ -25,12 +25,14 @@ import org.json.JSONObject;
  * introduce : 用户更新请求request
  */
 public class UserUpdateRequest extends PostJsonRequest {
+    private UserDao userDao;
     private SLUser user;
 
     public UserUpdateRequest(Handler handler, Context context, SLUser user) {
         this.handler = handler;
         this.context = context;
         this.user = user;
+        userDao = new UserDaoImpl();
     }
 
     @Override
@@ -60,6 +62,7 @@ public class UserUpdateRequest extends PostJsonRequest {
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
                 msg.what = MessageSignConstant.USER_UPDATE_SUCCESS;
+                userDao.addUser(user);
                 msg.setData(b);
                 handler.sendMessage(msg);
                 LogUtil.i(requestTag() + " success");
