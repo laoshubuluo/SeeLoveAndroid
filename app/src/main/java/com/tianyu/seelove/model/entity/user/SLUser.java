@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * 用户实体类
- *
  * @author shisheng.zhao
  * @date 2017-03-31 18:07
  */
@@ -15,17 +14,17 @@ public class SLUser implements Serializable {
     private String nickName; // 用户昵称
     private int accountType = 0; // 0:未知;1:微信;2:QQ
     private int age = 0; // 用户年龄
-    private String sex;//性别 0:未知;1男;2女
+    private String sex = "0";//性别 0:未知;1男;2女
     private String bigImg; // 用户信息默认大图
-    private String cityCode; // 城市编号
+    private String cityCode = "01"; // 城市编号
     private String cityName; // 城市名称
-    private String workCode; // 职业编号
+    private String workCode = "01"; // 职业编号
     private String workName; // 职业名称
-    private String educationCode; // 学历编号
+    private String educationCode = "0"; // 学历编号
     private String educationName; // 学历名称
-    private String houseCode; // 住房状况编号
+    private String houseCode = "0"; // 住房状况编号
     private String houseName; // 住房状况名称
-    private String marriageCode; // 婚姻状况编号
+    private String marriageCode = "0"; // 婚姻状况编号
     private String marriageName; // 婚姻状况名称
     private String introduce; // 一句话介绍
     private String remark; // 保留域

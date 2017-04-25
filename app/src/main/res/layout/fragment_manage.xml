@@ -225,7 +225,7 @@
             <RelativeLayout
                 android:id="@+id/userInfoLayout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_40dp"
+                android:layout_height="@dimen/layout_45dp"
                 android:layout_marginBottom="@dimen/layout_5dp"
                 android:background="@color/white">
 

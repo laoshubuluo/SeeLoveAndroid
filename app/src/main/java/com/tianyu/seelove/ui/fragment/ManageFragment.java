@@ -256,7 +256,6 @@ public class ManageFragment extends BaseFragment {
             case MessageSignConstant.USER_LOGIN_SUCCESS:
                 user = (SLUser) msg.getData().getSerializable("user");
                 initData(user);
-                initService();
                 Toast.makeText(getActivity(), "登录成功：" + user.toString(), Toast.LENGTH_LONG).show();
                 break;
             case MessageSignConstant.USER_LOGIN_FAILURE:
@@ -275,14 +274,6 @@ public class ManageFragment extends BaseFragment {
                 break;
         }
         return false;
-    }
-
-
-    private void initService() {
-        Intent intent;
-        // 启动发送消息Service
-        intent = IntentManager.createIntent(getActivity(), MessageSendService.class);
-        getActivity().startService(intent);
     }
 
     @Override

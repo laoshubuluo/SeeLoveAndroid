@@ -2,13 +2,17 @@ package com.tianyu.seelove.ui.activity.user;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.common.ActivityResultConstant;
+import com.tianyu.seelove.common.MessageSignConstant;
+import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.AgeType;
@@ -24,6 +28,8 @@ import com.tianyu.seelove.ui.activity.system.InputMultiLineActivity;
 import com.tianyu.seelove.ui.activity.system.InputSingleLineActivity;
 import com.tianyu.seelove.ui.activity.system.SelectHeadActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
+import com.tianyu.seelove.view.dialog.CustomProgressDialog;
+import com.tianyu.seelove.view.dialog.PromptDialog;
 
 /**
  * 个人信息界面
@@ -31,6 +37,7 @@ import com.tianyu.seelove.utils.ImageLoaderUtil;
  * @date 2017-03-29 22:50
  */
 public class MyInfoActivity extends BaseActivity {
+    private UserController controller;
     private RelativeLayout headLayout;
     private ImageView userIcon;
     private SLUser slUser;
@@ -40,6 +47,7 @@ public class MyInfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myinfo);
+        controller = new UserController(this, handler);
         slUser = (SLUser) getIntent().getSerializableExtra("user");
         initView();
         initData();
@@ -91,13 +99,13 @@ public class MyInfoActivity extends BaseActivity {
         if (null != slUser) {
             ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), userIcon, ImageLoaderUtil.getHeadUrlImageOptions());
             userName.setText(slUser.getNickName());
-            userSex.setText(slUser.getSex());
-            userAge.setText(String.valueOf(slUser.getAge()));
-            userWork.setText(slUser.getWorkName());
-            userEducation.setText(slUser.getEducationName());
-            userAddress.setText(slUser.getCityName());
-            userHouse.setText(slUser.getHouseName());
-            userMarriage.setText(slUser.getMarriageName());
+            userSex.setText(SexType.parse(slUser.getSex()).getResultMsg());
+            userAge.setText(AgeType.parse(String.valueOf(slUser.getAge())).getResultMsg());
+            userWork.setText(WorkType.parse(slUser.getWorkCode()).getResultMsg());
+            userEducation.setText(EducationType.parse(slUser.getEducationCode()).getResultMsg());
+            userAddress.setText(CityType.parse(slUser.getCityCode()).getResultMsg());
+            userHouse.setText(HouseType.parse(slUser.getHouseCode()).getResultMsg());
+            userMarriage.setText(MarraryType.parse(slUser.getMarriageCode()).getResultMsg());
             userIntroduce.setText(slUser.getIntroduce());
         }
     }
@@ -112,6 +120,10 @@ public class MyInfoActivity extends BaseActivity {
                 break;
             }
             case R.id.rightBtn: {
+                // 请求服务器
+                customProgressDialog = new CustomProgressDialog(MyInfoActivity.this, getString(R.string.loading));
+                customProgressDialog.show();
+                controller.update(slUser);
                 break;
             }
             case R.id.headLayout: {
@@ -192,6 +204,7 @@ public class MyInfoActivity extends BaseActivity {
             case ActivityResultConstant.UPDATE_USER_HEAD: {
                 String filePath = data.getExtras().getString("filePath");
                 ImageLoader.getInstance().displayImage(filePath, userIcon, ImageLoaderUtil.getHeadUrlImageOptions());
+                slUser.setHeadUrl(filePath);
                 break;
             }
             case ActivityResultConstant.NAME_INPUT: {
@@ -209,12 +222,14 @@ public class MyInfoActivity extends BaseActivity {
             case ActivityResultConstant.CITY_INPUT: {
                 String cityStr = data.getExtras().getString("cityStr");
                 slUser.setCityCode(CityType.parseByMsg(cityStr).getResultCode());
+                slUser.setCityName(cityStr);
                 userAddress.setText(cityStr);
                 break;
             }
             case ActivityResultConstant.WORK_INPUT: {
                 String workStr = data.getExtras().getString("workStr");
-                slUser.setWorkName(WorkType.parseByMsg(workStr).getResultCode());
+                slUser.setWorkCode(WorkType.parseByMsg(workStr).getResultCode());
+                slUser.setWorkName(workStr);
                 userWork.setText(workStr);
                 break;
             }
@@ -226,19 +241,22 @@ public class MyInfoActivity extends BaseActivity {
             }
             case ActivityResultConstant.EDUCATION_INPUT: {
                 String educationStr = data.getExtras().getString("educationStr");
-                slUser.setEducationName(EducationType.parseByMsg(educationStr).getResultCode());
+                slUser.setEducationCode(EducationType.parseByMsg(educationStr).getResultCode());
+                slUser.setEducationName(educationStr);
                 userEducation.setText(educationStr);
                 break;
             }
             case ActivityResultConstant.HOUSE_INPUT: {
                 String houseStr = data.getExtras().getString("houseStr");
-                slUser.setHouseName(HouseType.parseByMsg(houseStr).getResultCode());
+                slUser.setHouseCode(HouseType.parseByMsg(houseStr).getResultCode());
+                slUser.setHouseName(houseStr);
                 userHouse.setText(houseStr);
                 break;
             }
             case ActivityResultConstant.MARRIAGE_INPUT: {
                 String marrayStr = data.getExtras().getString("marrayStr");
                 slUser.setMarriageCode(MarraryType.parseByMsg(marrayStr).getResultCode());
+                slUser.setMarriageName(marrayStr);
                 userMarriage.setText(marrayStr);
                 break;
             }
@@ -249,5 +267,36 @@ public class MyInfoActivity extends BaseActivity {
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (customProgressDialog != null)
+            customProgressDialog.dismiss();
+        if (promptDialog == null || promptDialog.isShowing())
+            promptDialog = new PromptDialog(this);
+        String code;
+        String message;
+        switch (msg.what) {
+            case MessageSignConstant.USER_UPDATE_SUCCESS:
+                Toast.makeText(this, R.string.user_update_success, Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+            case MessageSignConstant.USER_UPDATE_FAILURE:
+                code = msg.getData().getString("code");
+                message = msg.getData().getString("message");
+                promptDialog.initData(getString(R.string.user_update_success), message);
+                promptDialog.show();
+                break;
+            case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
+                promptDialog.initData("", msg.getData().getString("message"));
+                promptDialog.show();
+                break;
+            case MessageSignConstant.UNKNOWN_ERROR:
+                promptDialog.initData("", getString(R.string.unknown_error));
+                promptDialog.show();
+                break;
+        }
+        return false;
     }
 }

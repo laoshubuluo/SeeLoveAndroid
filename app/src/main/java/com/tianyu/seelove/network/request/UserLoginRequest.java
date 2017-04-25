@@ -9,9 +9,11 @@ import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
 import com.tianyu.seelove.common.WebConstant;
+import com.tianyu.seelove.dao.UserDao;
 import com.tianyu.seelove.dao.impl.UserDaoImpl;
 import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.manager.IntentManager;
+import com.tianyu.seelove.manager.RongCloudManager;
 import com.tianyu.seelove.model.entity.network.request.UserLoginActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.UserLoginRspInfo;
@@ -29,6 +31,7 @@ import org.json.JSONObject;
  * introduce : 用户创建请求request
  */
 public class UserLoginRequest extends PostJsonRequest {
+    private UserDao userDao;
     private Long userId;
     private String userName;
     private String password;
@@ -39,6 +42,7 @@ public class UserLoginRequest extends PostJsonRequest {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
+        userDao = new UserDaoImpl();
     }
 
     @Override
@@ -95,6 +99,9 @@ public class UserLoginRequest extends PostJsonRequest {
         AppUtils.getInstance().setUserToken(slUser.getToken4RongCloud());
         // 数据库指向用户自己的数据库
         DbConnectionManager.getInstance().reload();
-        new UserDaoImpl().addUser(slUser);
+        userDao.addUser(slUser);
+        // 链接融云服务器
+        String token = AppUtils.getInstance().getUserToken(); // 当前用户token
+        RongCloudManager.getInstance().connect(token);
     }
 }

@@ -132,7 +132,7 @@ public class InputListActivity extends BaseActivity {
                 String value = sexList.get(position);
                 viewHolder.contentTV.setText(value);
                 viewHolder.contentTV.setTextSize(17);
-                if (value.equals(user.getSex())) {
+                if (value.equals(SexType.parse(user.getSex()).getResultMsg())) {
                     viewHolder.checkIV.setVisibility(View.VISIBLE);
                     viewHolder.contentTV.setTextColor(getResources().getColor(R.color.red_7a));
                 }
@@ -194,7 +194,7 @@ public class InputListActivity extends BaseActivity {
                 String value = workList.get(position);
                 viewHolder.contentTV.setText(value);
                 viewHolder.contentTV.setTextSize(17);
-                if (value.equals(user.getWorkCode())) {
+                if (value.equals(WorkType.parse(user.getWorkCode()).getResultMsg())) {
                     viewHolder.checkIV.setVisibility(View.VISIBLE);
                     viewHolder.contentTV.setTextColor(getResources().getColor(R.color.red_7a));
                 }
@@ -277,7 +277,7 @@ public class InputListActivity extends BaseActivity {
                 String value = ageList.get(position);
                 viewHolder.contentTV.setText(value);
                 viewHolder.contentTV.setTextSize(17);
-                if (value.equals(user.getAge())) {
+                if (value.equals(AgeType.parse(String.valueOf(user.getAge())).getResultMsg())) {
                     viewHolder.checkIV.setVisibility(View.VISIBLE);
                     viewHolder.contentTV.setTextColor(getResources().getColor(R.color.red_7a));
                 }
@@ -361,7 +361,7 @@ public class InputListActivity extends BaseActivity {
                 String value = cityList.get(position);
                 viewHolder.contentTV.setText(value);
                 viewHolder.contentTV.setTextSize(17);
-                if (value.equals(user.getCityCode())) {
+                if (value.equals(CityType.parse(user.getCityCode()).getResultMsg())) {
                     viewHolder.checkIV.setVisibility(View.VISIBLE);
                     viewHolder.contentTV.setTextColor(getResources().getColor(R.color.red_7a));
                 }
@@ -415,7 +415,7 @@ public class InputListActivity extends BaseActivity {
                 String value = houseList.get(position);
                 viewHolder.contentTV.setText(value);
                 viewHolder.contentTV.setTextSize(17);
-                if (value.equals(user.getHouseCode())) {
+                if (value.equals(HouseType.parse(user.getHouseCode()).getResultMsg())) {
                     viewHolder.checkIV.setVisibility(View.VISIBLE);
                     viewHolder.contentTV.setTextColor(getResources().getColor(R.color.red_7a));
                 }
@@ -471,7 +471,7 @@ public class InputListActivity extends BaseActivity {
                 String value = educationList.get(position);
                 viewHolder.contentTV.setText(value);
                 viewHolder.contentTV.setTextSize(17);
-                if (value.equals(user.getEducationCode())) {
+                if (value.equals(EducationType.parse(user.getEducationCode()).getResultMsg())) {
                     viewHolder.checkIV.setVisibility(View.VISIBLE);
                     viewHolder.contentTV.setTextColor(getResources().getColor(R.color.red_7a));
                 }
@@ -524,7 +524,7 @@ public class InputListActivity extends BaseActivity {
                 String value = marraryList.get(position);
                 viewHolder.contentTV.setText(value);
                 viewHolder.contentTV.setTextSize(17);
-                if (value.equals(user.getMarriageCode())) {
+                if (value.equals(MarraryType.parse(user.getMarriageCode()).getResultMsg())) {
                     viewHolder.checkIV.setVisibility(View.VISIBLE);
                     viewHolder.contentTV.setTextColor(getResources().getColor(R.color.red_7a));
                 }
