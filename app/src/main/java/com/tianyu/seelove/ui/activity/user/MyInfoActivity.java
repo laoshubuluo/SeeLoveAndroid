@@ -58,7 +58,7 @@ public class MyInfoActivity extends BaseActivity {
         titleView.setText(R.string.user_info);
         ImageView backView = (ImageView) findViewById(R.id.leftBtn);
         ImageView saveView = (ImageView) findViewById(R.id.rightBtn);
-        saveView.setBackgroundResource(R.mipmap.save_icon);
+        saveView.setBackgroundResource(R.mipmap.submit_btn);
         saveView.setVisibility(View.VISIBLE);
         backView.setVisibility(View.VISIBLE);
         saveView.setOnClickListener(this);

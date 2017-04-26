@@ -10,26 +10,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
-import com.qiniu.android.utils.UrlSafeBase64;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.application.SeeLoveApplication;
-import com.tianyu.seelove.common.MessageSignConstant;
-import com.tianyu.seelove.common.WebConstant;
-import com.tianyu.seelove.controller.VideoController;
-import com.tianyu.seelove.model.entity.video.SLVideo;
-import com.tianyu.seelove.model.entity.video.VideoUploadResponse;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
-import com.tianyu.seelove.utils.AppUtils;
-import com.tianyu.seelove.utils.GsonUtil;
-import com.tianyu.seelove.view.dialog.CustomProgressDialog;
-import com.tianyu.seelove.view.dialog.PromptDialog;
-import com.tianyu.seelove.view.dialog.VideoTitleDialog;
 import com.tianyu.seelove.view.video.FocusSurfaceView;
 import com.tianyu.seelove.view.video.MyVideoView;
 import com.tianyu.seelove.view.video.RecordedButton;
@@ -38,12 +24,8 @@ import com.yixia.camera.MediaRecorderNative;
 import com.yixia.camera.VCamera;
 import com.yixia.camera.model.MediaObject;
 import com.yixia.videoeditor.adapter.UtilityAdapter;
-import org.json.JSONObject;
 import java.io.File;
 import java.util.LinkedList;
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * 录制视频界面
@@ -56,7 +38,7 @@ public class VideoRecordActivity extends BaseActivity implements MediaRecorderBa
     private MediaObject mMediaObject;
     private FocusSurfaceView sv_ffmpeg;
     private RecordedButton rb_start;
-    private int maxDuration = 10000;
+    private int maxDuration = 5000;
     private boolean recordedOver;
     private MyVideoView vv_play;
     private ImageView iv_finish;
@@ -65,8 +47,6 @@ public class VideoRecordActivity extends BaseActivity implements MediaRecorderBa
     private TextView tv_hint;
     private float backX = -1;
     private TextView textView;
-    private VideoController controller;
-    private String videoTitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +54,6 @@ public class VideoRecordActivity extends BaseActivity implements MediaRecorderBa
         setCurrentColor("#00000000");
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_video_record);
-        controller = new VideoController(this, handler);
         sv_ffmpeg = (FocusSurfaceView) findViewById(R.id.sv_ffmpeg);
         rb_start = (RecordedButton) findViewById(R.id.rb_start);
         vv_play = (MyVideoView) findViewById(R.id.vv_play);
@@ -114,6 +93,15 @@ public class VideoRecordActivity extends BaseActivity implements MediaRecorderBa
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        Button switchBtn = (Button) findViewById(R.id.switchBtn);
+        switchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediaRecorder.isSupportFrontCamera()){
+                    mMediaRecorder.switchCamera();
+                }
             }
         });
     }
@@ -269,23 +257,10 @@ public class VideoRecordActivity extends BaseActivity implements MediaRecorderBa
             iv_finish.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final VideoTitleDialog videoTitleDialog = new VideoTitleDialog(v.getContext());
-                    videoTitleDialog.show();
-                    videoTitleDialog.getSureTV().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            videoTitle = videoTitleDialog.getContentTV().getText().toString().trim();
-                            // 请求服务器
-                            customProgressDialog = new CustomProgressDialog(VideoRecordActivity.this, getString(R.string.loading));
-                            customProgressDialog.show();
-                            videoTitleDialog.dismiss();
-                            uploadFile(path);
-                        }
-                    });
-//                    Intent intent = new Intent(VideoRecordActivity.this, EditVideoActivity.class);
-//                    intent.putExtra("videoPath", path);
-//                    startActivity(intent);
-//                    finish();
+                    Intent intent = new Intent(VideoRecordActivity.this, VideoImageActivity.class);
+                    intent.putExtra("videoPath", path);
+                    startActivity(intent);
+                    finish();
 //                    startActivityForResult(intent, REQUEST_KEY);
 //                    initMediaRecorderState();
                 }
@@ -308,93 +283,5 @@ public class VideoRecordActivity extends BaseActivity implements MediaRecorderBa
     @Override
     public void onEncodeError() {
         Log.i("Log.i", "onEncodeError");
-    }
-
-    private void uploadFile(String videoPath) {
-        try {
-            // 1 构造上传策略
-            JSONObject _json = new JSONObject();
-            long _dataline = System.currentTimeMillis() / 1000 + 3600;
-            _json.put("deadline", _dataline);// 有效时间为一个小时
-            _json.put("scope", "laoshubuluo");
-            String _encodedPutPolicy = UrlSafeBase64.encodeToString(_json.toString().getBytes());
-            byte[] _sign = HmacSHA1Encrypt(_encodedPutPolicy, WebConstant.SecretKey);
-            String _encodedSign = UrlSafeBase64.encodeToString(_sign);
-            String _uploadToken = WebConstant.AccessKey + ':' + _encodedSign + ':'
-                    + _encodedPutPolicy;
-            UploadManager uploadManager = new UploadManager();
-            uploadManager.put(videoPath, null, _uploadToken,
-                    new UpCompletionHandler() {
-                        @Override
-                        public void complete(String key, ResponseInfo info, JSONObject response) {
-                            VideoUploadResponse videoUploadResponse = GsonUtil.fromJson(response.toString(), VideoUploadResponse.class);
-                            String videoUrl = "http://7xrjck.com1.z0.glb.clouddn.com/" + videoUploadResponse.getKey();
-                            SLVideo slVideo = new SLVideo();
-                            slVideo.setVideoId(System.currentTimeMillis());
-                            slVideo.setUserId(AppUtils.getInstance().getUserId());
-                            slVideo.setVideoTitle(videoTitle);
-                            slVideo.setVideoTime(maxDuration + "");
-                            slVideo.setIsDefault("0");
-                            slVideo.setVideoTime("");
-                            slVideo.setVideoUrl(videoUrl);
-                            controller.create(slVideo);
-                        }
-                    }, null);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 这个签名方法找了半天 一个个对出来的、程序猿辛苦啊、 使用 HMAC-SHA1 签名方法对对encryptText进行签名
-     *
-     * @param encryptText 被签名的字符串
-     * @param encryptKey  密钥
-     * @throws Exception
-     */
-    public static byte[] HmacSHA1Encrypt(String encryptText, String encryptKey)
-            throws Exception {
-        byte[] data = encryptKey.getBytes(WebConstant.ENCODING);
-        // 根据给定的字节数组构造一个密钥,第二参数指定一个密钥算法的名称
-        SecretKey secretKey = new SecretKeySpec(data, WebConstant.MAC_NAME);
-        // 生成一个指定 Mac 算法 的 Mac 对象
-        Mac mac = Mac.getInstance(WebConstant.MAC_NAME);
-        // 用给定密钥初始化 Mac 对象
-        mac.init(secretKey);
-        byte[] text = encryptText.getBytes(WebConstant.ENCODING);
-        // 完成 Mac 操作
-        return mac.doFinal(text);
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        if (customProgressDialog != null)
-            customProgressDialog.dismiss();
-        if (promptDialog == null || promptDialog.isShowing())
-            promptDialog = new PromptDialog(this);
-        String code;
-        String message;
-        switch (msg.what) {
-            case MessageSignConstant.VIDEO_CREATE_SUCCESS:
-                Toast.makeText(this, "发布成功！", Toast.LENGTH_SHORT).show();
-                finish();
-                break;
-            case MessageSignConstant.VIDEO_CREATE_FAILURE:
-                code = msg.getData().getString("code");
-                message = msg.getData().getString("message");
-                promptDialog.initData(getString(R.string.user_find_all_failure), message);
-                promptDialog.show();
-                break;
-            case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
-                promptDialog.initData("", msg.getData().getString("message"));
-                promptDialog.show();
-                break;
-            case MessageSignConstant.UNKNOWN_ERROR:
-                promptDialog.initData("", getString(R.string.unknown_error));
-                promptDialog.show();
-                break;
-        }
-        return false;
     }
 }
