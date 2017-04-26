@@ -24,8 +24,6 @@ import java.util.List;
  * @date 2017-03-31 17:50
  */
 public class VideoGridAdapter extends BaseAdapter {
-    String imageUrl = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1849074283,1272897972&fm=111&gp=0.jpg";
-    String videoUrl = "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4";
     Context mContext;
     LayoutInflater inflater = null;
     List<SLVideo> slVideoList = new ArrayList<>();
@@ -60,7 +58,7 @@ public class VideoGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null || convertView.getTag() == null) {
             convertView = inflater.inflate(R.layout.item_video_grid, null);
@@ -74,7 +72,7 @@ public class VideoGridAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        ImageLoader.getInstance().displayImage(imageUrl, viewHolder.videoImg, ImageLoaderUtil.getSmallImageOptions());
+        ImageLoader.getInstance().displayImage(slVideoList.get(position).getVideoImg(), viewHolder.videoImg, ImageLoaderUtil.getSmallImageOptions());
         viewHolder.videoTitle.setText(StringUtils.isNotBlank(slVideoList.get(position).getVideoTitle())
                 ? slVideoList.get(position).getVideoTitle() : "我的爱情观!");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +80,7 @@ public class VideoGridAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(view.getContext(), VideoPlayActivity.class);
-                intent.putExtra("videoPath", videoUrl);
+                intent.putExtra("videoPath", slVideoList.get(position).getVideoUrl());
                 mContext.startActivity(intent);
             }
         });

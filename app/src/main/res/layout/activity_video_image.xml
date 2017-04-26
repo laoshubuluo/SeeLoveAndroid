@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
+    style="@style/root_layout"
+    android:orientation="vertical">
+
+    <include layout="@layout/public_top_view"></include>
+
+    <EditText
+        android:id="@+id/editVideoTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_8dp"
+        android:background="@drawable/message_sender_input__bg"
+        android:hint="@string/video_title_hint"
+        android:maxLines="5"
+        android:paddingLeft="@dimen/layout_10dp"
+        android:textColor="@color/gray_73"
+        android:textSize="@dimen/font_16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_40dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/layout_10dp"
+        android:text="@string/select_video_image"
+        android:textColor="@color/black_37"
+        android:textSize="@dimen/font_14sp" />
+
+    <com.tianyu.seelove.view.MyGridView
+        android:id="@+id/videoGridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:horizontalSpacing="@dimen/layout_5dp"
+        android:numColumns="3"
+        android:padding="@dimen/layout_10dp"
+        android:verticalSpacing="@dimen/layout_5dp" />
+</LinearLayout>

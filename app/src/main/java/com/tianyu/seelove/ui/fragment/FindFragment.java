@@ -77,7 +77,7 @@ public class FindFragment extends BaseFragment {
         customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
         customProgressDialog.show();
         // TODO shisheng.zhao 测试数据
-        controller.findAll(19, 33, "1", "111");
+        controller.findAll(1, 33, "1", "111");
 //        controller.findAll(AppUtils.getInstance().getStartAge(),AppUtils.getInstance().getEndAge(),
 //                AppUtils.getInstance().getSexCode(),AppUtils.getInstance().getCityCode());
     }
