@@ -17,6 +17,8 @@ public class RequestCode {
     public static final int VIDEO_CREATE = 1006;
 
     public static final int FOLLOW = 1010;
-    public static final int FOLLOW_FIND_BY_USER = 1011;
-    public static final int FOLLOW_FIND_BY_FOLLOWED_USER = 1012;
+    public static final int FOLLOW_FIND_BY_USER = 1011;// 我关注的
+    public static final int FOLLOW_FIND_BY_FOLLOWED_USER = 1012;// 关注我的
+
+    public static final int NEWS_FIND_ALL = 1015;// 动态
 }

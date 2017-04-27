@@ -38,4 +38,7 @@ public class MessageSignConstant {
 
     public static final int FOLLOW_FIND_ALL_BY_FOLLOWED_USER_SUCCESS = 1015;
     public static final int FOLLOW_FIND_ALL_BY_FOLLOWED_USER_FAILURE = 1016;
+
+    public static final int NEWS_FIND_ALL_SUCCESS = 1017;
+    public static final int NEWS_FIND_ALL_FAILURE = 1018;
 }
