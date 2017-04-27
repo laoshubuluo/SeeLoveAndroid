@@ -5,6 +5,8 @@ import android.os.Handler;
 
 import com.tianyu.seelove.model.entity.user.SLFollow;
 import com.tianyu.seelove.network.VolleyManager;
+import com.tianyu.seelove.network.request.FollowFindAllByFollowedUserRequest;
+import com.tianyu.seelove.network.request.FollowFindAllByUserRequest;
 import com.tianyu.seelove.network.request.FollowRequest;
 
 /**
@@ -26,6 +28,22 @@ public class FollowController {
      */
     public void follow(SLFollow follow, int type) {
         FollowRequest request = new FollowRequest(handler, context, follow, type);
+        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
+    }
+
+    /**
+     * 我关注的
+     */
+    public void followFindAllByUser(long userId) {
+        FollowFindAllByUserRequest request = new FollowFindAllByUserRequest(handler, context, userId);
+        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
+    }
+
+    /**
+     * 关注我的
+     */
+    public void followFindAllByFollowUser(long userId) {
+        FollowFindAllByFollowedUserRequest request = new FollowFindAllByFollowedUserRequest(handler, context, userId);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 }

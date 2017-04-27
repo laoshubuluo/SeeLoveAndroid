@@ -21,7 +21,7 @@ import org.json.JSONObject;
 /**
  * author : L.jinzhu
  * date : 2015/9/11
- * introduce : 关注我的request
+ * introduce : 我关注的request
  */
 public class FollowFindAllByUserRequest extends PostJsonRequest {
     private long userId;
