@@ -114,6 +114,7 @@
     <string name="user_login_failure">用户登录失败</string>
     <string name="user_create_failure">用户创建失败</string>
     <string name="user_find_all_failure">获取所有用户失败</string>
+    <string name="find_all_failure">获取用户动态失败</string>
     <string name="user_update_success">用户信息更新成功</string>
     <string name="user_update_failure">用户信息更新失败</string>
     <string name="user_find_detail_failure">获取用户信息失败</string>

@@ -12,7 +12,8 @@
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_45dp"
-        android:background="@color/translate_half">
+        android:background="@color/translate_half"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/backBtn"

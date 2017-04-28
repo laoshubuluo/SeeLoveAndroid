@@ -49,6 +49,7 @@ public class UserInfoActivity extends BaseActivity {
     private Button sendMessage;
     private MyGridView videoGridView;
     private SLUserDetail slUserDetail;
+    List<SLVideo> slVideoList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,15 +97,11 @@ public class UserInfoActivity extends BaseActivity {
             userName.setText(slUser.getNickName());
             userAge.setText(slUser.getAge() + "岁");
             userDescript.setText(StringUtils.isNotBlank(slUser.getIntroduce()) ? slUser.getIntroduce() : "我是一句话介绍！！");
-            cityName.setText(StringUtils.isNotBlank(slUser.getCityName()) ? slUser.getCityName() : "/北京");
+            cityName.setText(StringUtils.isNotBlank(slUser.getCityName()) ? "/" + slUser.getCityName() : "/北京");
             ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), bigImage, ImageLoaderUtil.getSmallImageOptions());
-            // TODO shisheng.zhao 测试数据
-            List<SLVideo> slVideoList = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                SLVideo slVideo = new SLVideo();
-                slVideoList.add(slVideo);
+            if (slVideoList.size() > 0) {
+                videoGridAdapter.updateData(slVideoList);
             }
-            videoGridAdapter.updateData(slVideoList);
         }
         scrollView.post(new Runnable() {
             @Override
@@ -155,7 +152,6 @@ public class UserInfoActivity extends BaseActivity {
 
     /**
      * Handler发送message的逻辑处理方法
-     *
      * @param msg
      * @return
      */
@@ -171,6 +167,9 @@ public class UserInfoActivity extends BaseActivity {
             case MessageSignConstant.USER_FIND_DETAIL_SUCCESS:
                 slUserDetail = (SLUserDetail) msg.getData().getSerializable("userDetail");
                 slUser = slUserDetail.getUser();
+                if (null != slUserDetail.getVideoList() && slUserDetail.getVideoList().size() > 0) {
+                    slVideoList = slUserDetail.getVideoList();
+                }
                 initData();
                 break;
             case MessageSignConstant.USER_FIND_DETAIL_FAILURE:

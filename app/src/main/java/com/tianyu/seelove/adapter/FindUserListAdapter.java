@@ -27,7 +27,6 @@ import java.util.List;
  * @date 2017-03-31 17:50
  */
 public class FindUserListAdapter extends BaseAdapter {
-    String videoUrl = "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4";
     private Context mContext;
     private List<SLUserDetail> slUserDetailList;
 
@@ -89,13 +88,13 @@ public class FindUserListAdapter extends BaseAdapter {
         SLUser userInfo = userDetailInfo.getUser();
         viewHolder.userName.setText(userInfo.getNickName());
         viewHolder.userAge.setText(userInfo.getAge() + "岁");
-        viewHolder.cityName.setText(StringUtils.isNotBlank(userInfo.getCityName()) ? userInfo.getCityName() : "/北京");
+        viewHolder.cityName.setText(StringUtils.isNotBlank(userInfo.getCityName()) ? "/" + userInfo.getCityName() : "/北京");
         if (SexType.SEX_BOY.getResultCode().equals(userInfo.getSex())) {
             viewHolder.sexImg.setBackgroundResource(R.mipmap.man_icon);
         } else if (SexType.SEX_GIRL.getResultCode().equals(userInfo.getSex())) {
             viewHolder.sexImg.setBackgroundResource(R.mipmap.women_icon);
         }
-        ImageLoader.getInstance().displayImage(userInfo.getHeadUrl(), viewHolder.videoImg, ImageLoaderUtil.getSmallImageOptions());
+        ImageLoader.getInstance().displayImage(slUserDetailList.get(position).getDefultVideo().getVideoImg(), viewHolder.videoImg, ImageLoaderUtil.getSmallImageOptions());
         viewHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +107,7 @@ public class FindUserListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, VideoPlayActivity.class);
-                intent.putExtra("videoPath", videoUrl);
+                intent.putExtra("videoPath", slUserDetailList.get(position).getDefultVideo().getVideoUrl());
                 mContext.startActivity(intent);
             }
         });

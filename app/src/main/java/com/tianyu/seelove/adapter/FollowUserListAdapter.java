@@ -12,8 +12,11 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.user.SLUser;
+import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.activity.user.UserInfoActivity;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +33,19 @@ public class FollowUserListAdapter extends BaseAdapter {
         this.mContext = context;
         this.slUserList = slUserList;
         this.followType = followType;
+    }
+
+    public void updateData(List<SLUser> slUserList, boolean isClean) {
+        if (null == slUserList) {
+            slUserList = new ArrayList<>();
+        }
+        if (isClean) {
+            this.slUserList.clear();
+            this.slUserList = slUserList;
+        } else {
+            this.slUserList.addAll(slUserList);
+        }
+        notifyDataSetChanged();
     }
 
     @Override

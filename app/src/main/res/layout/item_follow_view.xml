@@ -35,7 +35,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/layout_15dp"
-            android:background="@mipmap/follow_add_icon" />
+            android:background="@mipmap/follow_add_icon"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <RelativeLayout
