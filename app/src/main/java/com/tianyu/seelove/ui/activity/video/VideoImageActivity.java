@@ -1,7 +1,10 @@
 package com.tianyu.seelove.ui.activity.video;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -19,6 +22,7 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.utils.UrlSafeBase64;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoImageAdapter;
+import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.WebConstant;
 import com.tianyu.seelove.controller.VideoController;
@@ -140,7 +144,6 @@ public class VideoImageActivity extends BaseActivity {
 
     /**
      * 上传视频封面
-     *
      * @param imagePath
      */
     private void uploadImageFile(String imagePath) {
@@ -166,9 +169,8 @@ public class VideoImageActivity extends BaseActivity {
                             slVideo.setVideoId(System.currentTimeMillis());
                             slVideo.setUserId(AppUtils.getInstance().getUserId());
                             slVideo.setVideoTitle(videoTitle);
-                            slVideo.setVideoTime(maxDuration + "");
                             slVideo.setIsDefault("0");
-                            slVideo.setVideoTime("");
+                            slVideo.setVideoTime(String.valueOf(new Date().getTime()));
                             slVideo.setVideoUrl(uploadVideoUrl);
                             slVideo.setVideoImg(uploadImageUrl);
                             controller.create(slVideo);
@@ -210,7 +212,6 @@ public class VideoImageActivity extends BaseActivity {
 
     /**
      * 这个签名方法找了半天 一个个对出来的、程序猿辛苦啊、 使用 HMAC-SHA1 签名方法对对encryptText进行签名
-     *
      * @param encryptText 被签名的字符串
      * @param encryptKey  密钥
      * @throws Exception
@@ -239,6 +240,8 @@ public class VideoImageActivity extends BaseActivity {
         String message;
         switch (msg.what) {
             case MessageSignConstant.VIDEO_CREATE_SUCCESS:
+                // 发送广播 通知动态刷新数据
+                sendBroadcast(new Intent(Actions.ACTION_UPDATE_FOLLOW_LIST));
                 Toast.makeText(this, "发布成功！", Toast.LENGTH_SHORT).show();
                 finish();
                 break;

@@ -18,6 +18,8 @@ import com.tianyu.seelove.utils.LogUtil;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * author : L.jinzhu
  * date : 2015/9/11
@@ -58,6 +60,7 @@ public class FollowFindAllByFollowedUserRequest extends PostJsonRequest {
             FollowFindAllRspInfo info = GsonUtil.fromJson(response.toString(), FollowFindAllRspInfo.class);
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
+                b.putSerializable("userList", (Serializable) info.getUserList());
                 msg.what = MessageSignConstant.FOLLOW_FIND_ALL_BY_FOLLOWED_USER_SUCCESS;
                 msg.setData(b);
                 handler.sendMessage(msg);

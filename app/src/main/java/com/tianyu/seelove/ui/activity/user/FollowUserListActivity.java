@@ -1,14 +1,21 @@
 package com.tianyu.seelove.ui.activity.user;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FollowUserListAdapter;
+import com.tianyu.seelove.common.MessageSignConstant;
+import com.tianyu.seelove.controller.FollowController;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
+import com.tianyu.seelove.utils.AppUtils;
+import com.tianyu.seelove.view.dialog.CustomProgressDialog;
+import com.tianyu.seelove.view.dialog.PromptDialog;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,18 +25,20 @@ import java.util.List;
  * @date 2017-03-29 12:16
  */
 public class FollowUserListActivity extends BaseActivity {
-    String headUrl = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1849074283,1272897972&fm=111&gp=0.jpg";
+    private FollowController controller;
     private TextView titleView;
     private FollowUserListAdapter adapter;
     private List<SLUser> slUserList = new ArrayList<>();
     private ListView userListView;
     private int followType = 0;
+    private List<SLUser> userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_list);
         followType = getIntent().getIntExtra("followType", 1);
+        controller = new FollowController(this, handler);
         initView();
         initData();
     }
@@ -43,17 +52,15 @@ public class FollowUserListActivity extends BaseActivity {
     }
 
     private void initData() {
+        // 请求服务器
+        customProgressDialog = new CustomProgressDialog(this, getString(R.string.loading));
+        customProgressDialog.show();
         if (1 == followType) {
             titleView.setText(R.string.my_follow);
+            controller.followFindAllByUser(AppUtils.getInstance().getUserId());
         } else if (2 == followType) {
             titleView.setText(R.string.follow_my);
-        }
-        for (int i = 0; i < 10; i++) {
-            SLUser slUser = new SLUser();
-            slUser.setHeadUrl(headUrl);
-            slUser.setUserId(i + 1);
-            slUser.setNickName("Test" + i);
-            slUserList.add(slUser);
+            controller.followFindAllByFollowUser(AppUtils.getInstance().getUserId());
         }
         adapter = new FollowUserListAdapter(this, slUserList, followType);
         userListView.setAdapter(adapter);
@@ -68,4 +75,54 @@ public class FollowUserListActivity extends BaseActivity {
                 break;
         }
     }
+
+    /**
+     * Handler发送message的逻辑处理方法
+     *
+     * @param msg
+     * @return
+     */
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (customProgressDialog != null)
+            customProgressDialog.dismiss();
+        if (promptDialog == null || promptDialog.isShowing())
+            promptDialog = new PromptDialog(this);
+        String code;
+        String message;
+        switch (msg.what) {
+            case MessageSignConstant.FOLLOW_FIND_ALL_BY_USER_SUCCESS:
+                userList = (List<SLUser>) msg.getData().getSerializable("userList");
+                adapter.updateData(userList, true);
+                adapter.notifyDataSetChanged();
+                break;
+            case MessageSignConstant.FOLLOW_FIND_ALL_BY_USER_FAILURE:
+                code = msg.getData().getString("code");
+                message = msg.getData().getString("message");
+                promptDialog.initData(getString(R.string.find_all_failure), message);
+                promptDialog.show();
+                break;
+            case MessageSignConstant.FOLLOW_FIND_ALL_BY_FOLLOWED_USER_SUCCESS:
+                userList = (List<SLUser>) msg.getData().getSerializable("userList");
+                adapter.updateData(userList, true);
+                adapter.notifyDataSetChanged();
+                break;
+            case MessageSignConstant.FOLLOW_FIND_ALL_BY_FOLLOWED_USER_FAILURE:
+                code = msg.getData().getString("code");
+                message = msg.getData().getString("message");
+                promptDialog.initData(getString(R.string.find_all_failure), message);
+                promptDialog.show();
+                break;
+            case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
+                promptDialog.initData("", msg.getData().getString("message"));
+                promptDialog.show();
+                break;
+            case MessageSignConstant.UNKNOWN_ERROR:
+                promptDialog.initData("", getString(R.string.unknown_error));
+                promptDialog.show();
+                break;
+        }
+        return false;
+    }
+
 }

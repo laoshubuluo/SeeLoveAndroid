@@ -1,7 +1,10 @@
 package com.tianyu.seelove.ui.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -12,11 +15,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FollowListAdapter;
+import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.common.MessageSignConstant;
-import com.tianyu.seelove.controller.UserController;
+import com.tianyu.seelove.controller.NewsController;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.activity.video.VideoRecordActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
+import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
@@ -30,8 +35,9 @@ import java.util.List;
 public class FollowFragment extends BaseFragment {
     private FollowListAdapter adapter;
     private ListView followListView;
+    private FollowReciver reciver;
     private View view = null;
-    private UserController controller;
+    private NewsController controller;
     private List<SLUserDetail> userList;
 
     @Override
@@ -44,7 +50,9 @@ public class FollowFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtil.d("FollowFragment____onCreate");
-        controller = new UserController(getActivity(), handler);
+        controller = new NewsController(getActivity(), handler);
+        reciver = new FollowReciver();
+        initIntent();
     }
 
     @Override
@@ -75,7 +83,26 @@ public class FollowFragment extends BaseFragment {
         // 请求服务器
         customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
         customProgressDialog.show();
-        controller.findAll(1, 33, "1", "111");
+        controller.findAll(AppUtils.getInstance().getUserId());
+    }
+
+    private void initIntent() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.setPriority(1100);
+        intentFilter.addAction(Actions.ACTION_UPDATE_FOLLOW_LIST);
+        getActivity().registerReceiver(reciver, intentFilter);
+    }
+
+    private class FollowReciver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Actions.ACTION_UPDATE_FOLLOW_LIST)) {
+                // 请求服务器
+                customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
+                customProgressDialog.show();
+                controller.findAll(AppUtils.getInstance().getUserId());
+            }
+        }
     }
 
     @Override
@@ -105,15 +132,15 @@ public class FollowFragment extends BaseFragment {
         String code;
         String message;
         switch (msg.what) {
-            case MessageSignConstant.USER_FIND_ALL_SUCCESS:
+            case MessageSignConstant.NEWS_FIND_ALL_SUCCESS:
                 userList = (List<SLUserDetail>) msg.getData().getSerializable("userList");
                 adapter.updateData(userList, true);
                 adapter.notifyDataSetChanged();
                 break;
-            case MessageSignConstant.USER_FIND_ALL_FAILURE:
+            case MessageSignConstant.NEWS_FIND_ALL_FAILURE:
                 code = msg.getData().getString("code");
                 message = msg.getData().getString("message");
-                promptDialog.initData(getString(R.string.user_find_all_failure), message);
+                promptDialog.initData(getString(R.string.find_all_failure), message);
                 promptDialog.show();
                 break;
             case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
@@ -168,6 +195,9 @@ public class FollowFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         LogUtil.d("FollowFragment____onDestroy");
+        if (null != reciver) {
+            getActivity().unregisterReceiver(reciver);
+        }
     }
 
     @Override

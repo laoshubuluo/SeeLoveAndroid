@@ -11,17 +11,13 @@ public class Actions {
      */
     public static final String SINGLEMESSAGE_ADD_ACTION = "wmgj.amen.action.singlemessage_add_action";
     /**
-     * 群聊消息发生变动时更新窗口的广播消息
-     */
-    public static final String GROUPMESSAGE_ADD_ACTION = "wmgj.amen.action.groupmessage_add_action";
-    /**
      * 发送单聊消息广播
      */
     public static final String ACTION_SNED_SINGLE_MESSAGE = "wmgj.amen.send_single_message";
     /**
-     * 发送群组消息广播
+     * 发送广播通知刷新动态列表
      */
-    public static final String ACTION_SNED_GROUP_MESSAGE = "wmgj.amen.send_group_message";
+    public static final String ACTION_UPDATE_FOLLOW_LIST = "see.love.update_follow_list";
     /**
      * 更新消息状态广播
      */
@@ -114,29 +110,6 @@ public class Actions {
      * 支付结果
      */
     public static final String ACTION_PAY_COMPLETED = "wmgj.amen.action.pay_completed";
-
-    // 代祷删除选中图片
-    public static final String ACTION_PRAY_DELETE_IMAGE = "wmgj.amen.action.pray_delete_image";
-    // 代祷添加选中图片
-    public static final String ACTION_PRAY_ADD_IMAGE = "wmgj.amen.action.pray_add_image";
-    // 代祷数据更新
-    public static final String ACTION_PRAY_DATA_UPDATE = "wmgj.amen.action.pray_data_update";
-
-    // 互动交流更新数据
-    public static final String ACTION_MEETING_INTERACT_DATA_UPDATE = "wmgj.amen.action.meeting_interact_data_update";
-
-    // 信息分享_删除评论
-    public static final String ACTION_INFO_SHARE_DEL_COMMENT = "wmgj.amen.action.info_share_del_comment";
-
-    // 信息分享评论_增加评论
-    public static final String ACTION_INFO_SHARE_COMMENT_ADD_COMMENT = "wmgj.amen.action.info_share_comment_add_comment";
-    // 信息分享评论_删除评论
-    public static final String ACTION_INFO_SHARE_COMMENT_DEL_COMMENT = "wmgj.amen.action.info_share_comment_del_comment";
-    // 信息分享评论_增加赞
-    public static final String ACTION_INFO_SHARE_COMMENT_ADD_AGREE = "wmgj.amen.action.info_share_comment_add_agree";
-
-    // 红点，支持阿门事工
-    public static final String ACTION_RED_DOT_SHOW_4_DEVOTE_AMEN = "wmgj.amen.action.red_dot_show_4_devote_amen";
 
     // 分享成功
     public static final String ACTION_SHARE_SUCCESS = "wmgj.amen.action.share_success";

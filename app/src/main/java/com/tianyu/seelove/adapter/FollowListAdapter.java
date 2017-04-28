@@ -13,7 +13,8 @@ import com.tianyu.seelove.R;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.activity.user.UserInfoActivity;
-import com.tianyu.seelove.ui.activity.video.FullVideoActivity;
+import com.tianyu.seelove.ui.activity.video.VideoPlayActivity;
+import com.tianyu.seelove.utils.DateUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,6 @@ import java.util.List;
  * @date 2017-03-31 17:50
  */
 public class FollowListAdapter extends BaseAdapter {
-    String videoUrl = "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4";
-    String headUrl = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1849074283,1272897972&fm=111&gp=0.jpg";
     private Context mContext;
     private List<SLUserDetail> slUserDetailList;
 
@@ -83,8 +82,11 @@ public class FollowListAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        ImageLoader.getInstance().displayImage(headUrl, viewHolder.userIcon, ImageLoaderUtil.getHeadUrlImageOptions());
-        ImageLoader.getInstance().displayImage(headUrl, viewHolder.videoImg, ImageLoaderUtil.getSmallImageOptions());
+        viewHolder.videoTime.setText(DateUtils.getPastDate(Long.parseLong(slUserDetailList.get(position).getDefultVideo().getVideoTime())));
+        viewHolder.userName.setText(slUserDetailList.get(position).getUser().getNickName());
+        viewHolder.videoTitle.setText(slUserDetailList.get(position).getDefultVideo().getVideoTitle());
+        ImageLoader.getInstance().displayImage(slUserDetailList.get(position).getUser().getHeadUrl(), viewHolder.userIcon, ImageLoaderUtil.getHeadUrlImageOptions());
+        ImageLoader.getInstance().displayImage(slUserDetailList.get(position).getDefultVideo().getVideoImg(), viewHolder.videoImg, ImageLoaderUtil.getSmallImageOptions());
         viewHolder.userIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,8 +100,8 @@ public class FollowListAdapter extends BaseAdapter {
         viewHolder.playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(new Intent(mContext, FullVideoActivity.class));
-                intent.putExtra("videoUrl", videoUrl);
+                Intent intent = new Intent(mContext, VideoPlayActivity.class);
+                intent.putExtra("videoPath", slUserDetailList.get(position).getDefultVideo().getVideoUrl());
                 mContext.startActivity(intent);
             }
         });
