@@ -3,14 +3,8 @@ package com.tianyu.seelove.controller;
 import android.content.Context;
 import android.os.Handler;
 
-import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.network.VolleyManager;
 import com.tianyu.seelove.network.request.NewsFindAllRequest;
-import com.tianyu.seelove.network.request.UserFindAllRequest;
-import com.tianyu.seelove.network.request.UserFindDetailRequest;
-import com.tianyu.seelove.network.request.UserLoginRequest;
-import com.tianyu.seelove.network.request.UserRegistRequest;
-import com.tianyu.seelove.network.request.UserUpdateRequest;
 
 /**
  * author : L.jinzhu

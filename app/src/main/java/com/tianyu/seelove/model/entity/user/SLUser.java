@@ -8,23 +8,28 @@ import java.io.Serializable;
  * @date 2017-03-31 18:07
  */
 public class SLUser implements Serializable {
+    public static final int ACCOUNT_TYPE_WECHAT = 1;// 微信
+    public static final int ACCOUNT_TYPE_QQ = 2;// QQ
+    public static final int ACCOUNT_TYPE_PHONE = 3;// 手机号
+
     // 用户基本信息
     private long userId; // 用户id,唯一标示
+    private String account;// 用户名
+    private int accountType = 0; // 用户类型 1:微信;2:QQ;3:手机号
     private String headUrl; // 用户头像
     private String nickName; // 用户昵称
-    private int accountType = 0; // 0:未知;1:微信;2:QQ
     private int age = 0; // 用户年龄
-    private String sex = "0";//性别 0:未知;1男;2女
+    private String sex;//性别 0:未知;1男;2女
     private String bigImg; // 用户信息默认大图
-    private String cityCode = "01"; // 城市编号
+    private String cityCode; // 城市编号
     private String cityName; // 城市名称
-    private String workCode = "01"; // 职业编号
+    private String workCode; // 职业编号
     private String workName; // 职业名称
-    private String educationCode = "0"; // 学历编号
+    private String educationCode; // 学历编号
     private String educationName; // 学历名称
-    private String houseCode = "0"; // 住房状况编号
+    private String houseCode; // 住房状况编号
     private String houseName; // 住房状况名称
-    private String marriageCode = "0"; // 婚姻状况编号
+    private String marriageCode; // 婚姻状况编号
     private String marriageName; // 婚姻状况名称
     private String introduce; // 一句话介绍
     private String remark; // 保留域
@@ -36,14 +41,6 @@ public class SLUser implements Serializable {
     private int videoCount; // 视频数
     private int followCount; // 关注数
     private int followedCount; // 被关注数
-
-    public SLUser() {
-    }
-
-    public SLUser(long userId, String nickName) {
-        this.userId = userId;
-        this.nickName = nickName;
-    }
 
     public long getUserId() {
         return userId;
@@ -229,25 +226,34 @@ public class SLUser implements Serializable {
         this.followedCount = followedCount;
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", headUrl='" + headUrl + '\'' +
                 ", nickName='" + nickName + '\'' +
+                ", account='" + account + '\'' +
                 ", accountType=" + accountType +
                 ", age=" + age +
                 ", sex='" + sex + '\'' +
                 ", bigImg='" + bigImg + '\'' +
-                ", cityCode=" + cityCode +
+                ", cityCode='" + cityCode + '\'' +
                 ", cityName='" + cityName + '\'' +
-                ", workCode=" + workCode +
+                ", workCode='" + workCode + '\'' +
                 ", workName='" + workName + '\'' +
-                ", educationCode=" + educationCode +
+                ", educationCode='" + educationCode + '\'' +
                 ", educationName='" + educationName + '\'' +
-                ", houseCode=" + houseCode +
+                ", houseCode='" + houseCode + '\'' +
                 ", houseName='" + houseName + '\'' +
-                ", marriageCode=" + marriageCode +
+                ", marriageCode='" + marriageCode + '\'' +
                 ", marriageName='" + marriageName + '\'' +
                 ", introduce='" + introduce + '\'' +
                 ", remark='" + remark + '\'' +

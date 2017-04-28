@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
@@ -39,11 +40,13 @@ import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import com.tianyu.seelove.wxapi.QQEntryActivity;
 import com.tianyu.seelove.wxapi.WXEntryActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Fragmengt(管理)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:03
  */
@@ -165,7 +168,7 @@ public class ManageFragment extends BaseFragment {
             case R.id.userInfoLayout: {
                 intent = new Intent();
                 intent.setClass(view.getContext(), MyInfoActivity.class);
-                intent.putExtra("user",slUser);
+                intent.putExtra("user", slUser);
                 startActivity(intent);
                 break;
             }
@@ -177,14 +180,14 @@ public class ManageFragment extends BaseFragment {
             }
             case R.id.followLayout: {
                 intent = new Intent();
-                intent.putExtra("followType",1);
+                intent.putExtra("followType", 1);
                 intent.setClass(view.getContext(), FollowUserListActivity.class);
                 startActivity(intent);
                 break;
             }
             case R.id.followedLayout: {
                 intent = new Intent();
-                intent.putExtra("followType",2);
+                intent.putExtra("followType", 2);
                 intent.setClass(view.getContext(), FollowUserListActivity.class);
                 startActivity(intent);
                 break;
@@ -210,15 +213,15 @@ public class ManageFragment extends BaseFragment {
                 break;
             }
             case R.id.registBtn: {
-                customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
-                customProgressDialog.show();
-                controller.regist("测试帐号", "我是从微信返回的字段");
+                Toast.makeText(getActivity(), "没有单独的注册了", Toast.LENGTH_LONG).show();
                 break;
             }
             case R.id.loginBtn: {
+                Toast.makeText(getActivity(), "手机注册码登录，直接接到获取注册码即可", Toast.LENGTH_LONG).show();
+
                 customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
                 customProgressDialog.show();
-                controller.login(userId, "", "");
+                controller.login4Phone(SLUser.ACCOUNT_TYPE_PHONE, "15810592135", "1231");
                 break;
             }
             default:
@@ -228,6 +231,7 @@ public class ManageFragment extends BaseFragment {
 
     /**
      * Handler发送message的逻辑处理方法
+     *
      * @param msg
      * @return
      */
@@ -241,18 +245,6 @@ public class ManageFragment extends BaseFragment {
         String code;
         String message;
         switch (msg.what) {
-            case MessageSignConstant.USER_REGIST_SUCCESS:
-                user = (SLUser) msg.getData().getSerializable("user");
-                userId = user.getUserId();
-                titleView.setText(user.getNickName());
-                Toast.makeText(getActivity(), "创建成功：" + user.toString(), Toast.LENGTH_LONG).show();
-                break;
-            case MessageSignConstant.USER_REGIST_FAILURE:
-                code = msg.getData().getString("code");
-                message = msg.getData().getString("message");
-                promptDialog.initData(getString(R.string.user_create_failure), message);
-                promptDialog.show();
-                break;
             case MessageSignConstant.USER_LOGIN_SUCCESS:
                 user = (SLUser) msg.getData().getSerializable("user");
                 initData(user);

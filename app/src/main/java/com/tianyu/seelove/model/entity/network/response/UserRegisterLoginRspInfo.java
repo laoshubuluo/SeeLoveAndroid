@@ -9,7 +9,7 @@ import com.tianyu.seelove.model.entity.user.SLUser;
  * date : 2015/8/12
  * introduce : 响应实体
  */
-public class UserLoginRspInfo extends ResponseInfo {
+public class UserRegisterLoginRspInfo extends ResponseInfo {
     private SLUser user;
 
     public SLUser getUser() {
@@ -22,11 +22,10 @@ public class UserLoginRspInfo extends ResponseInfo {
 
     @Override
     public String toString() {
-        return "UserLoginRspInfo{" +
+        return "UserRegisterLoginRspInfo{" +
                 "actionId=" + actionId +
                 ", statusCode=" + statusCode +
                 ", statusMsg='" + statusMsg + '\'' +
-                ", user=" + user.toString() +
                 '}';
     }
 }

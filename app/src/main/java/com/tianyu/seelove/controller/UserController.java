@@ -7,8 +7,7 @@ import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.network.VolleyManager;
 import com.tianyu.seelove.network.request.UserFindAllRequest;
 import com.tianyu.seelove.network.request.UserFindDetailRequest;
-import com.tianyu.seelove.network.request.UserLoginRequest;
-import com.tianyu.seelove.network.request.UserRegistRequest;
+import com.tianyu.seelove.network.request.UserRegistLoginRequest;
 import com.tianyu.seelove.network.request.UserUpdateRequest;
 
 /**
@@ -26,25 +25,18 @@ public class UserController {
     }
 
     /**
-     * 用户注册
-     *
-     * @param userName
-     * @param dataFromOtherPlatform
+     * 用户登录
      */
-    public void regist(String userName, String dataFromOtherPlatform) {
-        UserRegistRequest request = new UserRegistRequest(handler, context, userName, dataFromOtherPlatform);
+    public void login4Platform(int accountType, String dataFromOtherPlatform) {
+        UserRegistLoginRequest request = new UserRegistLoginRequest(handler, context, accountType, dataFromOtherPlatform);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 
     /**
      * 用户登录
-     *
-     * @param userId
-     * @param userName
-     * @param password
      */
-    public void login(Long userId, String userName, String password) {
-        UserLoginRequest request = new UserLoginRequest(handler, context, userId, userName, password);
+    public void login4Phone(int accountType, String phoneNumber, String code) {
+        UserRegistLoginRequest request = new UserRegistLoginRequest(handler, context, accountType, phoneNumber, code);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 
