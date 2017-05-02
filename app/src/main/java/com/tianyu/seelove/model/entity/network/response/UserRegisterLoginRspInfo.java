@@ -3,6 +3,7 @@ package com.tianyu.seelove.model.entity.network.response;
 
 import com.tianyu.seelove.model.entity.network.response.base.ResponseInfo;
 import com.tianyu.seelove.model.entity.user.SLUser;
+import com.tianyu.seelove.model.entity.user.SLUserDetail;
 
 /**
  * author : L.jinzhu
@@ -10,14 +11,14 @@ import com.tianyu.seelove.model.entity.user.SLUser;
  * introduce : 响应实体
  */
 public class UserRegisterLoginRspInfo extends ResponseInfo {
-    private SLUser user;
+    private SLUserDetail userDetail;
 
-    public SLUser getUser() {
-        return user;
+    public void setUserDetail(SLUserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 
-    public void setUser(SLUser user) {
-        this.user = user;
+    public SLUserDetail getUserDetail() {
+        return userDetail;
     }
 
     @Override

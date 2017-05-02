@@ -1,9 +1,18 @@
 package com.tianyu.seelove.model.entity.user;
 
+import com.tianyu.seelove.model.enums.CityType;
+import com.tianyu.seelove.model.enums.EducationType;
+import com.tianyu.seelove.model.enums.HouseType;
+import com.tianyu.seelove.model.enums.MarraryType;
+import com.tianyu.seelove.model.enums.SexType;
+import com.tianyu.seelove.model.enums.WorkType;
+import com.tianyu.seelove.utils.StringUtils;
+
 import java.io.Serializable;
 
 /**
  * 用户实体类
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 18:07
  */
@@ -75,7 +84,11 @@ public class SLUser implements Serializable {
     }
 
     public int getAge() {
-        return age;
+        if (0 == age) {
+            return 18;
+        } else {
+            return age;
+        }
     }
 
     public void setAge(int age) {
@@ -83,7 +96,7 @@ public class SLUser implements Serializable {
     }
 
     public String getSex() {
-        return sex;
+        return StringUtils.isNotBlank(sex) ? sex : SexType.SEX_UNKNOW.getResultCode();
     }
 
     public void setSex(String sex) {
@@ -99,7 +112,7 @@ public class SLUser implements Serializable {
     }
 
     public String getCityCode() {
-        return cityCode;
+        return StringUtils.isNotBlank(cityCode) ? cityCode : CityType.CITY_01.getResultCode();
     }
 
     public void setCityCode(String cityCode) {
@@ -115,7 +128,7 @@ public class SLUser implements Serializable {
     }
 
     public String getWorkCode() {
-        return workCode;
+        return StringUtils.isNotBlank(workCode) ? workCode : WorkType.WORK_01.getResultCode();
     }
 
     public void setWorkCode(String workCode) {
@@ -131,7 +144,7 @@ public class SLUser implements Serializable {
     }
 
     public String getEducationCode() {
-        return educationCode;
+        return StringUtils.isNotBlank(educationCode) ? educationCode : EducationType.EDUCATION_UNKNOW.getResultCode();
     }
 
     public void setEducationCode(String educationCode) {
@@ -147,7 +160,7 @@ public class SLUser implements Serializable {
     }
 
     public String getHouseCode() {
-        return houseCode;
+        return StringUtils.isNotBlank(houseCode) ? houseCode : HouseType.HOUSE_UNKNOW.getResultCode();
     }
 
     public void setHouseCode(String houseCode) {
@@ -163,7 +176,7 @@ public class SLUser implements Serializable {
     }
 
     public String getMarriageCode() {
-        return marriageCode;
+        return StringUtils.isNotBlank(marriageCode) ? marriageCode : MarraryType.UNMARRARY.getResultCode();
     }
 
     public void setMarriageCode(String marriageCode) {

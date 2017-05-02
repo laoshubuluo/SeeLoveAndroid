@@ -3,30 +3,31 @@ package com.tianyu.seelove.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
+import com.tianyu.seelove.controller.SecurityCodeController;
 import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.dao.UserDao;
 import com.tianyu.seelove.dao.VideoDao;
 import com.tianyu.seelove.dao.impl.UserDaoImpl;
 import com.tianyu.seelove.dao.impl.VideoDaoImpl;
-import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUser;
+import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.model.entity.video.SLVideo;
-import com.tianyu.seelove.service.MessageSendService;
 import com.tianyu.seelove.ui.activity.system.SettingActivity;
 import com.tianyu.seelove.ui.activity.user.FollowUserListActivity;
 import com.tianyu.seelove.ui.activity.user.MyInfoActivity;
@@ -35,34 +36,36 @@ import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.LogUtil;
+import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.MyGridView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import com.tianyu.seelove.wxapi.QQEntryActivity;
 import com.tianyu.seelove.wxapi.WXEntryActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Fragmengt(管理)
- *
  * @author shisheng.zhao
  * @date 2017-03-29 15:03
  */
 public class ManageFragment extends BaseFragment {
-    List<SLVideo> videoInfos;
+    List<SLVideo> videoInfos = new ArrayList<>();
     private View view = null;
     private UserController controller;
+    private SecurityCodeController codeController;
     private SLUser slUser;
-    private Long userId;
     private ImageView bigImage, headUrl;
     private TextView titleView, userName, videoCount, followCount, followedCount;
     private MyGridView videoGridView;
     private LinearLayout loginLayout, userLayout;
+    private EditText phoneEdit, codeEdit;
     private UserDao userDao;
     private VideoDao videoDao;
     private VideoGridAdapter videoGridAdapter;
+    private TextView getCodeBtn;
+    private TimeCount time;//倒计时
 
     @Override
     public void onAttach(Activity activity) {
@@ -77,6 +80,7 @@ public class ManageFragment extends BaseFragment {
         userDao = new UserDaoImpl();
         videoDao = new VideoDaoImpl();
         controller = new UserController(getActivity(), handler);
+        codeController = new SecurityCodeController(getActivity(), handler);
         slUser = userDao.getUserByUserId(AppUtils.getInstance().getUserId());
     }
 
@@ -126,14 +130,16 @@ public class ManageFragment extends BaseFragment {
         videoGridAdapter = new VideoGridAdapter(getActivity());
         videoGridAdapter.updateData(new ArrayList<SLVideo>());
         videoGridView.setAdapter(videoGridAdapter);
-        Button qqLoginBtn = (Button) view.findViewById(R.id.qqLoginBtn);
-        Button wechatLoginBtn = (Button) view.findViewById(R.id.wechatLoginBtn);
-        Button registBtn = (Button) view.findViewById(R.id.registBtn);
+        getCodeBtn = (TextView) view.findViewById(R.id.getCodeBtn);
+        phoneEdit = (EditText) view.findViewById(R.id.phoneEdit);
+        codeEdit = (EditText) view.findViewById(R.id.codeEdit);
+        ImageView qqLoginBtn = (ImageView) view.findViewById(R.id.qqLoginBtn);
+        ImageView wechatLoginBtn = (ImageView) view.findViewById(R.id.wechatLoginBtn);
         Button loginBtn = (Button) view.findViewById(R.id.loginBtn);
         qqLoginBtn.setOnClickListener(this);
         wechatLoginBtn.setOnClickListener(this);
-        registBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
+        getCodeBtn.setOnClickListener(this);
     }
 
     private void initData(SLUser slUser) {
@@ -144,12 +150,13 @@ public class ManageFragment extends BaseFragment {
         } else {
             userLayout.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);
-            ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), bigImage, ImageLoaderUtil.getDefaultDisplayOptions());
+            ImageLoader.getInstance().displayImage(slUser.getBigImg(), bigImage, ImageLoaderUtil.getDefaultDisplayOptions());
             ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), headUrl, ImageLoaderUtil.getHeadUrlImageOptions());
             userName.setText(slUser.getNickName());
             videoCount.setText(slUser.getVideoCount() + "");
             followCount.setText(slUser.getFollowCount() + "");
             followedCount.setText(slUser.getFollowedCount() + "");
+            videoInfos.clear();
             videoInfos = videoDao.getVideoListByUserId(AppUtils.getInstance().getUserId());
             videoGridAdapter.updateData(videoInfos);
         }
@@ -158,6 +165,8 @@ public class ManageFragment extends BaseFragment {
     @Override
     public void onClick(View view) {
         Intent intent = null;
+        String phoneNum = phoneEdit.getText().toString().trim();
+        String verifyCode = codeEdit.getText().toString().trim();
         switch (view.getId()) {
             case R.id.rightBtn: {
                 intent = new Intent();
@@ -212,16 +221,29 @@ public class ManageFragment extends BaseFragment {
                 startActivityForResult(intent, 0);
                 break;
             }
-            case R.id.registBtn: {
-                Toast.makeText(getActivity(), "没有单独的注册了", Toast.LENGTH_LONG).show();
-                break;
-            }
             case R.id.loginBtn: {
-                Toast.makeText(getActivity(), "手机注册码登录，直接接到获取注册码即可", Toast.LENGTH_LONG).show();
-
+                if (StringUtils.isNullOrBlank(phoneNum)) {
+                    Toast.makeText(getActivity(), R.string.phone_is_null, Toast.LENGTH_LONG).show();
+                    break;
+                }
+                if (StringUtils.isNullOrBlank(verifyCode)) {
+                    Toast.makeText(getActivity(), R.string.code_is_null, Toast.LENGTH_LONG).show();
+                    break;
+                }
                 customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
                 customProgressDialog.show();
-                controller.login4Phone(SLUser.ACCOUNT_TYPE_PHONE, "15810592135", "1231");
+                controller.login4Phone(SLUser.ACCOUNT_TYPE_PHONE, phoneNum, verifyCode);
+                break;
+            }
+            case R.id.getCodeBtn: {
+                if (StringUtils.isNullOrBlank(phoneNum)) {
+                    Toast.makeText(getActivity(), R.string.phone_is_null, Toast.LENGTH_LONG).show();
+                    break;
+                }
+                codeController.send(phoneNum);
+                //开始倒计时
+                time = new TimeCount(60000, 1000);
+                time.start();
                 break;
             }
             default:
@@ -230,8 +252,33 @@ public class ManageFragment extends BaseFragment {
     }
 
     /**
+     * 重新发送倒计时
+     */
+    private class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {//计时完毕时触发
+            reset();
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+            getCodeBtn.setClickable(false);
+            getCodeBtn.setText(millisUntilFinished / 1000 + "s");
+        }
+
+        public void reset() {
+            this.cancel();
+            getCodeBtn.setText(getString(R.string.get_code));
+            getCodeBtn.setClickable(true);
+        }
+    }
+
+    /**
      * Handler发送message的逻辑处理方法
-     *
      * @param msg
      * @return
      */
@@ -246,9 +293,9 @@ public class ManageFragment extends BaseFragment {
         String message;
         switch (msg.what) {
             case MessageSignConstant.USER_LOGIN_SUCCESS:
-                user = (SLUser) msg.getData().getSerializable("user");
-                initData(user);
-                Toast.makeText(getActivity(), "登录成功：" + user.toString(), Toast.LENGTH_LONG).show();
+                SLUserDetail slUserDetail = (SLUserDetail) msg.getData().getSerializable("userDetail");
+                slUser = slUserDetail.getUser();
+                initData(slUser);
                 break;
             case MessageSignConstant.USER_LOGIN_FAILURE:
                 code = msg.getData().getString("code");

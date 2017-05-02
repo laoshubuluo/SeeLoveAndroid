@@ -204,6 +204,7 @@ public class MyInfoActivity extends BaseActivity {
             case ActivityResultConstant.UPDATE_USER_HEAD: {
                 String filePath = data.getExtras().getString("filePath");
                 ImageLoader.getInstance().displayImage(filePath, userIcon, ImageLoaderUtil.getHeadUrlImageOptions());
+                slUser.setBigImg(filePath);
                 slUser.setHeadUrl(filePath);
                 break;
             }

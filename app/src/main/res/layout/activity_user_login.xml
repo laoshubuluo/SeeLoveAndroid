@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/root_layout">
+
+    <ImageView
+        style="@style/wh_mm"
+        android:background="@mipmap/ic_launcher"
+        android:scaleType="centerCrop" />
+</RelativeLayout>

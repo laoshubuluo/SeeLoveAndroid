@@ -40,6 +40,7 @@
     <dimen name="layout_180dp">180dp</dimen>
     <dimen name="layout_200dp">200dp</dimen>
     <dimen name="layout_250dp">250dp</dimen>
+    <dimen name="layout_260dp">260dp</dimen>
     <dimen name="layout_280dp">280dp</dimen>
     <dimen name="layout_300dp">300dp</dimen>
     <dimen name="layout_240dp">340dp</dimen>

@@ -30,6 +30,12 @@
     <string name="select_city">请选择城市</string>
     <string name="video_title_hint">请设置视频简要说明...</string>
     <string name="user_info">个人信息</string>
+    <string name="phone_number_hint">请输入手机号</string>
+    <string name="code_number_hint">请输入验证码</string>
+    <string name="phone_login">手机号快捷登录</string>
+    <string name="get_code">获取验证码</string>
+    <string name="phone_is_null">手机号不能为空!</string>
+    <string name="code_is_null">验证码为空!</string>
     <!--消息-->
     <string name="send">发送</string>
     <string name="send_message">发送消息</string>
