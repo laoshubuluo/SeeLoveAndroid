@@ -51,16 +51,14 @@ public class UserDaoImpl implements UserDao {
         try {
             DbConnectionManager.getInstance().getConnection().execSQL(
                     sqlInsertUserInfo,
-                    new String[]{String.valueOf(user.getUserId()), user.getHeadUrl(),
+                    new Object[]{String.valueOf(user.getUserId()), user.getHeadUrl(),
                             user.getNickName(), String.valueOf(user.getAccountType()),
                             String.valueOf(user.getAge()), user.getSex(),
-                            user.getBigImg(), String.valueOf(user.getCityCode()), user.getCityName(),
-                            String.valueOf(user.getWorkCode()), user.getWorkName(),
-                            String.valueOf(user.getEducationCode()), user.getEducationName(),
-                            String.valueOf(user.getHouseCode()),
-                            user.getHouseName(),
-                            String.valueOf(user.getMarriageCode()),
-                            user.getMarriageName(), user.getIntroduce(),
+                            user.getBigImg(), user.getCityCode(), user.getCityName(),
+                            user.getWorkCode(), user.getWorkName(),
+                            user.getEducationCode(), user.getEducationName(),
+                            user.getHouseCode(), user.getHouseName(),
+                            user.getMarriageCode(), user.getMarriageName(), user.getIntroduce(),
                             user.getRemark(), String.valueOf(user.getVideoCount()), String.valueOf(user.getFollowCount()),
                             String.valueOf(user.getFollowedCount())});
             LogUtil.i("db execute sql success： " + sqlInsertUserInfo);

@@ -4,19 +4,26 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
 import com.tianyu.seelove.common.WebConstant;
+import com.tianyu.seelove.dao.UserDao;
+import com.tianyu.seelove.dao.VideoDao;
+import com.tianyu.seelove.dao.impl.UserDaoImpl;
+import com.tianyu.seelove.dao.impl.VideoDaoImpl;
+import com.tianyu.seelove.manager.DbConnectionManager;
+import com.tianyu.seelove.manager.RongCloudManager;
 import com.tianyu.seelove.model.entity.network.request.UserRegisterLoginActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.UserRegisterLoginRspInfo;
 import com.tianyu.seelove.model.entity.user.SLUser;
+import com.tianyu.seelove.model.entity.user.SLUserDetail;
+import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.network.request.base.PostJsonRequest;
+import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
-
 import org.json.JSONObject;
 
 /**
@@ -25,11 +32,11 @@ import org.json.JSONObject;
  * introduce : 用户注册请求request
  */
 public class UserRegistLoginRequest extends PostJsonRequest {
+    private UserDao userDao;
+    private VideoDao videoDao;
     private int accountType;// User.accountType
-
     // 第三方平台快捷登录
     private String dataFromOtherPlatform;
-
     // 手机号快捷注册登录
     private String phoneNumber;
     private String code;
@@ -39,6 +46,8 @@ public class UserRegistLoginRequest extends PostJsonRequest {
         this.context = context;
         this.accountType = accountType;
         this.dataFromOtherPlatform = dataFromOtherPlatform;
+        userDao = new UserDaoImpl();
+        videoDao = new VideoDaoImpl();
     }
 
     public UserRegistLoginRequest(Handler handler, Context context, int accountType, String phoneNumber, String code) {
@@ -47,6 +56,7 @@ public class UserRegistLoginRequest extends PostJsonRequest {
         this.accountType = accountType;
         this.phoneNumber = phoneNumber;
         this.code = code;
+        userDao = new UserDaoImpl();
     }
 
     @Override
@@ -80,7 +90,8 @@ public class UserRegistLoginRequest extends PostJsonRequest {
             UserRegisterLoginRspInfo info = GsonUtil.fromJson(response.toString(), UserRegisterLoginRspInfo.class);
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
-                b.putSerializable("user", info.getUser());
+                b.putSerializable("userDetail", info.getUserDetail());
+                saveDataAfterLoginSuccess(info.getUserDetail());
                 msg.what = MessageSignConstant.USER_LOGIN_SUCCESS;
                 msg.setData(b);
                 handler.sendMessage(msg);
@@ -99,5 +110,22 @@ public class UserRegistLoginRequest extends PostJsonRequest {
             handler.sendEmptyMessage(MessageSignConstant.UNKNOWN_ERROR);
             LogUtil.e(requestTag() + " error", e);
         }
+    }
+
+    private void saveDataAfterLoginSuccess(SLUserDetail slUserDetail) {
+        // 初始化用户信息
+        AppUtils.getInstance().setUserId(slUserDetail.getUser().getUserId());
+        AppUtils.getInstance().setUserToken(slUserDetail.getUser().getToken4RongCloud());
+        // 数据库指向用户自己的数据库
+        DbConnectionManager.getInstance().reload();
+        userDao.addUser(slUserDetail.getUser());
+        if (null != slUserDetail.getVideoList() && slUserDetail.getVideoList().size() > 0) {
+            for (SLVideo slVideo : slUserDetail.getVideoList()) {
+                videoDao.addVideo(slVideo);
+            }
+        }
+        // 链接融云服务器
+        String token = AppUtils.getInstance().getUserToken(); // 当前用户token
+        RongCloudManager.getInstance().connect(token);
     }
 }

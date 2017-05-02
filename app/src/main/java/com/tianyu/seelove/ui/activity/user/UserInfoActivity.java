@@ -98,7 +98,7 @@ public class UserInfoActivity extends BaseActivity {
             userAge.setText(slUser.getAge() + "岁");
             userDescript.setText(StringUtils.isNotBlank(slUser.getIntroduce()) ? slUser.getIntroduce() : "我是一句话介绍！！");
             cityName.setText(StringUtils.isNotBlank(slUser.getCityName()) ? "/" + slUser.getCityName() : "/北京");
-            ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), bigImage, ImageLoaderUtil.getSmallImageOptions());
+            ImageLoader.getInstance().displayImage(slUser.getBigImg(), bigImage, ImageLoaderUtil.getSmallImageOptions());
             if (slVideoList.size() > 0) {
                 videoGridAdapter.updateData(slVideoList);
             }
