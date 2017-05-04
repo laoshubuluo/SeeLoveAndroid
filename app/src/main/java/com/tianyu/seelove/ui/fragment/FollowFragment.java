@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.tianyu.seelove.ui.activity.video.VideoRecordActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
+import com.tianyu.seelove.view.PullToRefreshView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import java.util.List;
@@ -32,13 +35,14 @@ import java.util.List;
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
-public class FollowFragment extends BaseFragment {
+public class FollowFragment extends BaseFragment implements PullToRefreshView.OnHeaderRefreshListener, PullToRefreshView.OnFooterRefreshListener{
     private FollowListAdapter adapter;
     private ListView followListView;
     private FollowReciver reciver;
     private View view = null;
     private NewsController controller;
     private List<SLUserDetail> userList;
+    private PullToRefreshView mPullToRefreshView;
 
     @Override
     public void onAttach(Activity activity) {
@@ -77,6 +81,9 @@ public class FollowFragment extends BaseFragment {
         rightView.setVisibility(View.VISIBLE);
         rightView.setBackgroundResource(R.mipmap.create_video_cion);
         rightView.setOnClickListener(this);
+        mPullToRefreshView = (PullToRefreshView) view.findViewById(R.id.pull_to_refresh_view);
+        mPullToRefreshView.setOnFooterRefreshListener(this);
+        mPullToRefreshView.setOnHeaderRefreshListener(this);
         followListView = (ListView) view.findViewById(R.id.followListView);
         adapter = new FollowListAdapter(getActivity(), userList);
         followListView.setAdapter(adapter);
@@ -85,6 +92,38 @@ public class FollowFragment extends BaseFragment {
         customProgressDialog.show();
         controller.findAll(AppUtils.getInstance().getUserId());
     }
+
+    @Override
+    public void onFooterRefresh(PullToRefreshView view) {
+		/* 上拉加载更多 */
+        h.sendEmptyMessage(1);
+    }
+
+    @Override
+    public void onHeaderRefresh(PullToRefreshView view) {
+		/* 下拉刷新数据 */
+        h.sendEmptyMessage(2);
+    }
+
+    Handler h = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == 1) {
+                h.postAtTime(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullToRefreshView.onFooterRefreshComplete();
+                    }
+                }, SystemClock.uptimeMillis() + 1000);
+            } else if (msg.what == 2) {
+                h.postAtTime(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullToRefreshView.onHeaderRefreshComplete();
+                    }
+                }, SystemClock.uptimeMillis() + 1000);
+            }
+        };
+    };
 
     private void initIntent() {
         IntentFilter intentFilter = new IntentFilter();

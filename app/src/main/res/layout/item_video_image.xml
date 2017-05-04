@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/signImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/layout_20dp"
+        android:layout_height="@dimen/layout_20dp"
         android:background="@mipmap/checkbox_pressed" />
 </FrameLayout>

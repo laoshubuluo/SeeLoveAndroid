@@ -5,10 +5,16 @@
 
     <include layout="@layout/public_top_view"></include>
 
-    <ListView
-        android:id="@+id/followListView"
+    <com.tianyu.seelove.view.PullToRefreshView
+        android:id="@+id/pull_to_refresh_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none" />
+        android:orientation="vertical">
 
+        <ListView
+            android:id="@+id/followListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+    </com.tianyu.seelove.view.PullToRefreshView>
 </LinearLayout>

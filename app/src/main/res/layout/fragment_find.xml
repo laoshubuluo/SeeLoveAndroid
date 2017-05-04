@@ -5,12 +5,19 @@
 
     <include layout="@layout/public_top_view"></include>
 
-    <GridView
-        android:id="@+id/userGridView"
+    <com.tianyu.seelove.view.PullToRefreshView
+        android:id="@+id/pull_to_refresh_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="2"
-        android:horizontalSpacing="@dimen/layout_5dp"
-        android:verticalSpacing="@dimen/layout_5dp"
-        android:scrollbars="none" />
+        android:orientation="vertical">
+
+        <GridView
+            android:id="@+id/userGridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:horizontalSpacing="@dimen/layout_5dp"
+            android:numColumns="2"
+            android:scrollbars="none"
+            android:verticalSpacing="@dimen/layout_5dp" />
+    </com.tianyu.seelove.view.PullToRefreshView>
 </LinearLayout>

@@ -3,19 +3,34 @@
     android:id="@+id/itemView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/item_video_view"
-        layout="@layout/list_video_item"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_130dp" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/item_video_view"
+            layout="@layout/list_video_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_130dp" />
+
+        <ImageView
+            android:id="@+id/deleteImg"
+            android:layout_width="@dimen/layout_20dp"
+            android:layout_height="@dimen/layout_20dp"
+            android:layout_gravity="right|top"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/delete_sign"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/videoTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray_73"
         android:layout_marginTop="@dimen/layout_5dp"
+        android:textColor="@color/gray_73"
         android:textSize="@dimen/font_14sp" />
 </LinearLayout>
