@@ -23,12 +23,14 @@ import com.tianyu.seelove.view.dialog.SureDialog;
  */
 public class SettingActivity extends BaseActivity {
     private SureDialog sureDialog;
+    private TextView exitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         initView();
+        initData();
     }
 
     private void initView() {
@@ -36,9 +38,17 @@ public class SettingActivity extends BaseActivity {
         titleView.setText(R.string.setting);
         ImageView backView = (ImageView) findViewById(R.id.leftBtn);
         backView.setVisibility(View.VISIBLE);
-        TextView exitBtn = (TextView) findViewById(R.id.exitLogin);
+        exitBtn = (TextView) findViewById(R.id.exitLogin);
         exitBtn.setOnClickListener(this);
         backView.setOnClickListener(this);
+    }
+
+    private void initData() {
+        if (AppUtils.getInstance().getUserId() != 0) {
+            exitBtn.setVisibility(View.VISIBLE);
+        } else {
+            exitBtn.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -67,7 +77,7 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
-    private void exitLogin(){
+    private void exitLogin() {
         // 注销通知栏通知
         NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         try {

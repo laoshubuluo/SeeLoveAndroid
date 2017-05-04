@@ -2,7 +2,9 @@ package com.tianyu.seelove.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
+import com.tianyu.seelove.view.PullToRefreshView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import com.tianyu.seelove.view.dialog.SelectDialog;
@@ -26,12 +29,13 @@ import java.util.List;
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
-public class FindFragment extends BaseFragment {
+public class FindFragment extends BaseFragment implements PullToRefreshView.OnHeaderRefreshListener, PullToRefreshView.OnFooterRefreshListener {
     private View view = null;
     private GridView userGridView;
     private FindUserListAdapter mAdapter;
     private UserController controller;
     private List<SLUserDetail> userList;
+    private PullToRefreshView mPullToRefreshView;
 
     @Override
     public void onAttach(Activity activity) {
@@ -66,9 +70,12 @@ public class FindFragment extends BaseFragment {
         TextView titleView = (TextView) view.findViewById(R.id.titleView);
         ImageView rightView = (ImageView) view.findViewById(R.id.rightBtn);
         titleView.setText(R.string.find);
-        rightView.setVisibility(View.VISIBLE);
+        rightView.setVisibility(View.GONE);
         rightView.setBackgroundResource(R.mipmap.find_select_btn);
         rightView.setOnClickListener(this);
+        mPullToRefreshView = (PullToRefreshView) view.findViewById(R.id.pull_to_refresh_view);
+        mPullToRefreshView.setOnFooterRefreshListener(this);
+        mPullToRefreshView.setOnHeaderRefreshListener(this);
         userGridView = (GridView) view.findViewById(R.id.userGridView);
         mAdapter = new FindUserListAdapter(getActivity(), userList);
         userGridView.setAdapter(mAdapter);
@@ -80,6 +87,38 @@ public class FindFragment extends BaseFragment {
 //        controller.findAll(AppUtils.getInstance().getStartAge(),AppUtils.getInstance().getEndAge(),
 //                AppUtils.getInstance().getSexCode(),AppUtils.getInstance().getCityCode());
     }
+
+    @Override
+    public void onFooterRefresh(PullToRefreshView view) {
+		/* 上拉加载更多 */
+        h.sendEmptyMessage(1);
+    }
+
+    @Override
+    public void onHeaderRefresh(PullToRefreshView view) {
+		/* 下拉刷新数据 */
+        h.sendEmptyMessage(2);
+    }
+
+    Handler h = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == 1) {
+                h.postAtTime(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullToRefreshView.onFooterRefreshComplete();
+                    }
+                }, SystemClock.uptimeMillis() + 1000);
+            } else if (msg.what == 2) {
+                h.postAtTime(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullToRefreshView.onHeaderRefreshComplete();
+                    }
+                }, SystemClock.uptimeMillis() + 1000);
+            }
+        };
+    };
 
     @Override
     public void onClick(View view) {

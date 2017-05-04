@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
+import com.tianyu.seelove.common.ActivityResultConstant;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.SecurityCodeController;
 import com.tianyu.seelove.controller.UserController;
@@ -25,9 +26,11 @@ import com.tianyu.seelove.dao.UserDao;
 import com.tianyu.seelove.dao.VideoDao;
 import com.tianyu.seelove.dao.impl.UserDaoImpl;
 import com.tianyu.seelove.dao.impl.VideoDaoImpl;
+import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.model.entity.video.SLVideo;
+import com.tianyu.seelove.ui.activity.system.SelectHeadActivity;
 import com.tianyu.seelove.ui.activity.system.SettingActivity;
 import com.tianyu.seelove.ui.activity.user.FollowUserListActivity;
 import com.tianyu.seelove.ui.activity.user.MyInfoActivity;
@@ -66,6 +69,7 @@ public class ManageFragment extends BaseFragment {
     private VideoGridAdapter videoGridAdapter;
     private TextView getCodeBtn;
     private TimeCount time;//倒计时
+    private String filePath = "";
 
     @Override
     public void onAttach(Activity activity) {
@@ -133,6 +137,7 @@ public class ManageFragment extends BaseFragment {
         getCodeBtn = (TextView) view.findViewById(R.id.getCodeBtn);
         phoneEdit = (EditText) view.findViewById(R.id.phoneEdit);
         codeEdit = (EditText) view.findViewById(R.id.codeEdit);
+        LinearLayout userEditLayout = (LinearLayout) view.findViewById(R.id.userEditLayout);
         ImageView qqLoginBtn = (ImageView) view.findViewById(R.id.qqLoginBtn);
         ImageView wechatLoginBtn = (ImageView) view.findViewById(R.id.wechatLoginBtn);
         Button loginBtn = (Button) view.findViewById(R.id.loginBtn);
@@ -140,6 +145,8 @@ public class ManageFragment extends BaseFragment {
         wechatLoginBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
         getCodeBtn.setOnClickListener(this);
+        bigImage.setOnClickListener(this);
+        userEditLayout.setOnClickListener(this);
     }
 
     private void initData(SLUser slUser) {
@@ -246,6 +253,19 @@ public class ManageFragment extends BaseFragment {
                 time.start();
                 break;
             }
+            case R.id.bigImage: {
+                intent = IntentManager.createIntent(getActivity(), SelectHeadActivity.class);
+                startActivityForResult(intent, 0);
+                getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);
+                break;
+            }
+            case R.id.userEditLayout: {
+                intent = new Intent();
+                intent.setClass(view.getContext(), MyInfoActivity.class);
+                intent.putExtra("user", slUser);
+                startActivity(intent);
+                break;
+            }
             default:
                 break;
         }
@@ -279,6 +299,7 @@ public class ManageFragment extends BaseFragment {
 
     /**
      * Handler发送message的逻辑处理方法
+     *
      * @param msg
      * @return
      */
@@ -292,6 +313,15 @@ public class ManageFragment extends BaseFragment {
         String code;
         String message;
         switch (msg.what) {
+            case MessageSignConstant.USER_UPDATE_SUCCESS:
+                ImageLoader.getInstance().displayImage(filePath, bigImage, ImageLoaderUtil.getSmallImageOptions());
+                break;
+            case MessageSignConstant.USER_UPDATE_FAILURE:
+                code = msg.getData().getString("code");
+                message = msg.getData().getString("message");
+                promptDialog.initData(getString(R.string.user_update_success), message);
+                promptDialog.show();
+                break;
             case MessageSignConstant.USER_LOGIN_SUCCESS:
                 SLUserDetail slUserDetail = (SLUserDetail) msg.getData().getSerializable("userDetail");
                 slUser = slUserDetail.getUser();
@@ -313,6 +343,20 @@ public class ManageFragment extends BaseFragment {
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case ActivityResultConstant.UPDATE_USER_HEAD: {
+                filePath = data.getExtras().getString("filePath");
+                slUser.setBigImg(filePath);
+                customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
+                customProgressDialog.show();
+                controller.update(slUser);
+                break;
+            }
+        }
     }
 
     @Override

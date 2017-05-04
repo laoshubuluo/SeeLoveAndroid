@@ -10,7 +10,6 @@ import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.AsyncTaskUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.StringUtils;
-
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -66,6 +65,9 @@ public class SignleAlbumActivity extends BaseActivity {
         btn_back = (ImageView) findViewById(R.id.leftBtn);
         title = (TextView) findViewById(R.id.titleView);
         title.setText(getString(R.string.select_photos));
+        ImageView backView = (ImageView) findViewById(R.id.leftBtn);
+        backView.setVisibility(View.VISIBLE);
+        backView.setOnClickListener(this);
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
         progressBar.setVisibility(View.GONE);
         gridView = (GridView) findViewById(R.id.myGrid);
@@ -77,6 +79,16 @@ public class SignleAlbumActivity extends BaseActivity {
         okButton = (Button) findViewById(R.id.ok_button);
         scrollview = (HorizontalScrollView) findViewById(R.id.scrollview);
         initSelectImage();
+    }
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        switch (view.getId()) {
+            case R.id.leftBtn:
+                finish();
+                break;
+        }
     }
 
     private void initSelectImage() {
@@ -170,7 +182,7 @@ public class SignleAlbumActivity extends BaseActivity {
                                             }
                                         });
                                 okButton.setText(getString(R.string.select_pre)
-                                        + selectedDataList.size() +getString(R.string.select_add));
+                                        + selectedDataList.size() + getString(R.string.select_add));
                                 Intent intent = new Intent();
                                 Bundle bundle = new Bundle();
                                 // intent.putArrayListExtra("dataList",
