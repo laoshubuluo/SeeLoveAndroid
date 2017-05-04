@@ -3,7 +3,6 @@ package com.tianyu.seelove.ui.activity.video;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
@@ -32,6 +31,7 @@ import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.BitmapUtils;
 import com.tianyu.seelove.utils.GsonUtil;
+import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.MyGridView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
@@ -86,6 +86,7 @@ public class VideoImageActivity extends BaseActivity {
     private void initData() {
         adapter = new VideoImageAdapter(this, bitmapList);
         videoGridView.setAdapter(adapter);
+        adapter.changeState(0);
         videoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -105,6 +106,10 @@ public class VideoImageActivity extends BaseActivity {
             }
             case R.id.rightBtn: {
                 videoTitle = editVideoTitle.getText().toString().trim();
+                if (StringUtils.isNullOrBlank(videoTitle)) {
+                    Toast.makeText(this, R.string.video_title_is_null, Toast.LENGTH_LONG).show();
+                    break;
+                }
                 // 请求服务器
                 customProgressDialog = new CustomProgressDialog(VideoImageActivity.this, getString(R.string.loading));
                 customProgressDialog.show();

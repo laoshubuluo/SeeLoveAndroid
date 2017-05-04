@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
+import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.video.MyVideoView;
 
 /**
@@ -25,6 +26,8 @@ public class VideoPlayActivity extends BaseActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_video_play);
         videoPath = getIntent().getStringExtra("videoPath");
+        customProgressDialog = new CustomProgressDialog(this, getString(R.string.loading_video));
+        customProgressDialog.show();
         initView();
     }
 
@@ -38,6 +41,8 @@ public class VideoPlayActivity extends BaseActivity {
             public void onPrepared(MediaPlayer mediaPlayer) {
                 vv_play.setLooping(true);
                 vv_play.start();
+                if (customProgressDialog != null)
+                    customProgressDialog.dismiss();
             }
         });
     }
