@@ -63,7 +63,7 @@ public class VideoCreateRequest extends PostJsonRequest {
             VideoCreateRspInfo info = GsonUtil.fromJson(response.toString(), VideoCreateRspInfo.class);
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
-                videoDao.addVideo(video);
+                videoDao.addVideo(info.getVideo());
                 msg.what = MessageSignConstant.VIDEO_CREATE_SUCCESS;
                 msg.setData(b);
                 handler.sendMessage(msg);

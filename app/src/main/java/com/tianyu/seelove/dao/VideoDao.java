@@ -29,7 +29,7 @@ public interface VideoDao {
      * @param videoId
      * @return
      */
-    boolean deleteVideoByVideoId(String videoId);
+    boolean deleteVideoByVideoId(long videoId);
 
     /**
      * 获取当前用户所有短视屏详情

@@ -2,45 +2,43 @@ package com.tianyu.seelove.ui.activity.video;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Message;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
+import com.tianyu.seelove.common.MessageSignConstant;
+import com.tianyu.seelove.controller.VideoController;
 import com.tianyu.seelove.dao.VideoDao;
 import com.tianyu.seelove.dao.impl.VideoDaoImpl;
 import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.view.MyGridView;
-
+import com.tianyu.seelove.view.dialog.PromptDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Toast;
-
 /**
  * 我的视频界面
- *
  * @author shisheng.zhao
  * @date 2017-03-29 22:50
  */
 public class VideoListActivity extends BaseActivity implements VideoGridAdapter.ShowDeleteSignListener, VideoGridAdapter.DeleteListener {
+    private VideoController controller;
     private VideoDao videoDao;
     private MyGridView videoGridView;
     private VideoGridAdapter adapter;
     private List<SLVideo> slVideoList = new ArrayList<>();
     private boolean isShowDelete = false;
+    private int currentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_list);
+        controller = new VideoController(this, handler);
         videoDao = new VideoDaoImpl();
         adapter = new VideoGridAdapter(this, this, this);
         adapter.updateData(slVideoList);
@@ -50,7 +48,7 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
 
     private void initView() {
         TextView titleView = (TextView) findViewById(R.id.titleView);
-        titleView.setText("我的视频");
+        titleView.setText(R.string.my_video);
         ImageView backView = (ImageView) findViewById(R.id.leftBtn);
         ImageView rightView = (ImageView) findViewById(R.id.rightBtn);
         rightView.setBackgroundResource(R.mipmap.create_video_cion);
@@ -66,29 +64,6 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
     private void initData() {
         slVideoList = videoDao.getVideoListByUserId(AppUtils.getInstance().getUserId());
         adapter.updateData(slVideoList);
-//        videoGridView.setOnItemLongClickListener(this);
-        videoGridView.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (isShowDelete) {
-                    isShowDelete = false;
-                } else {
-                    isShowDelete = true;
-                    adapter.setIsShowDelete(isShowDelete);
-                    videoGridView.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            delete(position);//删除选中项
-                            Log.e("------>", "进来了么");
-                            adapter.notifyDataSetChanged();//刷新gridview
-                        }
-                    });
-                }
-                Log.e("------>", "进来了没");
-                adapter.setIsShowDelete(isShowDelete);//setIsShowDelete()方法用于传递isShowDelete值
-                return false;
-            }
-        });
     }
 
     @Override
@@ -104,8 +79,10 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
 
     @Override
     public void delete(int position) {
-        slVideoList.remove(position);
-        adapter.notifyDataSetChanged();
+        currentPosition = position;
+        List<Long> videoIdList = new ArrayList<>();
+        videoIdList.add(slVideoList.get(position).getVideoId());
+        controller.delete(AppUtils.getInstance().getUserId(), videoIdList);
     }
 
 
@@ -130,5 +107,37 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
     protected void onResume() {
         super.onResume();
         initData();
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (customProgressDialog != null)
+            customProgressDialog.dismiss();
+        if (promptDialog == null || promptDialog.isShowing())
+            promptDialog = new PromptDialog(this);
+        String code;
+        String message;
+        switch (msg.what) {
+            case MessageSignConstant.VIDEO_DELETE_SUCCESS:
+                new VideoDaoImpl().deleteVideoByVideoId(slVideoList.get(currentPosition).getVideoId());
+                slVideoList.remove(currentPosition);
+                adapter.notifyDataSetChanged();
+                break;
+            case MessageSignConstant.VIDEO_DELETE_FAILURE:
+                code = msg.getData().getString("code");
+                message = msg.getData().getString("message");
+                promptDialog.initData(getString(R.string.delete_video_failure), message);
+                promptDialog.show();
+                break;
+            case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
+                promptDialog.initData("", msg.getData().getString("message"));
+                promptDialog.show();
+                break;
+            case MessageSignConstant.UNKNOWN_ERROR:
+                promptDialog.initData("", getString(R.string.unknown_error));
+                promptDialog.show();
+                break;
+        }
+        return false;
     }
 }

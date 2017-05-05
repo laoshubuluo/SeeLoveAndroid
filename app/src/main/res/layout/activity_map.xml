@@ -7,7 +7,7 @@
     <include layout="@layout/public_top_view"></include>
 
     <com.baidu.mapapi.map.MapView
-        android:id="@+id/bmapView"
+        android:id="@+id/mMapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

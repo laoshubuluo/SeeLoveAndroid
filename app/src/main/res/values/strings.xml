@@ -133,5 +133,6 @@
     <string name="user_update_success">用户信息更新成功</string>
     <string name="user_update_failure">用户信息更新失败</string>
     <string name="user_find_detail_failure">获取用户信息失败</string>
+    <string name="delete_video_failure">删除视频失败</string>
     <string name="video_error">视频播放错误，请重试!</string>
 </resources>

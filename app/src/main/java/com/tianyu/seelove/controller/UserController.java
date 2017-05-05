@@ -3,6 +3,8 @@ package com.tianyu.seelove.controller;
 import android.content.Context;
 import android.os.Handler;
 
+import com.tianyu.seelove.model.entity.network.request.TokenFromWeiXinRequest;
+import com.tianyu.seelove.model.entity.network.request.UserInfoFromWeiXinRequest;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.network.VolleyManager;
 import com.tianyu.seelove.network.request.UserFindAllRequest;
@@ -27,8 +29,8 @@ public class UserController {
     /**
      * 用户登录
      */
-    public void login4Platform(int accountType, String dataFromOtherPlatform) {
-        UserRegistLoginRequest request = new UserRegistLoginRequest(handler, context, accountType, dataFromOtherPlatform);
+    public void login4Platform(int accountType, String openId, String dataFromOtherPlatform) {
+        UserRegistLoginRequest request = new UserRegistLoginRequest(handler, context, openId, accountType, dataFromOtherPlatform);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 
@@ -61,6 +63,22 @@ public class UserController {
      */
     public void findDetail(long userId) {
         UserFindDetailRequest request = new UserFindDetailRequest(handler, context, userId);
+        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
+    }
+
+    /**
+     * 微信开放平台登录步骤二：通过code获取token
+     */
+    public void getTokenByCodeFromWeiXin(String code) {
+        TokenFromWeiXinRequest request = new TokenFromWeiXinRequest(handler, context, code);
+        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
+    }
+
+    /**
+     * 微信开放平台登录步骤三：通过token获取用户信息
+     */
+    public void getUserInfoByTokenFromWeiXin(String accessToken, String openId) {
+        UserInfoFromWeiXinRequest request = new UserInfoFromWeiXinRequest(handler, context, accessToken, openId);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 }

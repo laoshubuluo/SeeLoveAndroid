@@ -11,7 +11,6 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MarkerOptions.MarkerAnimateType;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -21,25 +20,16 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.tianyu.seelove.R;
-import com.tianyu.seelove.injection.ControlInjection;
-import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
-
-import android.content.Intent;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Bundle;
 
-public class PositionActivity extends BaseActivity implements
-        OnGetGeoCoderResultListener {
-    @ControlInjection(R.id.titleView)
-    private TextView titleView;
-    @ControlInjection(R.id.bmapView)
+public class PositionActivity extends BaseActivity implements OnGetGeoCoderResultListener {
     private MapView mMapView;
     BaiduMap mBaiduMap;
     BitmapDescriptor mCurrentMarker;
@@ -49,7 +39,6 @@ public class PositionActivity extends BaseActivity implements
     GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
     private double lat, lng;
     private String address;
-    private boolean isEdit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +47,16 @@ public class PositionActivity extends BaseActivity implements
         lng = getIntent().getDoubleExtra("lng", 0);
         lat = getIntent().getDoubleExtra("lat", 0);
         address = getIntent().getStringExtra("address");
-        isEdit = getIntent().getBooleanExtra("isEdit", false);
         initView();
     }
 
     private void initView() {
+        TextView titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(getString(R.string.location_information));
+        ImageView backView = (ImageView) findViewById(R.id.leftBtn);
+        backView.setVisibility(View.VISIBLE);
+        backView.setOnClickListener(this);
+        mMapView = (MapView) findViewById(R.id.mMapView);
         mBaiduMap = mMapView.getMap();
         MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(17f);
         mBaiduMap.setMapStatus(msu);
@@ -96,14 +89,9 @@ public class PositionActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        Intent intent = null;
         switch (v.getId()) {
-            case R.id.titleView:
-//                intent = IntentManager.createIntent(PositionActivity.this, SelectPositionActivity.class);
-//                intent.putExtra("lng", 0);  // 传值0代表定位当前所在位置
-//                intent.putExtra("lat", 0);
-//                startActivity(intent);
-//                finish();
+            case R.id.leftBtn:
+                finish();
                 break;
         }
     }
@@ -120,10 +108,8 @@ public class PositionActivity extends BaseActivity implements
             return;
         }
         mBaiduMap.clear();
-        MarkerOptions ooA = new MarkerOptions()
-                .position(result.getLocation())
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.mipmap.position_icon)).zIndex(9)
+        MarkerOptions ooA = new MarkerOptions().position(result.getLocation())
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.position_icon)).zIndex(9)
                 .draggable(true);
         // 掉下动画
 //        ooA.animateType(MarkerAnimateType.drop);

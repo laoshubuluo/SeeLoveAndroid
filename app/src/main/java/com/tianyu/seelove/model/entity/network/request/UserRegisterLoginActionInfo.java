@@ -10,6 +10,7 @@ import com.tianyu.seelove.model.entity.network.request.base.ActionInfo;
  */
 public class UserRegisterLoginActionInfo extends ActionInfo {
     private int accountType;// User.accountType
+    private String openId;
 
     // 第三方平台快捷登录
     private String dataFromOtherPlatform;//
@@ -18,8 +19,9 @@ public class UserRegisterLoginActionInfo extends ActionInfo {
     private String phoneNumber;
     private String code;
 
-    public UserRegisterLoginActionInfo(int actionId, int accountType, String dataFromOtherPlatform) {
+    public UserRegisterLoginActionInfo(int actionId, String openId, int accountType, String dataFromOtherPlatform) {
         super(actionId);
+        this.openId = openId;
         this.accountType = accountType;
         this.dataFromOtherPlatform = dataFromOtherPlatform;
     }
