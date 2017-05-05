@@ -5,11 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.tianyu.seelove.R;
@@ -40,9 +34,6 @@ import com.tianyu.seelove.utils.DimensionUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.view.dialog.SureDialog;
 import com.tianyu.seelove.view.image.BubbleImageView;
-
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.Date;
 
 public class LocationMessageEntity extends MessageEntity {
@@ -56,18 +47,15 @@ public class LocationMessageEntity extends MessageEntity {
         super(message);
         this.locationMessage = (SLLocationMessage) message;
         this.user = new UserDaoImpl().getUserByUserId(message.getUserFrom());
-        this.self = new UserDaoImpl().getUserByUserId(AppUtils.getInstance()
-                .getUserId());
+        this.self = new UserDaoImpl().getUserByUserId(AppUtils.getInstance().getUserId());
     }
 
     @Override
     protected View inflateView(Context context) {
         if (locationMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
-            return LayoutInflater.from(context).inflate(
-                    R.layout.chatting_item_msg_location_right, null);
+            return LayoutInflater.from(context).inflate(R.layout.chatting_item_msg_location_right, null);
         } else {
-            return LayoutInflater.from(context).inflate(
-                    R.layout.chatting_item_msg_location_left, null);
+            return LayoutInflater.from(context).inflate(R.layout.chatting_item_msg_location_left, null);
         }
     }
 
@@ -76,33 +64,22 @@ public class LocationMessageEntity extends MessageEntity {
                                ViewGroup viewGroup) {
         convertView = inflateView(context);
         viewHolder = new ViewHolder();
-        viewHolder.setUsername((TextView) convertView
-                .findViewById(R.id.mc_tv_username));
-        viewHolder.setBubbleImageView((BubbleImageView) convertView
-                .findViewById(R.id.mc_tv_chatcontent));
-        viewHolder.setAddress((TextView) convertView
-                .findViewById(R.id.mc_tv_address));
+        viewHolder.setUsername((TextView) convertView.findViewById(R.id.mc_tv_username));
+        viewHolder.setBubbleImageView((BubbleImageView) convertView.findViewById(R.id.mc_tv_chatcontent));
+        viewHolder.setAddress((TextView) convertView.findViewById(R.id.mc_tv_address));
         convertView.setTag(viewHolder);
-        viewHolder.setHeader((ImageView) convertView
-                .findViewById(R.id.mc_iv_userhead));
-        viewHolder.setCreateTime((TextView) convertView
-                .findViewById(R.id.mc_tv_sendtime));
-        viewHolder.setProgress((ProgressBar) convertView
-                .findViewById(R.id.mc_progressbar));
-        viewHolder.setSendFail((TextView) convertView
-                .findViewById(R.id.mc_sendfail));
-        viewHolder.setImageAuth((ImageView) convertView
-                .findViewById(R.id.user_recognise));
+        viewHolder.setHeader((ImageView) convertView.findViewById(R.id.mc_iv_userhead));
+        viewHolder.setCreateTime((TextView) convertView.findViewById(R.id.mc_tv_sendtime));
+        viewHolder.setProgress((ProgressBar) convertView.findViewById(R.id.mc_progressbar));
+        viewHolder.setSendFail((TextView) convertView.findViewById(R.id.mc_sendfail));
+        viewHolder.setImageAuth((ImageView) convertView.findViewById(R.id.user_recognise));
         // 设置头像
         if (locationMessage.getUserFrom() == AppUtils.getInstance().getUserId()) {
             viewHolder.getHeader().setImageResource(R.mipmap.default_head);
-            if (self != null && self.getHeadUrl() != null
-                    && self.getHeadUrl().length() > 0) {
+            if (self != null && self.getHeadUrl() != null && self.getHeadUrl().length() > 0) {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);
-                ImageLoader.getInstance().displayImage(
-                        ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()),
-                        viewHolder.getHeader(),
-                        ImageLoaderUtil.getHeadUrlImageOptions());
+                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(self.getHeadUrl()),
+                        viewHolder.getHeader(), ImageLoaderUtil.getHeadUrlImageOptions());
             } else {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);
                 viewHolder.getUsername().setVisibility(View.GONE);
@@ -110,13 +87,9 @@ public class LocationMessageEntity extends MessageEntity {
             viewHolder.getImageAuth().setVisibility(View.GONE);
         } else {
             viewHolder.getHeader().setImageResource(R.mipmap.default_head);
-            if (user != null && user.getHeadUrl() != null
-                    && user.getHeadUrl().length() > 0) {
-                ImageLoader.getInstance().displayImage(
-                        ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()),
-                        viewHolder.getHeader(),
-                        ImageLoaderUtil.getHeadUrlImageOptions());
-
+            if (user != null && user.getHeadUrl() != null && user.getHeadUrl().length() > 0) {
+                ImageLoader.getInstance().displayImage(ImageLoaderUtil.getAcceptableUri(user.getHeadUrl()),
+                        viewHolder.getHeader(), ImageLoaderUtil.getHeadUrlImageOptions());
             } else {
                 viewHolder.getHeader().setImageResource(R.mipmap.default_head);
             }
@@ -274,7 +247,6 @@ public class LocationMessageEntity extends MessageEntity {
 
     private void sendMessage(SLLocationMessage amMessage, final Context context) {
         final long lastId = System.currentTimeMillis();
-        final boolean isGroup;
         SLLocationMessage amLocationMessage = new SLLocationMessage();
         amLocationMessage.setMessageId(String.valueOf(lastId));
         amLocationMessage.setUserFrom(AppUtils.getInstance().getUserId());
@@ -316,9 +288,7 @@ public class LocationMessageEntity extends MessageEntity {
         SessionDao sessionDao = new SessionDaoImpl();
         sessionDao.addSession(session);
         Intent session_intent = new Intent(Actions.ACTION_SESSION);
-        Bundle bundle = new Bundle();
-        bundle.putLong("targetId", session.getTargetId());
-        session_intent.putExtras(bundle);
+        session_intent.putExtra("targetId", session.getTargetId());
         context.sendOrderedBroadcast(session_intent, null);
     }
 }

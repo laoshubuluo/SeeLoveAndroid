@@ -10,6 +10,7 @@ import android.view.View;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 基类fragment, 实现一些fragment公共方法
@@ -38,5 +39,17 @@ public class BaseFragment extends Fragment implements Handler.Callback, View.OnC
     @Override
     public boolean handleMessage(Message message) {
         return false;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(getActivity());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(getActivity());
     }
 }

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
@@ -128,6 +129,10 @@ public class UserInfoActivity extends BaseActivity {
             }
             case R.id.followBtn: {
                 // TODO shisheng.zhao 需要通过一种方式获得关系状态已关注/未关注
+                if (0l == AppUtils.getInstance().getUserId()) {
+                    Toast.makeText(UserInfoActivity.this, "未登录,请登录之后在操作!", Toast.LENGTH_LONG).show();
+                    break;
+                }
                 SLFollow slFollow = new SLFollow();
                 slFollow.setUserId(AppUtils.getInstance().getUserId());
                 slFollow.setFollowUserId(slUser.getUserId());
@@ -137,7 +142,10 @@ public class UserInfoActivity extends BaseActivity {
                 break;
             }
             case R.id.sendMessage: {
-                if (0l != AppUtils.getInstance().getUserId()) {
+                if (0l == AppUtils.getInstance().getUserId()) {
+                    Toast.makeText(UserInfoActivity.this, "未登录,请登录之后在操作!", Toast.LENGTH_LONG).show();
+                    break;
+                } else {
                     new UserDaoImpl().addUser(slUser);
                 }
                 intent = new Intent();

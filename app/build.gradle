@@ -17,16 +17,50 @@ android {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
     }
-    buildTypes {
+
+    //签名配置
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            storeFile file("../keystore/seelove.keystore")
+            storePassword "Person123456"
+            keyAlias "android.keystore"
+            keyPassword "Person123456"
+        }
+
+        debug {
+            storeFile file("../keystore/seelove.keystore")
+            storePassword "Person123456"
+            keyAlias "android.keystore"
+            keyPassword "Person123456"
+        }
+    }
+
+    //build类型
+    buildTypes {
+        debug {
+            minifyEnabled false //开启混淆
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false //开启混淆
+            shrinkResources false //删除无效的resources(需要与minifyEnabled同时设定)
+            debuggable false
+            jniDebuggable false
+            proguardFile('proguard-rules.pro')
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
     lintOptions {
         checkReleaseBuilds false //打包Release版本进行检测
         abortOnError false //报错不停止打包
+    }
+
+    productFlavors {
+        GuanWang {
+            manifestPlaceholders = [CHANNEL_NAME: "GuanWang"]
+        }
     }
 }
 
@@ -38,6 +72,7 @@ repositories {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:22.1.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.android.volley:volley:1.0.0'
     compile files('libs/universal-image-loader-1.9.3.jar')
     compile files('libs/gson-2.2.4.jar')

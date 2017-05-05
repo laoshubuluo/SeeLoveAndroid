@@ -1,0 +1,15 @@
+keystroe password:Person123456
+alias:android.keystore
+key password:Person123456
+first and last name:haimawan
+
+
+phone:
+key password:Person123456
+
+证书指纹:
+         MD5: 86:86:D5:5B:C6:AA:AE:18:25:5A:47:EC:3C:F5:6D:DB
+         SHA1: B0:55:F8:D5:0E:85:F4:A3:7E:F5:D6:B7:7A:10:DD:DE:8B:56:56:15
+         SHA256: C7:2B:15:98:27:8B:D5:3C:90:93:89:56:8B:00:D7:FB:5A:88:3B:7A:FA:E0:33:AE:2F:53:B2:27:81:EB:75:22
+         签名算法名称: SHA1withRSA
+         版本: 3

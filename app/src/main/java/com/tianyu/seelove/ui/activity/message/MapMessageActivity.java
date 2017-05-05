@@ -28,7 +28,6 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
@@ -45,7 +44,6 @@ import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.dao.UserDao;
 import com.tianyu.seelove.dao.impl.SessionDaoImpl;
 import com.tianyu.seelove.dao.impl.UserDaoImpl;
-import com.tianyu.seelove.injection.ControlInjection;
 import com.tianyu.seelove.manager.DirectoryManager;
 import com.tianyu.seelove.model.entity.message.LocationBean;
 import com.tianyu.seelove.model.entity.message.SLLocationMessage;
@@ -60,7 +58,6 @@ import com.tianyu.seelove.utils.BaiduMapUtilByRacer;
 import com.tianyu.seelove.utils.DensityUtil;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.utils.StringUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -125,17 +122,25 @@ public class MapMessageActivity extends BaseActivity {
         topLayout = (RelativeLayout) findViewById(R.id.topLayout);
         titleView = (TextView) findViewById(R.id.titleView);
         ImageView backBtn = (ImageView) findViewById(R.id.leftBtn);
+        ImageView sendBtn = (ImageView) findViewById(R.id.rightBtn);
         titleView.setText(getString(R.string.meet_fellowship_position));
         backBtn.setVisibility(View.VISIBLE);
         backBtn.setOnClickListener(this);
+        sendBtn.setVisibility(View.VISIBLE);
+        sendBtn.setOnClickListener(this);
+        sendBtn.setBackgroundResource(R.mipmap.submit_btn);
         ibMLLocate = (ImageButton) findViewById(R.id.ibMLLocate);
+        ibMLLocate.setOnClickListener(this);
         etMLCityPoi = (EditText) findViewById(R.id.etMLCityPoi);
+        etMLCityPoi.setOnClickListener(this);
         tvShowLocation = (TextView) findViewById(R.id.tvShowLocation);
         lvAroundPoi = (ListView) findViewById(R.id.lvPoiList);
         lvSearchPoi = (ListView) findViewById(R.id.lvMLCityPoi);
         ivMLPLoading = (ImageView) findViewById(R.id.ivMLPLoading);
         btMapZoomIn = (Button) findViewById(R.id.btMapZoomIn);
         btMapZoomOut = (Button) findViewById(R.id.btMapZoomOut);
+        btMapZoomOut.setOnClickListener(this);
+        btMapZoomIn.setOnClickListener(this);
         llMLMain = (LinearLayout) findViewById(R.id.llMLMain);
         mMapView = (MapView) findViewById(R.id.mMapView);
         // 地图初始化
@@ -152,10 +157,103 @@ public class MapMessageActivity extends BaseActivity {
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.leftBtn:
                 finish();
                 break;
+            case R.id.rightBtn:
+                sendMapMessage();
+                break;
+            case R.id.etMLCityPoi:
+                if (etMLCityPoi.getText().toString().trim().length() > 0) {
+                    getPoiByPoiSearch();
+                }
+                break;
+            case R.id.ibMLLocate:
+                locate();
+                break;
+            case R.id.btMapZoomIn:
+                isCanUpdateMap = false;
+                BaiduMapUtilByRacer.zoomInMapView(mMapView);
+                break;
+            case R.id.btMapZoomOut:
+                isCanUpdateMap = false;
+                BaiduMapUtilByRacer.zoomOutMapView(mMapView);
+                break;
+        }
+    }
+
+    private void sendMapMessage() {
+        if (null != poiInfo) {
+            // 发送位置逻辑
+            mBaiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
+                @Override
+                public void onSnapshotReady(Bitmap bitmap) {
+                    String savePath = DirectoryManager.getDirectory(DirectoryManager.DIR.IMAGE) + StringUtils.generateGUID() + ".jpg";
+                    File file = new File(savePath);
+                    FileOutputStream out;
+                    try {
+                        out = new FileOutputStream(file);
+                        // 获取状态栏高度
+                        Rect frame = new Rect();
+                        MapMessageActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+                        int statusBarHeight = frame.top;
+                        int x = Constant.deviceWidthHeight[0] / 2 - 152;
+                        int y = statusBarHeight + topLayout.getHeight() + 101;
+                        bitmap = Bitmap.createBitmap(bitmap, x, y, 304, 202);
+                        if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)) {
+                            out.flush();
+                            out.close();
+                        }
+                        final long lastId = System.currentTimeMillis();
+                        SLLocationMessage locationMessage = new SLLocationMessage();
+                        locationMessage.setMessageId(String.valueOf(lastId));
+                        locationMessage.setMessageContent(savePath);
+                        locationMessage.setUserFrom(AppUtils.getInstance().getUserId());
+                        locationMessage.setUserTo(target);
+                        locationMessage.setIsRead(SLMessage.msgRead);
+                        locationMessage.setTimestamp(new Date().getTime());
+                        locationMessage.setLat(poiInfo.location.latitude);
+                        locationMessage.setLng(poiInfo.location.longitude);
+                        locationMessage.setAddress(poiInfo.address);
+                        locationMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
+                        InsertMessageTask insertMessageTask = new InsertMessageTask();
+                        insertMessageTask.setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
+                            @Override
+                            public void handle(Boolean result) {
+                                // 发送融云广播
+                                Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
+                                send_Intent.putExtra("messageId", String.valueOf(lastId));
+                                send_Intent.putExtra("chatType", "single");
+                                getApplicationContext().sendOrderedBroadcast(send_Intent, null);
+                                // 本地会话广播
+                                Intent intent = new Intent(Actions.SINGLEMESSAGE_ADD_ACTION);
+                                intent.putExtra("messageID", String.valueOf(lastId));
+                                getApplicationContext().sendOrderedBroadcast(intent, null);
+                            }
+                        });
+                        insertMessageTask.execute(locationMessage);
+                        SLSession session = new SLSession();
+                        session.setLastMessageId(String.valueOf(lastId));
+                        session.setPriority(locationMessage.getTimestamp());
+                        session.setTargetId(target);
+                        session.setSessionContent(locationMessage.getMessageContent());
+                        session.setMessageType(locationMessage.getMessageType());
+                        session.setSessionType(SessionType.CHAT);
+                        session.setSessionName(userDao.getUserByUserId(target).getNickName());
+                        SessionDaoImpl sessionDaoImpl = new SessionDaoImpl();
+                        sessionDaoImpl.addSession(session);
+                        Intent session_intent = new Intent(Actions.ACTION_SESSION);
+                        session_intent.putExtra("targetId", session.getTargetId());
+                        sendOrderedBroadcast(session_intent, null);
+                        MapMessageActivity.this.finish();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 
@@ -176,7 +274,6 @@ public class MapMessageActivity extends BaseActivity {
     public void locate() {
         BaiduMapUtilByRacer.locateByBaiduMap(mContext, 2000,
                 new BaiduMapUtilByRacer.LocateListener() {
-
                     @Override
                     public void onLocateSucceed(LocationBean locationBean) {
                         mLocationBean = locationBean;
@@ -185,10 +282,8 @@ public class MapMessageActivity extends BaseActivity {
                         } else {
                             mBaiduMap.clear();
                         }
-                        mMarker = BaiduMapUtilByRacer.showMarkerByResource(
-                                locationBean.getLatitude(),
-                                locationBean.getLongitude(), R.mipmap.point,
-                                mBaiduMap, 0, true);
+                        mMarker = BaiduMapUtilByRacer.showMarkerByResource(locationBean.getLatitude(),
+                                locationBean.getLongitude(), R.mipmap.point, mBaiduMap, 0, true);
                     }
 
                     @Override
@@ -233,8 +328,7 @@ public class MapMessageActivity extends BaseActivity {
                 new BaiduMapUtilByRacer.GeoCodePoiListener() {
 
                     @Override
-                    public void onGetSucceed(LocationBean locationBean,
-                                             List<PoiInfo> poiList) {
+                    public void onGetSucceed(LocationBean locationBean, List<PoiInfo> poiList) {
                         mLocationBean = (LocationBean) locationBean.clone();
                         // mBaiduMap.setMapStatus(MapStatusUpdateFactory
                         // .newLatLng(new LatLng(locationBean
@@ -264,217 +358,66 @@ public class MapMessageActivity extends BaseActivity {
     }
 
     private void iniEvent() {
-        titleView.setOnClickListener(new OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             if (null != poiInfo) {
-                                                 // 发送位置逻辑
-                                                 mBaiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
-                                                     @Override
-                                                     public void onSnapshotReady(Bitmap bitmap) {
-                                                         String savePath = DirectoryManager.getDirectory(DirectoryManager.DIR.IMAGE) +
-                                                                 StringUtils.generateGUID()
-                                                                 + ".jpg";
-                                                         File file = new File(savePath);
-                                                         FileOutputStream out;
-                                                         try {
-                                                             out = new FileOutputStream(file);
-                                                             // 获取状态栏高度
-                                                             Rect frame = new Rect();
-                                                             MapMessageActivity.this.getWindow().getDecorView()
-                                                                     .getWindowVisibleDisplayFrame(frame);
-                                                             int statusBarHeight = frame.top;
-                                                             int x = Constant.deviceWidthHeight[0] / 2 - 152;
-                                                             int y = statusBarHeight + topLayout.getHeight() + 101;
-                                                             bitmap = Bitmap.createBitmap(bitmap, x, y, 304, 202);
-                                                             if (bitmap.compress(Bitmap.CompressFormat.PNG, 100,
-                                                                     out)) {
-                                                                 out.flush();
-                                                                 out.close();
-                                                             }
-                                                             final long lastId = System.currentTimeMillis();
-                                                             SLLocationMessage locationMessage = new SLLocationMessage();
-                                                             locationMessage.setMessageId(String.valueOf(lastId));
-                                                             locationMessage.setMessageContent(savePath);
-                                                             locationMessage.setUserFrom(AppUtils.getInstance().getUserId());
-                                                             locationMessage.setUserTo(target);
-                                                             locationMessage.setIsRead(SLMessage.msgRead);
-                                                             locationMessage.setTimestamp(new Date().getTime());
-                                                             locationMessage.setLat(poiInfo.location.latitude);
-                                                             locationMessage.setLng(poiInfo.location.longitude);
-                                                             locationMessage.setAddress(poiInfo.address);
-                                                             locationMessage.setSendStatue(SLMessage.MessagePropertie.MSG_SENDING);
-                                                             InsertMessageTask insertMessageTask = new InsertMessageTask();
-                                                             insertMessageTask
-                                                                     .setOnPostExecuteHandler(new BaseTask.OnPostExecuteHandler<Boolean>() {
-                                                                         @Override
-                                                                         public void handle(Boolean result) {
-                                                                             // 发送融云广播
-                                                                             Intent send_Intent = new Intent(Actions.ACTION_SNED_SINGLE_MESSAGE);
-                                                                             send_Intent.putExtra("messageId",
-                                                                                     String.valueOf(lastId));
-                                                                             send_Intent.putExtra("chatType", "single");
-                                                                             getApplicationContext().sendOrderedBroadcast(send_Intent, null);
-                                                                             // 本地会话广播
-                                                                             Intent intent = new Intent(Actions.SINGLEMESSAGE_ADD_ACTION);
-                                                                             intent.putExtra("messageID",
-                                                                                     String.valueOf(lastId));
-                                                                             getApplicationContext().sendOrderedBroadcast(intent, null);
-                                                                         }
-                                                                     });
-                                                             insertMessageTask.execute(locationMessage);
-                                                             SLSession session = new SLSession();
-                                                             session.setLastMessageId(String.valueOf(lastId));
-                                                             session.setPriority(locationMessage.getTimestamp());
-                                                             session.setTargetId(target);
-                                                             session.setSessionContent(locationMessage.getMessageContent());
-                                                             session.setMessageType(locationMessage.getMessageType());
-                                                             session.setSessionType(SessionType.CHAT);
-                                                             session.setSessionName(userDao.getUserByUserId(target).getNickName());
-                                                             SessionDaoImpl sessionDaoImpl = new SessionDaoImpl();
-                                                             sessionDaoImpl.addSession(session);
-                                                             Intent session_intent = new Intent(Actions.ACTION_SESSION);
-                                                             Bundle bundle = new Bundle();
-                                                             bundle.putLong("targetId", session.getTargetId());
-                                                             session_intent.putExtras(bundle);
-                                                             sendOrderedBroadcast(session_intent, null);
-                                                             MapMessageActivity.this.finish();
-                                                         } catch (FileNotFoundException e) {
-                                                             e.printStackTrace();
-                                                         } catch (IOException e) {
-                                                             e.printStackTrace();
-                                                         }
-                                                     }
-                                                 });
-                                             }
-                                         }
-                                     }
+        etMLCityPoi.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        );
-        etMLCityPoi.setOnClickListener(new
+            }
 
-                                               OnClickListener() {
+            @Override
+            public void onTextChanged(CharSequence cs, int start, int before, int count) {
+                if (cs.toString().trim().length() > 0) {
+                    getPoiByPoiSearch();
+                } else {
+                    if (searchPoiList != null) {
+                        searchPoiList.clear();
+                    }
+                    showMapOrSearch(SHOW_MAP);
+                    hideSoftinput(mContext);
+                }
+            }
 
-                                                   @Override
-                                                   public void onClick(View v) {
-                                                       if (etMLCityPoi.getText().toString().trim().length() > 0) {
-                                                           getPoiByPoiSearch();
-                                                       }
-                                                   }
-                                               }
+            @Override
+            public void afterTextChanged(Editable s) {
 
-        );
-        etMLCityPoi.addTextChangedListener(new
-
-                                                   TextWatcher() {
-
-                                                       @Override
-                                                       public void onTextChanged(CharSequence cs, int start, int before,
-                                                                                 int count) {
-                                                           if (cs.toString().trim().length() > 0) {
-                                                               getPoiByPoiSearch();
-                                                           } else {
-                                                               if (searchPoiList != null) {
-                                                                   searchPoiList.clear();
-                                                               }
-                                                               showMapOrSearch(SHOW_MAP);
-                                                               hideSoftinput(mContext);
-                                                           }
-                                                       }
-
-                                                       @Override
-                                                       public void beforeTextChanged(CharSequence s, int start, int count,
-                                                                                     int after) {
-                                                       }
-
-                                                       @Override
-                                                       public void afterTextChanged(Editable s) {
-                                                       }
-                                                   }
-
-        );
-        ibMLLocate.setOnClickListener(new
-
-                                              OnClickListener() {
-
-                                                  @Override
-                                                  public void onClick(View v) {
-                                                      locate();
-                                                  }
-                                              }
-
-        );
-        btMapZoomIn.setOnClickListener(new
-
-                                               OnClickListener() {
-
-                                                   @Override
-                                                   public void onClick(View v) {
-                                                       isCanUpdateMap = false;
-                                                       BaiduMapUtilByRacer.zoomInMapView(mMapView);
-                                                   }
-                                               }
-
-        );
-        btMapZoomOut.setOnClickListener(new
-
-                                                OnClickListener() {
-
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        isCanUpdateMap = false;
-                                                        BaiduMapUtilByRacer.zoomOutMapView(mMapView);
-                                                    }
-                                                }
-
-        );
-        lvAroundPoi.setOnItemClickListener(new
-
-                                                   OnItemClickListener() {
-                                                       @Override
-                                                       public void onItemClick(AdapterView<?> arg0, View view, int position,
-                                                                               long arg3) {
-                                                           isCanUpdateMap = false;
-                                                           BaiduMapUtilByRacer.moveToTarget(
-                                                                   aroundPoiList.get(position).location.latitude,
-                                                                   aroundPoiList.get(position).location.longitude, mBaiduMap);
-                                                           tvShowLocation.setText(aroundPoiList.get(position).name);
-                                                           poiInfo = (PoiInfo) arg0.getAdapter().getItem(position);
-                                                           LogUtil.i("address:item" + poiInfo.address);
-                                                       }
-                                                   }
-
-        );
-        lvSearchPoi.setOnItemClickListener(new
-
-                                                   OnItemClickListener() {
-
-                                                       @Override
-                                                       public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                                                               long arg3) {
-                                                           // Geo搜索
-                                                           // mGeoCoder.geocode(new GeoCodeOption().city(
-                                                           // searchPoiList.get(arg2).getCity()).address(
-                                                           // searchPoiList.get(arg2).getLocName()));
-                                                           hideSoftinput(mContext);
-                                                           isCanUpdateMap = false;
-                                                           BaiduMapUtilByRacer.moveToTarget(searchPoiList.get(arg2)
-                                                                           .getLatitude(), searchPoiList.get(arg2).getLongitude(),
-                                                                   mBaiduMap);
-                                                           tvShowLocation.setText(searchPoiList.get(arg2).getLocName());
-                                                           // 反Geo搜索
-                                                           reverseGeoCode(new LatLng(
-                                                                   searchPoiList.get(arg2).getLatitude(), searchPoiList
-                                                                   .get(arg2).getLongitude()), false);
-                                                           if (ivMLPLoading != null
-                                                                   && ivMLPLoading.getVisibility() == View.GONE) {
-                                                               loadingHandler.sendEmptyMessageDelayed(1, 0);
-                                                           }
-                                                           showMapOrSearch(SHOW_MAP);
-                                                       }
-                                                   }
-
-        );
+            }
+        });
+        lvAroundPoi.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                isCanUpdateMap = false;
+                BaiduMapUtilByRacer.moveToTarget(
+                        aroundPoiList.get(position).location.latitude,
+                        aroundPoiList.get(position).location.longitude, mBaiduMap);
+                tvShowLocation.setText(aroundPoiList.get(position).name);
+                poiInfo = (PoiInfo) parent.getAdapter().getItem(position);
+                LogUtil.i("address:item" + poiInfo.address);
+            }
+        });
+        lvSearchPoi.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Geo搜索
+                // mGeoCoder.geocode(new GeoCodeOption().city(
+                // searchPoiList.get(arg2).getCity()).address(
+                // searchPoiList.get(arg2).getLocName()));
+                hideSoftinput(mContext);
+                isCanUpdateMap = false;
+                BaiduMapUtilByRacer.moveToTarget(searchPoiList.get(position)
+                                .getLatitude(), searchPoiList.get(position).getLongitude(),
+                        mBaiduMap);
+                tvShowLocation.setText(searchPoiList.get(position).getLocName());
+                // 反Geo搜索
+                reverseGeoCode(new LatLng(
+                        searchPoiList.get(position).getLatitude(), searchPoiList
+                        .get(position).getLongitude()), false);
+                if (ivMLPLoading != null
+                        && ivMLPLoading.getVisibility() == View.GONE) {
+                    loadingHandler.sendEmptyMessageDelayed(1, 0);
+                }
+                showMapOrSearch(SHOW_MAP);
+            }
+        });
     }
 
     @Override
@@ -498,12 +441,9 @@ public class MapMessageActivity extends BaseActivity {
         }
     }
 
-    ;
-
     BaiduMap.OnMapClickListener mapOnClickListener = new BaiduMap.OnMapClickListener() {
         /**
          * 地图单击事件回调函数
-         *
          * @param point 点击的地理坐标
          */
         public void onMapClick(LatLng point) {
@@ -512,7 +452,6 @@ public class MapMessageActivity extends BaseActivity {
 
         /**
          * 地图内 Poi 单击事件回调函数
-         *
          * @param poi 点击的 poi 信息
          * @return
          */
@@ -594,7 +533,6 @@ public class MapMessageActivity extends BaseActivity {
 
     /**
      * 隐藏软键盘
-     *
      * @param
      */
     private void hideSoftinput(Context mContext) {
