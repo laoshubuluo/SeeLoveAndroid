@@ -6,6 +6,9 @@ import android.os.Handler;
 import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.network.VolleyManager;
 import com.tianyu.seelove.network.request.VideoCreateRequest;
+import com.tianyu.seelove.network.request.VideoDeleteRequest;
+
+import java.util.List;
 
 /**
  * author : L.jinzhu
@@ -26,6 +29,14 @@ public class VideoController {
      */
     public void create(SLVideo video) {
         VideoCreateRequest request = new VideoCreateRequest(handler, context, video);
+        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
+    }
+
+    /**
+     * 删除用户视频
+     */
+    public void delete(Long userId, List<Long> videoIdList) {
+        VideoDeleteRequest request = new VideoDeleteRequest(handler, context, userId, videoIdList);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 }

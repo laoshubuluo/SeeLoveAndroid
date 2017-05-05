@@ -41,4 +41,7 @@ public class MessageSignConstant {
 
     public static final int SEND_SECURITY_CODE_SUCCESS = 1021;
     public static final int SEND_SECURITY_CODE_FAILURE = 1022;
+
+    public static final int VIDEO_DELETE_SUCCESS = 1023;
+    public static final int VIDEO_DELETE_FAILURE = 1024;
 }
