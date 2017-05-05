@@ -44,4 +44,7 @@ public class MessageSignConstant {
 
     public static final int VIDEO_DELETE_SUCCESS = 1023;
     public static final int VIDEO_DELETE_FAILURE = 1024;
+
+    public static final int TOKEN_OR_USERINFO_FROM_WEIXIN_SUCCESS = 1117;
+    public static final int TOKEN_OR_USERINFO_FROM_WEIXIN_FAILURE = 1118;
 }

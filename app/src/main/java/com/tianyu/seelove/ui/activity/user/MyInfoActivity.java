@@ -223,15 +223,15 @@ public class MyInfoActivity extends BaseActivity {
             case ActivityResultConstant.CITY_INPUT: {
                 String cityStr = data.getExtras().getString("cityStr");
                 slUser.setCityCode(CityType.parseByMsg(cityStr).getResultCode());
-                slUser.setCityName(cityStr);
-                userAddress.setText(cityStr);
+                slUser.setCityName(CityType.parse(slUser.getCityCode()).getResultMsg());
+                userAddress.setText(CityType.parse(slUser.getCityCode()).getResultMsg());
                 break;
             }
             case ActivityResultConstant.WORK_INPUT: {
                 String workStr = data.getExtras().getString("workStr");
                 slUser.setWorkCode(WorkType.parseByMsg(workStr).getResultCode());
-                slUser.setWorkName(workStr);
-                userWork.setText(workStr);
+                slUser.setWorkName(WorkType.parse(slUser.getWorkCode()).getResultMsg());
+                userWork.setText(WorkType.parse(slUser.getWorkCode()).getResultMsg());
                 break;
             }
             case ActivityResultConstant.AGE_INPUT: {
@@ -243,15 +243,15 @@ public class MyInfoActivity extends BaseActivity {
             case ActivityResultConstant.EDUCATION_INPUT: {
                 String educationStr = data.getExtras().getString("educationStr");
                 slUser.setEducationCode(EducationType.parseByMsg(educationStr).getResultCode());
-                slUser.setEducationName(educationStr);
-                userEducation.setText(educationStr);
+                slUser.setEducationName(EducationType.parse(slUser.getEducationCode()).getResultMsg());
+                userEducation.setText(EducationType.parse(slUser.getEducationCode()).getResultMsg());
                 break;
             }
             case ActivityResultConstant.HOUSE_INPUT: {
                 String houseStr = data.getExtras().getString("houseStr");
                 slUser.setHouseCode(HouseType.parseByMsg(houseStr).getResultCode());
-                slUser.setHouseName(houseStr);
-                userHouse.setText(houseStr);
+                slUser.setHouseName(HouseType.parse(slUser.getHouseCode()).getResultMsg());
+                userHouse.setText(HouseType.parse(slUser.getHouseCode()).getResultMsg());
                 break;
             }
             case ActivityResultConstant.MARRIAGE_INPUT: {

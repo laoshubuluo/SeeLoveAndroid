@@ -15,10 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.common.ActivityResultConstant;
+import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.SecurityCodeController;
 import com.tianyu.seelove.controller.UserController;
@@ -45,11 +47,13 @@ import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import com.tianyu.seelove.wxapi.QQEntryActivity;
 import com.tianyu.seelove.wxapi.WXEntryActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Fragmengt(管理)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:03
  */
@@ -60,6 +64,7 @@ public class ManageFragment extends BaseFragment {
     private SecurityCodeController codeController;
     private SLUser slUser;
     private ImageView bigImage, headUrl;
+    private ImageView qqLogin, wechatLogin;
     private TextView titleView, userName, videoCount, followCount, followedCount;
     private MyGridView videoGridView;
     private LinearLayout loginLayout, userLayout;
@@ -138,11 +143,11 @@ public class ManageFragment extends BaseFragment {
         phoneEdit = (EditText) view.findViewById(R.id.phoneEdit);
         codeEdit = (EditText) view.findViewById(R.id.codeEdit);
         LinearLayout userEditLayout = (LinearLayout) view.findViewById(R.id.userEditLayout);
-        ImageView qqLoginBtn = (ImageView) view.findViewById(R.id.qqLoginBtn);
-        ImageView wechatLoginBtn = (ImageView) view.findViewById(R.id.wechatLoginBtn);
+        qqLogin = (ImageView) view.findViewById(R.id.qqLoginBtn);
+        wechatLogin = (ImageView) view.findViewById(R.id.wechatLoginBtn);
         Button loginBtn = (Button) view.findViewById(R.id.loginBtn);
-        qqLoginBtn.setOnClickListener(this);
-        wechatLoginBtn.setOnClickListener(this);
+        qqLogin.setOnClickListener(this);
+        wechatLogin.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
         getCodeBtn.setOnClickListener(this);
         bigImage.setOnClickListener(this);
@@ -219,6 +224,8 @@ public class ManageFragment extends BaseFragment {
                 customProgressDialog.show();
                 intent = new Intent(getActivity(), QQEntryActivity.class);
                 startActivityForResult(intent, 0);
+                qqLogin.setClickable(false);
+                Constant.loginOpenPlatformIng = true;
                 break;
             }
             case R.id.wechatLoginBtn: {
@@ -226,6 +233,8 @@ public class ManageFragment extends BaseFragment {
                 customProgressDialog.show();
                 intent = new Intent(getActivity(), WXEntryActivity.class);
                 startActivityForResult(intent, 0);
+                wechatLogin.setClickable(false);
+                Constant.loginOpenPlatformIng = true;
                 break;
             }
             case R.id.loginBtn: {
@@ -297,12 +306,6 @@ public class ManageFragment extends BaseFragment {
         }
     }
 
-    /**
-     * Handler发送message的逻辑处理方法
-     *
-     * @param msg
-     * @return
-     */
     @Override
     public boolean handleMessage(Message msg) {
         if (customProgressDialog != null)
@@ -347,6 +350,12 @@ public class ManageFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 微信界面无法正常返回resultCode,故采用全局标识方式处理
+        if (!Constant.loginOpenPlatformIng) {
+            LogUtil.i("login from open platform cancel");
+            if (customProgressDialog != null)
+                customProgressDialog.dismiss();
+        }
         switch (resultCode) {
             case ActivityResultConstant.UPDATE_USER_HEAD: {
                 filePath = data.getExtras().getString("filePath");
@@ -382,6 +391,8 @@ public class ManageFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+        qqLogin.setClickable(true);
+        wechatLogin.setClickable(true);
         LogUtil.d("ManageFragment____onPause");
     }
 

@@ -211,7 +211,6 @@ public class LocationMessageEntity extends MessageEntity {
                 intent.putExtra("lng", locationMessage.getLng());
                 intent.putExtra("lat", locationMessage.getLat());
                 intent.putExtra("address", locationMessage.getAddress());
-                intent.putExtra("isEdit", false); // 是否可以编辑
                 context.startActivity(intent);
             }
         });

@@ -35,16 +35,18 @@ public class UserRegistLoginRequest extends PostJsonRequest {
     private UserDao userDao;
     private VideoDao videoDao;
     private int accountType;// User.accountType
+    private String openId;
     // 第三方平台快捷登录
     private String dataFromOtherPlatform;
     // 手机号快捷注册登录
     private String phoneNumber;
     private String code;
 
-    public UserRegistLoginRequest(Handler handler, Context context, int accountType, String dataFromOtherPlatform) {
+    public UserRegistLoginRequest(Handler handler, Context context, String openId, int accountType, String dataFromOtherPlatform) {
         this.handler = handler;
         this.context = context;
         this.accountType = accountType;
+        this.openId = openId;
         this.dataFromOtherPlatform = dataFromOtherPlatform;
         userDao = new UserDaoImpl();
         videoDao = new VideoDaoImpl();
@@ -65,7 +67,7 @@ public class UserRegistLoginRequest extends PostJsonRequest {
         if (SLUser.ACCOUNT_TYPE_PHONE == accountType) {
             actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, accountType, phoneNumber, code);
         } else {
-            actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, accountType, dataFromOtherPlatform);
+            actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, openId, accountType, dataFromOtherPlatform);
         }
         RequestInfo requestInfo = new RequestInfo(context, actionInfo);
         return GsonUtil.toJson(requestInfo);

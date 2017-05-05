@@ -171,7 +171,6 @@ public class VideoImageActivity extends BaseActivity {
                             VideoUploadResponse videoUploadResponse = GsonUtil.fromJson(response.toString(), VideoUploadResponse.class);
                             uploadImageUrl = "http://7xrjck.com1.z0.glb.clouddn.com/" + videoUploadResponse.getKey();
                             SLVideo slVideo = new SLVideo();
-                            slVideo.setVideoId(System.currentTimeMillis());
                             slVideo.setUserId(AppUtils.getInstance().getUserId());
                             slVideo.setVideoTitle(videoTitle);
                             slVideo.setIsDefault("0");

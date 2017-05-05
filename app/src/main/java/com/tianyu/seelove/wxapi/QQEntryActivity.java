@@ -9,12 +9,18 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 import com.tianyu.seelove.R;
-import com.tianyu.seelove.common.ActivityResultConstant;
 import com.tianyu.seelove.common.Constant;
+import com.tianyu.seelove.controller.UserController;
+import com.tianyu.seelove.model.enums.AccountType;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.LogUtil;
 import org.json.JSONObject;
 
+/**
+ * @author shisheng.zhao
+ * @Description: QQ登录
+ * @date 2017-05-05 19:38
+ */
 public class QQEntryActivity extends BaseActivity {
     private static Tencent mTencent;
     private UserInfo mInfo;
@@ -104,7 +110,9 @@ public class QQEntryActivity extends BaseActivity {
         @Override
         public void onComplete(final Object response) {
             LogUtil.i("call qq open platform to getUserInfo: success");
-            // todo shisheng.zhao 正式登录
+            // QQ登录
+            UserController controller = new UserController(getApplication(), Constant.loginHandler);
+            controller.login4Platform(Integer.parseInt(AccountType.QQ.getResultCode()), mTencent.getOpenId(), response.toString());
             finish();
         }
 
@@ -138,7 +146,7 @@ public class QQEntryActivity extends BaseActivity {
      * 通知上层界面（登录界面），因错误或主动操作，第三方登录流程退出
      */
     private void loginCancleAndFinish() {
-        setResult(ActivityResultConstant.RESULT_LOGIN_CANCEL, new Intent());
+        Constant.loginOpenPlatformIng = false;
         finish();
     }
 }

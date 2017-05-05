@@ -6,7 +6,6 @@ package com.tianyu.seelove.common;
  * @date 2017-03-29 22:50
  */
 public class ActivityResultConstant {
-
     // 用户信息修改
     public static final int UPDATE_USER_HEAD = 1001;
     public static final int NAME_INPUT = 1002;
@@ -22,7 +21,4 @@ public class ActivityResultConstant {
     public static final int SELECT_CAMER = 1014;
     public static final int SELECT_PICTURE = 1015;
     public static final int SELECT_CUT = 1016;
-    // 登录
-    public static final int RESULT_LOGIN_CANCEL = 1040;
-
 }

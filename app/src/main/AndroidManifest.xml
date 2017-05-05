@@ -193,6 +193,11 @@
             android:name=".ui.activity.user.UserLoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <!--定位-->
+        <activity
+            android:name=".ui.activity.message.PositionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!-- 发送message service -->
         <service
             android:name=".service.MessageSendService"
@@ -229,20 +234,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 微信开放平台 end -->
+
         <!-- QQ开放平台 begin -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.VIEW" />-->
-
-            <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--<category android:name="android.intent.category.BROWSABLE" />-->
-
-            <!--<data android:scheme="tencent1104784484" />-->
-            <!--</intent-filter>-->
-        </activity>
+            android:noHistory="true"></activity>
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -258,6 +255,7 @@
             </intent-filter>
         </activity>
         <!-- QQ开放平台 end -->
+
         <!-- ShareSDK开放平台 begin -->
         <activity
             android:name="com.mob.tools.MobUIShell"

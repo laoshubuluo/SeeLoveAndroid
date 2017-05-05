@@ -2,12 +2,10 @@ package com.tianyu.seelove.controller;
 
 import android.content.Context;
 import android.os.Handler;
-
 import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.network.VolleyManager;
 import com.tianyu.seelove.network.request.VideoCreateRequest;
 import com.tianyu.seelove.network.request.VideoDeleteRequest;
-
 import java.util.List;
 
 /**

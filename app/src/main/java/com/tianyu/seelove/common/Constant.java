@@ -1,5 +1,7 @@
 package com.tianyu.seelove.common;
 
+import android.os.Handler;
+
 /**
  * @author shisheng.zhao
  * @Description: 定义一些常量
@@ -28,11 +30,20 @@ public class Constant {
     public static int[] deviceWidthHeight;
 
     //QQ开放平台
-    public static final String QQ_APP_ID = "1104784484";
-    public static final String QQ_APP_KEY = "ASJIYRxo7CfkLPy9";
+    public static final String QQ_APP_ID = "1105974837";
+    public static final String QQ_APP_KEY = "y4e1eVHJ0fuo90T0";
     //微信开放平台
     public static final String WEIXIN_APP_ID = "wxb3509f0204b8d3cb";
     public static final String WEIXIN_APP_SECRET = "457fdf85cd950d433626fec52f9c610d";
 
+    //微信开放平台url
+    public static String WEIXIN_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token";
+    public static String WEIXIN_USER_INFO_URL = "https://api.weixin.qq.com/sns/userinfo";
+
     public static final int corners = 100;
+
+    //登录界面的handler（自有登录和第三方开放平台登录共用）
+    public static Handler loginHandler;
+    //是否进行第三方登录中
+    public static boolean loginOpenPlatformIng = false;
 }

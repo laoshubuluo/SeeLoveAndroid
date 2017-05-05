@@ -34,7 +34,7 @@ public class VideoDaoImpl implements VideoDao {
         if (null == getVideoByVideoId(slVideo.getVideoId())) {
             insertVideo(slVideo);
         } else {
-            deleteVideoByVideoId(String.valueOf(slVideo.getVideoId()));
+            deleteVideoByVideoId(slVideo.getVideoId());
             insertVideo(slVideo);
         }
     }
@@ -76,7 +76,7 @@ public class VideoDaoImpl implements VideoDao {
     }
 
     @Override
-    public boolean deleteVideoByVideoId(String videoId) {
+    public boolean deleteVideoByVideoId(long videoId) {
         try {
             DbConnectionManager.getInstance().getConnection().execSQL(
                     sqlDeleteVideoByVideoId,
