@@ -44,6 +44,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.MANAGE_LOCATION_POLICY"></uses-permission>
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -217,7 +218,7 @@
             android:process=":remote"></service>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="C6tvn4XphqOn8ICbKdO830Vq" />
+            android:value="Y91CBfGd055RQjRa7ZORW2yh" />
         <!--百度地图 end -->
 
         <!-- 微信开放平台 begin，不可修改类路径 -->
@@ -280,5 +281,13 @@
             </intent-filter>
         </activity>
         <!-- ShareSDK开放平台 end -->
+        <!--友盟key start-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="590beeeac89576381c00101a" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Test" />
+        <!--友盟key end-->
     </application>
 </manifest>
