@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.utils.DimensionUtils;
 

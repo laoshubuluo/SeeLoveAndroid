@@ -57,22 +57,22 @@ public interface MessageDao {
 
     /**
      * 获取和某人聊天过程中的未读消息总数
-     * @param from 需要查询的人
+     * @param userFrom 需要查询的人
      * @return
      */
-    public int getUnReadMessageCount(String from);
+    int getUnReadMessageCount(long userFrom);
 
     /**
      * 把某人的消息全部置成已读 点对点
-     * @param from
+     * @param userFrom
      */
-    public void setAllRead(long from, long to);
+    void setAllRead(long userFrom, long userTo);
 
     /**
      * 获取所有未读的消息总数 点对点消息
      * @return
      */
-    public int getAllUnReadMessageCount();
+    int getAllUnReadMessageCount();
 
     /**
      * 根据MessageId 更新消息状态为已读

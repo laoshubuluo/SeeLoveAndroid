@@ -27,7 +27,7 @@ public class DateUtils {
         long timeSpan = currentTime - time;
         DecimalFormat decimalFormat = new DecimalFormat("#");
         if (timeSpan < 1000 * 60) {
-            return decimalFormat.format(Math.floor(timeSpan * 1.0 / (1000)))
+            return decimalFormat.format(Math.floor(timeSpan * 1.0 / (1000))) + 1
                     + "秒前";
         } else if (timeSpan < 1000 * 60 * 60) {
             return decimalFormat.format(Math
@@ -67,13 +67,13 @@ public class DateUtils {
         String hour = sdf.format(new Date(time));
         calendar.setTimeInMillis(time);
         if (time >= today) {
-            return  hour;
+            return hour;
         }
         if ((today - time) / ONEDAY == 0) {
             return "昨天" + hour;
         }
         if ((today - time) / ONEDAY == 1) {
-            return  hour;
+            return hour;
         }
         if (calendar.get(Calendar.DAY_OF_WEEK) > 0
                 && (today - time) / ONEDAY < 7) {

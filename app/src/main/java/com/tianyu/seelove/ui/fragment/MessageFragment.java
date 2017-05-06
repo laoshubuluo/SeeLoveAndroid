@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.SessionAdapter;
 import com.tianyu.seelove.common.Actions;
@@ -29,6 +30,7 @@ import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.SessionType;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
 import com.tianyu.seelove.ui.activity.system.NetworkConnectActivity;
+import com.tianyu.seelove.ui.activity.user.UserLoginActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
@@ -42,7 +44,8 @@ import java.util.List;
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
-public class MessageFragment extends BaseFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class MessageFragment extends BaseFragment implements AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener {
     private TextView titleView;
     private SessionDao sessionDao;
     private SessionReciver reciver;
@@ -236,6 +239,13 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
     public void onStart() {
         super.onStart();
         LogUtil.d("MessageFragment____onStart");
+        if (0l == AppUtils.getInstance().getUserId()) {
+            Intent intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
+            startActivityForResult(intent, 0);
+            getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);
+            Toast.makeText(getActivity(), R.string.login_tips, Toast.LENGTH_LONG).show();
+            return;
+        }
     }
 
     @Override

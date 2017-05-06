@@ -1,6 +1,7 @@
 <resources>
     <!--整体背景色调-->
     <color name="gray_e5">#e5e5e5</color>
+    <color name="gray_fd">#fdfdfd</color>
     <!--tab上面线的颜色-->
     <color name="gray_b2">#b2b2b2</color>
     <!--用户信息文字颜色-->

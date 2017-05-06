@@ -1,7 +1,10 @@
 package com.tianyu.seelove.model.entity.message;
 
+import com.tianyu.seelove.dao.MessageDao;
+import com.tianyu.seelove.dao.impl.MessageDaoImpl;
 import com.tianyu.seelove.model.enums.MessageType;
 import com.tianyu.seelove.model.enums.SessionType;
+
 import java.io.Serializable;
 
 /**
@@ -106,5 +109,21 @@ public class SLSession implements Serializable {
                 ", sessionIsRead='" + sessionIsRead + '\'' +
                 ", sessionContent='" + sessionContent + '\'' +
                 '}';
+    }
+
+    /**
+     * 获取当前会话未读消息数
+     * @return
+     */
+    public int getUnreadCount(long targetId) {
+        MessageDao messageDao = new MessageDaoImpl();
+        if (sessionType.equals(SessionType.CHAT)) {
+            try {
+                return messageDao.getUnReadMessageCount(targetId);
+            } catch (Exception e) {
+                return 0;
+            }
+        }
+        return 0;
     }
 }

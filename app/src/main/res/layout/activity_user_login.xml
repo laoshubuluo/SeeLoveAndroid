@@ -1,9 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/root_layout">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_fd">
 
-    <ImageView
-        style="@style/wh_mm"
-        android:background="@mipmap/ic_launcher"
-        android:scaleType="centerCrop" />
+    <TextView
+        android:id="@+id/closeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/layout_20dp"
+        android:layout_marginTop="@dimen/layout_20dp"
+        android:background="@drawable/selector_login_close" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/closeBtn"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/headView"
+            android:layout_width="@dimen/layout_60dp"
+            android:layout_height="@dimen/layout_60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:background="@mipmap/ic_launcher" />
+
+        <EditText
+            android:id="@+id/phoneEdit"
+            android:layout_width="@dimen/layout_260dp"
+            android:layout_height="@dimen/layout_40dp"
+            android:layout_marginTop="@dimen/layout_20dp"
+            android:background="@null"
+            android:hint="@string/phone_number_hint" />
+
+        <View
+            android:layout_width="@dimen/layout_260dp"
+            android:layout_height="@dimen/layout_1dp"
+            android:background="@color/gray_73"></View>
+
+        <RelativeLayout
+            android:layout_width="@dimen/layout_260dp"
+            android:layout_height="@dimen/layout_40dp"
+            android:layout_marginTop="@dimen/layout_10dp">
+
+            <TextView
+                android:id="@+id/getCodeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/get_code" />
+
+            <EditText
+                android:id="@+id/codeEdit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/getCodeBtn"
+                android:background="@null"
+                android:hint="@string/code_number_hint" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="@dimen/layout_260dp"
+            android:layout_height="@dimen/layout_1dp"
+            android:background="@color/gray_73"></View>
+
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="@dimen/layout_260dp"
+            android:layout_height="@dimen/layout_40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/layout_40dp"
+            android:background="@mipmap/login_btn_bg"
+            android:text="@string/phone_login"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_60dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/login_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="其他设计帐号登录"
+                android:textColor="@color/gray_73"
+                android:textSize="@dimen/font_8sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_1dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/login_tips"
+                android:background="@color/gray_73"></View>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_1dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/login_tips"
+                android:background="@color/gray_73"></View>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/layout_15dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/qqLoginBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/layout_40dp"
+                android:background="@mipmap/login_qq_btn" />
+
+            <ImageView
+                android:id="@+id/wechatLoginBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/login_wechat_btn" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
