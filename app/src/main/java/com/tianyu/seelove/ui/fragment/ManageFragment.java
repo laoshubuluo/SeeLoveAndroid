@@ -63,7 +63,7 @@ public class ManageFragment extends BaseFragment {
     private UserController controller;
     private SecurityCodeController codeController;
     private SLUser slUser;
-    private ImageView bigImage, headUrl;
+    private ImageView bigImage, headUrl, rightView;
     private ImageView qqLogin, wechatLogin;
     private TextView titleView, userName, videoCount, followCount, followedCount;
     private MyGridView videoGridView;
@@ -112,7 +112,7 @@ public class ManageFragment extends BaseFragment {
 
     private void initView(View view) {
         titleView = (TextView) view.findViewById(R.id.titleView);
-        ImageView rightView = (ImageView) view.findViewById(R.id.rightBtn);
+        rightView = (ImageView) view.findViewById(R.id.rightBtn);
         rightView.setVisibility(View.VISIBLE);
         rightView.setBackgroundResource(R.mipmap.setting_icon);
         rightView.setOnClickListener(this);
@@ -158,6 +158,7 @@ public class ManageFragment extends BaseFragment {
         if (0 == AppUtils.getInstance().getUserId() || null == slUser || 0 == slUser.getUserId()) {
             userLayout.setVisibility(View.GONE);
             loginLayout.setVisibility(View.VISIBLE);
+            rightView.setVisibility(View.GONE);
             return;
         } else {
             userLayout.setVisibility(View.VISIBLE);
@@ -171,6 +172,7 @@ public class ManageFragment extends BaseFragment {
             videoInfos.clear();
             videoInfos = videoDao.getVideoListByUserId(AppUtils.getInstance().getUserId());
             videoGridAdapter.updateData(videoInfos);
+            rightView.setVisibility(View.VISIBLE);
         }
     }
 

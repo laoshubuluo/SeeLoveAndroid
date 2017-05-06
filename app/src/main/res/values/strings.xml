@@ -37,6 +37,8 @@
     <string name="phone_is_null">手机号不能为空!</string>
     <string name="code_is_null">验证码为空!</string>
     <string name="video_title_is_null">请输入简要视频介绍!</string>
+    <string name="login_tips">未登录,请登录之后在操作!</string>
+    <string name="login_success">登录成功!</string>
     <!--消息-->
     <string name="send">发送</string>
     <string name="send_message">发送消息</string>

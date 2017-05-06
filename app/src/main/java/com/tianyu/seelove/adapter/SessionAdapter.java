@@ -120,6 +120,8 @@ public class SessionAdapter extends BaseAdapter {
                 TextUtils.StringFilter(String.valueOf(sessions.get(position).getSessionName()))));
         ImageLoader.getInstance().displayImage(sessions.get(position).getSessionIcon(), viewHoder.message_img_photo, ImageLoaderUtil.getHeadUrlImageOptions());
         viewHoder.message_tv_time.setText(DateUtils.getPastDate(sessions.get(position).getPriority()));
+        int unReadCount = sessions.get(position).getUnreadCount(sessions.get(position).getTargetId());
+        viewHoder.redDotView.initView(unReadCount);
         if (sessions.get(position).getMessageType().equals(MessageType.AUDIO)) {
             viewHoder.message_tv_content.setText(R.string.audio_message);
         } else if (sessions.get(position).getMessageType().equals(MessageType.IMAGE)) {

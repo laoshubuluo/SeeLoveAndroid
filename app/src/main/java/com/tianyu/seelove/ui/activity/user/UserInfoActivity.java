@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
@@ -24,6 +25,7 @@ import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
+import com.tianyu.seelove.ui.activity.system.SelectHeadActivity;
 import com.tianyu.seelove.ui.activity.system.ShareActivity;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
@@ -31,11 +33,13 @@ import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.MyGridView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 个人信息界面
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 22:50
  */
@@ -45,7 +49,7 @@ public class UserInfoActivity extends BaseActivity {
     private VideoGridAdapter videoGridAdapter;
     private SLUser slUser;
     private TextView titleView, userName, userAge, cityName, userDescript;
-    private ImageView leftBtn, rightBtn, bigImage, followBtn;
+    private ImageView leftBtn, rightBtn, bigImage, headImage, followBtn;
     private ScrollView scrollView;
     private Button sendMessage;
     private MyGridView videoGridView;
@@ -69,6 +73,7 @@ public class UserInfoActivity extends BaseActivity {
         rightBtn = (ImageView) findViewById(R.id.rightBtn);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         bigImage = (ImageView) findViewById(R.id.bigImage);
+        headImage = (ImageView) findViewById(R.id.headUrl);
         sendMessage = (Button) findViewById(R.id.sendMessage);
         userName = (TextView) findViewById(R.id.userName);
         followBtn = (ImageView) findViewById(R.id.followBtn);
@@ -99,6 +104,7 @@ public class UserInfoActivity extends BaseActivity {
             userAge.setText(slUser.getAge() + "岁");
             userDescript.setText(StringUtils.isNotBlank(slUser.getIntroduce()) ? slUser.getIntroduce() : "我是一句话介绍！！");
             cityName.setText(StringUtils.isNotBlank(slUser.getCityName()) ? "/" + slUser.getCityName() : "/北京");
+            ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), headImage, ImageLoaderUtil.getHeadUrlImageOptions());
             ImageLoader.getInstance().displayImage(slUser.getBigImg(), bigImage, ImageLoaderUtil.getSmallImageOptions());
             if (slVideoList.size() > 0) {
                 videoGridAdapter.updateData(slVideoList);
@@ -130,7 +136,10 @@ public class UserInfoActivity extends BaseActivity {
             case R.id.followBtn: {
                 // TODO shisheng.zhao 需要通过一种方式获得关系状态已关注/未关注
                 if (0l == AppUtils.getInstance().getUserId()) {
-                    Toast.makeText(UserInfoActivity.this, "未登录,请登录之后在操作!", Toast.LENGTH_LONG).show();
+                    intent = IntentManager.createIntent(getApplicationContext(), UserLoginActivity.class);
+                    startActivityForResult(intent, 0);
+                    overridePendingTransition(R.anim.up_in, R.anim.up_out);
+                    Toast.makeText(UserInfoActivity.this, R.string.login_tips, Toast.LENGTH_LONG).show();
                     break;
                 }
                 SLFollow slFollow = new SLFollow();
@@ -143,7 +152,10 @@ public class UserInfoActivity extends BaseActivity {
             }
             case R.id.sendMessage: {
                 if (0l == AppUtils.getInstance().getUserId()) {
-                    Toast.makeText(UserInfoActivity.this, "未登录,请登录之后在操作!", Toast.LENGTH_LONG).show();
+                    intent = IntentManager.createIntent(getApplicationContext(), UserLoginActivity.class);
+                    startActivityForResult(intent, 0);
+                    overridePendingTransition(R.anim.up_in, R.anim.up_out);
+                    Toast.makeText(UserInfoActivity.this, R.string.login_tips, Toast.LENGTH_LONG).show();
                     break;
                 } else {
                     new UserDaoImpl().addUser(slUser);
@@ -160,6 +172,7 @@ public class UserInfoActivity extends BaseActivity {
 
     /**
      * Handler发送message的逻辑处理方法
+     *
      * @param msg
      * @return
      */

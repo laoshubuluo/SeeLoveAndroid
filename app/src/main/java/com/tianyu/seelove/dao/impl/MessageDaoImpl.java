@@ -37,8 +37,6 @@ public class MessageDaoImpl implements MessageDao {
     private final static String UPDATE_SENDSTATUE_SUCCESS = "UPDATE MESSAGEINFO SET SendStatue = " + SLMessage.MessagePropertie.MSG_SENDSUS + " WHERE MessageId = ?";
     // 根据消息ID更新sendStatue为发送失败
     private final static String UPDATE_SENDSTATUE_FAIL = "UPDATE MESSAGEINFO SET SendStatue = " + SLMessage.MessagePropertie.MSG_FAIL + " WHERE MessageId = ?";
-    // 查询当前用户未读消息数量
-    private final static String SELECT_UNREAD_MESSAGE_COUNT = "SELECT COUNT(*) CT FROM MESSAGEINFO WHERE IsRead = '0' AND UserFrom = ?";
     // 根据消息ID更新当前消息为已读
     private final static String UPDATE_MESSAGE_ISREAD_BY_MESSAGEID = "UPDATE MESSAGEINFO SET IsRead = '1' WHERE MessageId = ?";
     // 根据消息ID更新缩略图地址
@@ -154,12 +152,13 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public int getUnReadMessageCount(String from) {
-        Cursor cursor = DbConnectionManager.getInstance().getConnection().rawQuery(SELECT_UNREAD_MESSAGE_COUNT, new String[]{from});
+    public int getUnReadMessageCount(long userFrom) {
+        String sql = "SELECT COUNT(*) CT FROM MESSAGEINFO WHERE IsRead = 0 AND UserFrom = " + userFrom + "";
+        Cursor cursor = DbConnectionManager.getInstance().getConnection().rawQuery(sql, null);
         while (cursor.moveToNext()) {
-            int n = cursor.getInt(cursor.getColumnIndex("CT"));
+            int unReadCount = cursor.getInt(cursor.getColumnIndex("CT"));
             cursor.close();
-            return n;
+            return unReadCount;
         }
         cursor.close();
         return 0;
@@ -167,7 +166,9 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public void setAllRead(long userFrom, long userTo) {
-        DbConnectionManager.getInstance().getConnection().execSQL(SET_ALL_READ, new String[]{String.valueOf(userFrom), String.valueOf(userTo), String.valueOf(userFrom), String.valueOf(userTo)});
+        String sql = "UPDATE MESSAGEINFO SET IsRead = 1 WHERE (UserFrom = " + userFrom + " AND UserTo = " + userTo + ") " +
+                "OR (UserTo = " + userFrom + " AND UserFrom = " + userTo + ")";
+        DbConnectionManager.getInstance().getConnection().execSQL(sql);
     }
 
     @Override

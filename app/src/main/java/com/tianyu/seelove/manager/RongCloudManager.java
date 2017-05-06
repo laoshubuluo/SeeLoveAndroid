@@ -7,12 +7,14 @@ import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.common.RongCloudErrorCode;
 import com.tianyu.seelove.dao.impl.MessageDaoImpl;
 import com.tianyu.seelove.dao.impl.SessionDaoImpl;
+import com.tianyu.seelove.dao.impl.UserDaoImpl;
 import com.tianyu.seelove.model.entity.message.SLAudioMessage;
 import com.tianyu.seelove.model.entity.message.SLImageMessage;
 import com.tianyu.seelove.model.entity.message.SLLocationMessage;
 import com.tianyu.seelove.model.entity.message.SLMessage;
 import com.tianyu.seelove.model.entity.message.SLSession;
 import com.tianyu.seelove.model.entity.message.SLTextMessage;
+import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.MessageType;
 import com.tianyu.seelove.model.enums.SessionType;
 import com.tianyu.seelove.utils.AppUtils;
@@ -22,6 +24,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
+import io.rong.imlib.model.UserInfo;
 import io.rong.message.ImageMessage;
 import io.rong.message.LocationMessage;
 import io.rong.message.TextMessage;
@@ -114,6 +117,7 @@ public class RongCloudManager {
             //文字消息
             if (message.getContent() instanceof TextMessage) {
                 TextMessage msg = (TextMessage) message.getContent();
+                addUser(msg.getUserInfo());
                 SLTextMessage slTextMessage = null;
                 long lastId = System.currentTimeMillis();
                 slTextMessage = new SLTextMessage();
@@ -154,6 +158,7 @@ public class RongCloudManager {
             //位置消息
             else if (message.getContent() instanceof LocationMessage) {
                 LocationMessage msg = (LocationMessage) message.getContent();
+                addUser(msg.getUserInfo());
                 SLLocationMessage slLocationMessage = null;
                 long lastId = System.currentTimeMillis();
                 slLocationMessage = new SLLocationMessage();
@@ -204,6 +209,7 @@ public class RongCloudManager {
             //语音消息
             else if (message.getContent() instanceof VoiceMessage) {
                 VoiceMessage msg = (VoiceMessage) message.getContent();
+                addUser(msg.getUserInfo());
                 SLAudioMessage audioMessage = null;
                 long lastId = System.currentTimeMillis();
                 audioMessage = new SLAudioMessage();
@@ -244,6 +250,7 @@ public class RongCloudManager {
             //图片消息
             else if (message.getContent() instanceof ImageMessage) {
                 ImageMessage msg = (ImageMessage) message.getContent();
+                addUser(msg.getUserInfo());
                 SLImageMessage slImageMessage = null;
                 long lastId = System.currentTimeMillis();
                 slImageMessage = new SLImageMessage();
@@ -287,6 +294,14 @@ public class RongCloudManager {
         }
 
     };
+
+    public void addUser(UserInfo userInfo) {
+        SLUser user = new SLUser();
+        user.setUserId(Long.parseLong(userInfo.getUserId()));
+        user.setNickName(userInfo.getName());
+        user.setHeadUrl(userInfo.getPortraitUri().toString());
+        new UserDaoImpl().addUser(user);
+    }
 
     /**
      * 连接状态监听器

@@ -15,12 +15,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FollowListAdapter;
 import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.NewsController;
+import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
+import com.tianyu.seelove.ui.activity.user.UserLoginActivity;
 import com.tianyu.seelove.ui.activity.video.VideoRecordActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
@@ -35,7 +39,8 @@ import java.util.List;
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
-public class FollowFragment extends BaseFragment implements PullToRefreshView.OnHeaderRefreshListener, PullToRefreshView.OnFooterRefreshListener{
+public class FollowFragment extends BaseFragment implements PullToRefreshView.OnHeaderRefreshListener,
+        PullToRefreshView.OnFooterRefreshListener{
     private FollowListAdapter adapter;
     private ListView followListView;
     private FollowReciver reciver;
@@ -204,6 +209,13 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
     public void onStart() {
         super.onStart();
         LogUtil.d("FollowFragment____onStart");
+        if (0l == AppUtils.getInstance().getUserId()) {
+            Intent intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
+            startActivityForResult(intent, 0);
+            getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);
+            Toast.makeText(getActivity(), R.string.login_tips, Toast.LENGTH_LONG).show();
+            return;
+        }
     }
 
     @Override

@@ -16,6 +16,7 @@
     <!--布局layout-->
     <dimen name="layout_1dp">1dp</dimen>
     <dimen name="layout_2dp">2dp</dimen>
+    <dimen name="layout_3dp">3dp</dimen>
     <dimen name="layout_5dp">5dp</dimen>
     <dimen name="layout_6dp">6dp</dimen>
     <dimen name="layout_8dp">8dp</dimen>
