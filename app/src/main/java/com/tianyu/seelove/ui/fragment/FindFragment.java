@@ -1,6 +1,7 @@
 package com.tianyu.seelove.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +16,9 @@ import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FindUserListAdapter;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
+import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
+import com.tianyu.seelove.ui.activity.system.ShareActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.PullToRefreshView;
@@ -70,8 +73,8 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
         TextView titleView = (TextView) view.findViewById(R.id.titleView);
         ImageView rightView = (ImageView) view.findViewById(R.id.rightBtn);
         titleView.setText(R.string.find);
-        rightView.setVisibility(View.GONE);
-        rightView.setBackgroundResource(R.mipmap.find_select_btn);
+        rightView.setVisibility(View.VISIBLE);
+        rightView.setBackgroundResource(R.mipmap.share_btn);
         rightView.setOnClickListener(this);
         mPullToRefreshView = (PullToRefreshView) view.findViewById(R.id.pull_to_refresh_view);
         mPullToRefreshView.setOnFooterRefreshListener(this);
@@ -122,10 +125,12 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
 
     @Override
     public void onClick(View view) {
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.rightBtn:
-                SelectDialog selectDialog = new SelectDialog(getActivity());
-                selectDialog.show();
+                intent = IntentManager.createIntent(getActivity(), ShareActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);
                 break;
             default:
                 break;

@@ -80,6 +80,10 @@
     <string name="share_sina_weibo_space">新浪微博</string>
     <string name="my_follow">我关注的</string>
     <string name="follow_my">关注我的</string>
+    <!--分享-->
+    <string name="share_success">分享成功</string>
+    <string name="share_failure">分享失败</string>
+    <string name="share_cancel">分享取消</string>
     <!--上拉刷新,下拉加载更多-->
     <string name="pull_to_refresh_footer_pull_label">上拉加载更多</string>
     <string name="pull_to_refresh_pull_label">下拉刷新</string>
