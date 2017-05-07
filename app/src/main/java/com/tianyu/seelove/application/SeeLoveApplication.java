@@ -10,6 +10,8 @@ import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.yixia.camera.VCamera;
 import java.io.File;
+
+import cn.sharesdk.framework.ShareSDK;
 import io.rong.imlib.RongIMClient;
 
 /**
@@ -41,6 +43,8 @@ public class SeeLoveApplication extends Application {
         // 初始化融云SDK
         RongIMClient.init(this);
         RongCloudManager.getInstance().init(this);
+        // 初始化分享SDK
+        ShareSDK.initSDK(this);
         deviceMode = getDeviceModel();
         initVCamera();
     }

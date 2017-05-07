@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.GridView;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.ShareListAdapter;
+import com.tianyu.seelove.manager.ShareManager;
 import com.tianyu.seelove.model.entity.share.ShareInfo;
+import com.tianyu.seelove.model.enums.ShareTo;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +29,14 @@ public class ShareActivity extends BaseActivity implements AdapterView.OnItemCli
     private Button btnCancel;
     private ShareListAdapter adapter;
     private boolean isGridViewItemCanClick = true;// GridView条目是否可点击
+    private ShareManager shareManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCurrentColor("#00000000");
         setContentView(R.layout.activity_share);
+        shareManager = new ShareManager(this);
         initView();
         initData();
     }
@@ -50,7 +54,7 @@ public class ShareActivity extends BaseActivity implements AdapterView.OnItemCli
         shareList.add(new ShareInfo(R.mipmap.share_wechatspace_icon, getString(R.string.share_wechat_space)));
         shareList.add(new ShareInfo(R.mipmap.share_qq_icon, getString(R.string.share_qq)));
         shareList.add(new ShareInfo(R.mipmap.share_qqspace_icon, getString(R.string.share_qq_space)));
-        shareList.add(new ShareInfo(R.mipmap.share_sinaweibo_icon, getString(R.string.share_sina_weibo_space)));
+//        shareList.add(new ShareInfo(R.mipmap.share_sinaweibo_icon, getString(R.string.share_sina_weibo_space)));
         adapter = new ShareListAdapter(ShareActivity.this, shareList);
         shareGridView.setAdapter(adapter);
         shareGridView.setSelector(new ColorDrawable(Color.TRANSPARENT));// 点击后背景不变
@@ -68,14 +72,19 @@ public class ShareActivity extends BaseActivity implements AdapterView.OnItemCli
         Intent intent;
         switch (shareInfo.getShareId()) {
             case R.mipmap.share_wechat_icon: // 微信
+                shareManager.share(ShareTo.WECHAT);
                 break;
             case R.mipmap.share_wechatspace_icon: // 朋友圈
+                shareManager.share(ShareTo.WECHAT_CIRCLE);
                 break;
             case R.mipmap.share_qq_icon: // QQ
+                shareManager.share(ShareTo.QQ);
                 break;
             case R.mipmap.share_qqspace_icon: // QQ空间
+                shareManager.share(ShareTo.QQ_CIRCLE);
                 break;
             case R.mipmap.share_sinaweibo_icon: // 新浪微博
+                shareManager.share(ShareTo.SINA_WEIBO);
                 break;
             default:
                 break;
