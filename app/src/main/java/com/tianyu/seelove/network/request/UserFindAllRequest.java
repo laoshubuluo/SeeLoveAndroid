@@ -13,6 +13,7 @@ import com.tianyu.seelove.model.entity.network.request.UserFindAllActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.UserFindAllRspInfo;
 import com.tianyu.seelove.network.request.base.PostJsonRequest;
+import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
 
@@ -42,7 +43,7 @@ public class UserFindAllRequest extends PostJsonRequest {
 
     @Override
     protected String getParamsJson() {
-        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, ageStart, ageEnd, sex, cityCode);
+        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, AppUtils.getInstance().getUserId(), ageStart, ageEnd, sex, cityCode);
         RequestInfo requestInfo = new RequestInfo(context, actionInfo);
         return GsonUtil.toJson(requestInfo);
     }
