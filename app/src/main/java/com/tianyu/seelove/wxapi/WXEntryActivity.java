@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
+
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -23,6 +24,7 @@ import com.tianyu.seelove.model.enums.AccountType;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+
 import cn.sharesdk.wechat.utils.WechatHandlerActivity;
 
 /**
@@ -108,7 +110,7 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
                 resp.toBundle(bundle);
                 SendAuth.Resp sp = new SendAuth.Resp(bundle);
                 // 从微信平台获取微信code
-                UserController controller = new UserController(getApplication(),handler);
+                UserController controller = new UserController(getApplication(), handler);
                 controller.getTokenByCodeFromWeiXin(sp.code);
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
@@ -137,7 +139,7 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
                 UserInfoFromWeiXinInfo info = (UserInfoFromWeiXinInfo) msg.getData().getSerializable("info");
                 //正式登录
                 UserController controller = new UserController(getApplication(), Constant.loginHandler);
-                controller.login4Platform(Integer.parseInt(AccountType.WECHAT.getResultCode()), info.getOpenid(), info.toString());
+                controller.login4Platform(AccountType.WECHAT.getCode(), info.getOpenid(), info.toString());
                 finish();
                 break;
             case MessageSignConstant.TOKEN_OR_USERINFO_FROM_WEIXIN_FAILURE:

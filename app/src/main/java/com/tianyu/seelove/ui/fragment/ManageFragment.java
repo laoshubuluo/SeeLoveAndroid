@@ -32,6 +32,7 @@ import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.model.entity.video.SLVideo;
+import com.tianyu.seelove.model.enums.AccountType;
 import com.tianyu.seelove.ui.activity.system.SelectHeadActivity;
 import com.tianyu.seelove.ui.activity.system.SettingActivity;
 import com.tianyu.seelove.ui.activity.user.FollowUserListActivity;
@@ -250,7 +251,7 @@ public class ManageFragment extends BaseFragment {
                 }
                 customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
                 customProgressDialog.show();
-                controller.login4Phone(SLUser.ACCOUNT_TYPE_PHONE, phoneNum, verifyCode);
+                controller.login4Phone(AccountType.PHONE.getCode(), phoneNum, verifyCode);
                 break;
             }
             case R.id.getCodeBtn: {

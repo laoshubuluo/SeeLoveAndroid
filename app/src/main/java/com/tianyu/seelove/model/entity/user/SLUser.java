@@ -17,10 +17,6 @@ import java.io.Serializable;
  * @date 2017-03-31 18:07
  */
 public class SLUser implements Serializable {
-    public static final int ACCOUNT_TYPE_WECHAT = 1;// 微信
-    public static final int ACCOUNT_TYPE_QQ = 2;// QQ
-    public static final int ACCOUNT_TYPE_PHONE = 3;// 手机号
-
     // 用户基本信息
     private long userId; // 用户id,唯一标示
     private String account;// 用户名

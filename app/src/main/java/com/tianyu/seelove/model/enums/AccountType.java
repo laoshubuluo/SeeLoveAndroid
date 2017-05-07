@@ -6,16 +6,17 @@ package com.tianyu.seelove.model.enums;
  * @date 2017-04-02 08:55
  */
 public enum AccountType {
-    QQ("1", "QQ"),
-    WECHAT("2", "微信"),
-    UNKNOW("0", "未知");
+    WECHAT(1, "微信"),
+    QQ(2, "QQ"),
+    PHONE(3, "手机号"),
+    UNKNOW(0, "未知");
 
-    private String resultCode;
-    private String resultMsg;
+    private int code;
+    private String msg;
 
-    public static AccountType parse(String resultCode) {
+    public static AccountType parse(int resultCode) {
         for (AccountType item : values()) {
-            if (item.getResultCode().equals(resultCode))
+            if (item.getCode() == resultCode)
                 return item;
         }
         return null;
@@ -23,22 +24,30 @@ public enum AccountType {
 
     public static AccountType parseByMsg(String resultMsg) {
         for (AccountType item : values()) {
-            if (item.getResultMsg().equals(resultMsg))
+            if (item.getMsg().equals(resultMsg))
                 return item;
         }
         return null;
     }
 
-    public String getResultCode() {
-        return resultCode;
+    public int getCode() {
+        return code;
     }
 
-    public String getResultMsg() {
-        return resultMsg;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    AccountType(String resultCode, String resultMsg) {
-        this.resultCode = resultCode;
-        this.resultMsg = resultMsg;
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    AccountType(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
     }
 }

@@ -3,6 +3,7 @@ package com.tianyu.seelove.wxapi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
@@ -14,6 +15,7 @@ import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.model.enums.AccountType;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.LogUtil;
+
 import org.json.JSONObject;
 
 /**
@@ -112,7 +114,7 @@ public class QQEntryActivity extends BaseActivity {
             LogUtil.i("call qq open platform to getUserInfo: success");
             // QQ登录
             UserController controller = new UserController(getApplication(), Constant.loginHandler);
-            controller.login4Platform(Integer.parseInt(AccountType.QQ.getResultCode()), mTencent.getOpenId(), response.toString());
+            controller.login4Platform(AccountType.QQ.getCode(), mTencent.getOpenId(), response.toString());
             finish();
         }
 

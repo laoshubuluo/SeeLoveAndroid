@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
@@ -20,10 +21,12 @@ import com.tianyu.seelove.model.entity.network.response.UserRegisterLoginRspInfo
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.model.entity.video.SLVideo;
+import com.tianyu.seelove.model.enums.AccountType;
 import com.tianyu.seelove.network.request.base.PostJsonRequest;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
+
 import org.json.JSONObject;
 
 /**
@@ -64,7 +67,7 @@ public class UserRegistLoginRequest extends PostJsonRequest {
     @Override
     protected String getParamsJson() {
         UserRegisterLoginActionInfo actionInfo;
-        if (SLUser.ACCOUNT_TYPE_PHONE == accountType) {
+        if (AccountType.PHONE.getCode() == accountType) {
             actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, accountType, phoneNumber, code);
         } else {
             actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, openId, accountType, dataFromOtherPlatform);

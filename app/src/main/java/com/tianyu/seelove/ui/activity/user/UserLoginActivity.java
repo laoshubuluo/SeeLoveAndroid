@@ -10,12 +10,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.SecurityCodeController;
 import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.model.entity.user.SLUser;
+import com.tianyu.seelove.model.enums.AccountType;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.utils.StringUtils;
@@ -100,7 +102,7 @@ public class UserLoginActivity extends BaseActivity {
                 }
                 customProgressDialog = new CustomProgressDialog(UserLoginActivity.this, getString(R.string.loading));
                 customProgressDialog.show();
-                controller.login4Phone(SLUser.ACCOUNT_TYPE_PHONE, phoneNum, verifyCode);
+                controller.login4Phone(AccountType.PHONE.getCode(), phoneNum, verifyCode);
                 break;
             }
             case R.id.getCodeBtn: {
