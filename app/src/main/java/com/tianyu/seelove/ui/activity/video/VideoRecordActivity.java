@@ -95,7 +95,7 @@ public class VideoRecordActivity extends BaseActivity implements MediaRecorderBa
                 onBackPressed();
             }
         });
-        Button switchBtn = (Button) findViewById(R.id.switchBtn);
+        ImageView switchBtn = (ImageView) findViewById(R.id.switchBtn);
         switchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

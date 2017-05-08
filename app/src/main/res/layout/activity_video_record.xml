@@ -3,19 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
-    <com.tianyu.seelove.view.video.FocusSurfaceView
-        android:id="@+id/sv_ffmpeg"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <com.tianyu.seelove.view.video.FocusSurfaceView
+            android:id="@+id/sv_ffmpeg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/switchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/layout_10dp"
+            android:layout_marginTop="@dimen/layout_10dp"
+            android:background="@mipmap/select_camera" />
+    </FrameLayout>
 
     <com.tianyu.seelove.view.video.MyVideoView
         android:id="@+id/vv_play"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
-
 
     <RelativeLayout
         android:id="@+id/rl_bottom"
@@ -56,11 +67,4 @@
         android:textColor="@color/white"
         android:textSize="@dimen/font_15sp" />
 
-    <Button
-        android:id="@+id/switchBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_above="@id/tv_hint"
-        android:text="切换摄像头" />
 </RelativeLayout>

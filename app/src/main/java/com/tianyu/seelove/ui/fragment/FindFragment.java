@@ -24,7 +24,6 @@ import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.PullToRefreshView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
-import com.tianyu.seelove.view.dialog.SelectDialog;
 import java.util.List;
 
 /**

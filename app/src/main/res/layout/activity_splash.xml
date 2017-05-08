@@ -4,6 +4,6 @@
 
     <ImageView
         style="@style/wh_mm"
-        android:background="@mipmap/ic_launcher"
+        android:background="@mipmap/splash"
         android:scaleType="centerCrop" />
 </RelativeLayout>
