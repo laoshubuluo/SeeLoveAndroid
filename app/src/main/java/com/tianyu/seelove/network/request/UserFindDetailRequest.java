@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
@@ -12,8 +13,10 @@ import com.tianyu.seelove.model.entity.network.request.UserFindDetailActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.UserFindDetailRspInfo;
 import com.tianyu.seelove.network.request.base.PostJsonRequest;
+import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
+
 import org.json.JSONObject;
 
 /**
@@ -32,7 +35,7 @@ public class UserFindDetailRequest extends PostJsonRequest {
 
     @Override
     protected String getParamsJson() {
-        UserFindDetailActionInfo actionInfo = new UserFindDetailActionInfo(RequestCode.USER_FIND_DETAIL, userId);
+        UserFindDetailActionInfo actionInfo = new UserFindDetailActionInfo(RequestCode.USER_FIND_DETAIL, userId, AppUtils.getInstance().getUserId());
         RequestInfo requestInfo = new RequestInfo(context, actionInfo);
         return GsonUtil.toJson(requestInfo);
     }

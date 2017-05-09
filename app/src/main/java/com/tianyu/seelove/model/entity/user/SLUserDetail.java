@@ -1,19 +1,22 @@
 package com.tianyu.seelove.model.entity.user;
 
 import com.tianyu.seelove.model.entity.video.SLVideo;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 短视频和用户实体类
+ *
  * @author shisheng.zhao
  * @date 2017-03-31 17:56
  */
-public class SLUserDetail implements Serializable{
+public class SLUserDetail implements Serializable {
     private SLUser user;
     private SLVideo defultVideo;// 默认视频
     private List<SLVideo> videoList; // 用户视频列表
     private List<SLUser> followUserList; // 用户关注列表
+    private int followStatus; // 用户关注状态 FollowStatus
 
     public SLUser getUser() {
         return user;
@@ -45,5 +48,13 @@ public class SLUserDetail implements Serializable{
 
     public void setFollowUserList(List<SLUser> followUserList) {
         this.followUserList = followUserList;
+    }
+
+    public void setFollowStatus(int followStatus) {
+        this.followStatus = followStatus;
+    }
+
+    public int getFollowStatus() {
+        return followStatus;
     }
 }
