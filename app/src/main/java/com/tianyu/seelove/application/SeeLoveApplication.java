@@ -1,6 +1,7 @@
 package com.tianyu.seelove.application;
 
 import android.app.Application;
+
 import com.baidu.mapapi.SDKInitializer;
 import com.tianyu.seelove.manager.CrashHandlerManager;
 import com.tianyu.seelove.manager.DbConnectionManager;
@@ -9,6 +10,7 @@ import com.tianyu.seelove.manager.RongCloudManager;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.yixia.camera.VCamera;
+
 import java.io.File;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -16,6 +18,7 @@ import io.rong.imlib.RongIMClient;
 
 /**
  * 系统初始化application
+ *
  * @author shisheng.zhao
  * @date 2016-11-14 18:06:11
  */

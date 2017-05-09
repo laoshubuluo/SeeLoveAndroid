@@ -62,6 +62,7 @@ public class UserRegistLoginRequest extends PostJsonRequest {
         this.phoneNumber = phoneNumber;
         this.code = code;
         userDao = new UserDaoImpl();
+        videoDao = new VideoDaoImpl();
     }
 
     @Override
