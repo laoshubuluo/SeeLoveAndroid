@@ -47,4 +47,8 @@ public class MessageSignConstant {
 
     public static final int TOKEN_OR_USERINFO_FROM_WEIXIN_SUCCESS = 1117;
     public static final int TOKEN_OR_USERINFO_FROM_WEIXIN_FAILURE = 1118;
+
+    public static final int NEW_VERSION_SUCCESS = 1119;
+    public static final int NEW_VERSION_FAILURE = 1120;
+
 }

@@ -24,4 +24,5 @@ public class RequestCode {
 
     public static final int NEWS_FIND_ALL = 1015;// 动态
 
+    public static final int SYSTEM_NEW_VERSION = 1020;// 最新版本
 }
