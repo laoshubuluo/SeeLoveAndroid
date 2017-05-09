@@ -26,17 +26,21 @@ import java.io.Serializable;
  * introduce : 获取所有动态请求request
  */
 public class NewsFindAllRequest extends PostJsonRequest {
-    private long userId ;
+    private int pageNumber = 0;
+    private int dataGetType = 0;
+    private long userId;
 
-    public NewsFindAllRequest(Handler handler, Context context, long userId) {
+    public NewsFindAllRequest(Handler handler, Context context, int pageNumber, int dataGetType, long userId) {
         this.handler = handler;
         this.context = context;
+        this.pageNumber = pageNumber;
+        this.dataGetType = dataGetType;
         this.userId = userId;
     }
 
     @Override
     protected String getParamsJson() {
-        NewsFindAllActionInfo actionInfo = new NewsFindAllActionInfo(RequestCode.NEWS_FIND_ALL, userId);
+        NewsFindAllActionInfo actionInfo = new NewsFindAllActionInfo(RequestCode.NEWS_FIND_ALL, pageNumber, dataGetType, userId);
         RequestInfo requestInfo = new RequestInfo(context, actionInfo);
         return GsonUtil.toJson(requestInfo);
     }
@@ -60,6 +64,8 @@ public class NewsFindAllRequest extends PostJsonRequest {
             NewsFindAllRspInfo info = GsonUtil.fromJson(response.toString(), NewsFindAllRspInfo.class);
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
+                b.putInt("currentPage", info.getCurrentPage());
+                b.putInt("isEndPage", info.getIsEndPage());
                 b.putSerializable("userList", (Serializable) info.getUserDetailList());
                 msg.what = MessageSignConstant.NEWS_FIND_ALL_SUCCESS;
                 msg.setData(b);

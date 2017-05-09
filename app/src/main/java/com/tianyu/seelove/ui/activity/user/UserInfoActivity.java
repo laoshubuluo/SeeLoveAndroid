@@ -23,6 +23,7 @@ import com.tianyu.seelove.model.entity.user.SLFollow;
 import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.model.entity.video.SLVideo;
+import com.tianyu.seelove.model.enums.FollowStatus;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
 import com.tianyu.seelove.ui.activity.system.SelectHeadActivity;
@@ -55,6 +56,7 @@ public class UserInfoActivity extends BaseActivity {
     private MyGridView videoGridView;
     private SLUserDetail slUserDetail;
     List<SLVideo> slVideoList = new ArrayList<>();
+    int followStatus = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,16 @@ public class UserInfoActivity extends BaseActivity {
             ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), headImage, ImageLoaderUtil.getHeadUrlImageOptions());
             ImageLoader.getInstance().displayImage(StringUtils.isNotBlank(slUser.getBigImg()) ? slUser.getBigImg() : slUser.getHeadUrl(),
                     bigImage, ImageLoaderUtil.getSmallImageOptions());
+            if (slUser.getUserId() == AppUtils.getInstance().getUserId()) {
+                followBtn.setVisibility(View.GONE);
+            } else {
+                followBtn.setVisibility(View.VISIBLE);
+                if (followStatus == FollowStatus.NONE.getCode() || followStatus == FollowStatus.FOLLOW_LOGIN_USER.getCode()) {
+                    followBtn.setBackgroundResource(R.mipmap.follow_add_icon);
+                } else if (followStatus == FollowStatus.FOLLOWED_BY_LOGIN_USER.getCode() || followStatus == FollowStatus.EACH_OTHER.getCode()) {
+                    followBtn.setBackgroundResource(R.mipmap.followed_icon);
+                }
+            }
             if (slVideoList.size() > 0) {
                 videoGridAdapter.updateData(slVideoList);
             }
@@ -143,12 +155,18 @@ public class UserInfoActivity extends BaseActivity {
                     Toast.makeText(UserInfoActivity.this, R.string.login_tips, Toast.LENGTH_LONG).show();
                     break;
                 }
+                int followType = 1;
+                if (followStatus == FollowStatus.NONE.getCode() || followStatus == FollowStatus.FOLLOW_LOGIN_USER.getCode()) {
+                    followType = FollowActionInfo.FOLLOW_TYPE_OK;
+                } else if (followStatus == FollowStatus.FOLLOWED_BY_LOGIN_USER.getCode() || followStatus == FollowStatus.EACH_OTHER.getCode()) {
+                    followType = FollowActionInfo.FOLLOW_TYPE_CANCLE;
+                }
                 SLFollow slFollow = new SLFollow();
                 slFollow.setUserId(AppUtils.getInstance().getUserId());
                 slFollow.setFollowUserId(slUser.getUserId());
                 customProgressDialog = new CustomProgressDialog(this, getString(R.string.add_follow));
                 customProgressDialog.show();
-                followController.follow(slFollow, FollowActionInfo.FOLLOW_TYPE_OK);
+                followController.follow(slFollow, followType);
                 break;
             }
             case R.id.sendMessage: {
@@ -171,12 +189,6 @@ public class UserInfoActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Handler发送message的逻辑处理方法
-     *
-     * @param msg
-     * @return
-     */
     @Override
     public boolean handleMessage(Message msg) {
         if (customProgressDialog != null)
@@ -192,6 +204,9 @@ public class UserInfoActivity extends BaseActivity {
                 if (null != slUserDetail.getVideoList() && slUserDetail.getVideoList().size() > 0) {
                     slVideoList = slUserDetail.getVideoList();
                 }
+                if (null != slUserDetail) {
+                    followStatus = slUserDetail.getFollowStatus();
+                }
                 initData();
                 break;
             case MessageSignConstant.USER_FIND_DETAIL_FAILURE:
@@ -201,7 +216,13 @@ public class UserInfoActivity extends BaseActivity {
                 promptDialog.show();
                 break;
             case MessageSignConstant.FOLLOW_SUCCESS:
-                followBtn.setBackgroundResource(R.mipmap.followed_icon);
+                if (followStatus == FollowStatus.NONE.getCode() || followStatus == FollowStatus.FOLLOW_LOGIN_USER.getCode()) {
+                    followBtn.setBackgroundResource(R.mipmap.followed_icon);
+                    followStatus = FollowStatus.FOLLOWED_BY_LOGIN_USER.getCode();
+                } else if (followStatus == FollowStatus.FOLLOWED_BY_LOGIN_USER.getCode() || followStatus == FollowStatus.EACH_OTHER.getCode()) {
+                    followBtn.setBackgroundResource(R.mipmap.follow_add_icon);
+                    followStatus = FollowStatus.NONE.getCode();
+                }
                 break;
             case MessageSignConstant.FOLLOW_FAILURE:
                 promptDialog.initData("", msg.getData().getString("message"));

@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +21,7 @@ import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.NewsController;
 import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
+import com.tianyu.seelove.model.enums.DataGetType;
 import com.tianyu.seelove.ui.activity.user.UserLoginActivity;
 import com.tianyu.seelove.ui.activity.video.VideoRecordActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
@@ -31,6 +30,7 @@ import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.PullToRefreshView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +47,9 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
     private NewsController controller;
     private List<SLUserDetail> userList;
     private PullToRefreshView mPullToRefreshView;
+    private int pageNumber = 0;
+    private int dataGetType = 0;
+    private int isEndPage = 0;
 
     @Override
     public void onAttach(Activity activity) {
@@ -92,44 +95,52 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
         adapter = new FollowListAdapter(getActivity(), userList);
         followListView.setAdapter(adapter);
         if (0l != AppUtils.getInstance().getUserId()) {
-            // 请求服务器
-            customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
-            customProgressDialog.show();
-            controller.findAll(AppUtils.getInstance().getUserId());
+            initData();
         }
     }
 
+    private void initData() {
+        // 请求服务器
+        customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
+        customProgressDialog.show();
+        updateData(DataGetType.DOWN);
+        dataGetType = 0;
+    }
+
+    private void updateData(final DataGetType dataGetType) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                controller.findAll(pageNumber, dataGetType.getCode(), AppUtils.getInstance().getUserId());
+            }
+        }, 100);
+    }
+
+    /**
+     * 上拉加载更多
+     * @param view
+     */
     @Override
     public void onFooterRefresh(PullToRefreshView view) {
-        /* 上拉加载更多 */
-        h.sendEmptyMessage(1);
+        if (isEndPage == 0) {
+            dataGetType = 1;
+            updateData(DataGetType.DOWN);
+        } else if (isEndPage == 1) {
+            mPullToRefreshView.onFooterRefreshComplete();
+            Toast.makeText(getActivity(), "没有下一页了!", Toast.LENGTH_LONG).show();
+        }
     }
 
+    /**
+     * 下拉刷新
+     * @param view
+     */
     @Override
     public void onHeaderRefresh(PullToRefreshView view) {
-        /* 下拉刷新数据 */
-        h.sendEmptyMessage(2);
+        dataGetType = 0;
+        pageNumber = 0;
+        updateData(DataGetType.DOWN);
     }
-
-    Handler h = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            if (msg.what == 1) {
-                h.postAtTime(new Runnable() {
-                    @Override
-                    public void run() {
-                        mPullToRefreshView.onFooterRefreshComplete();
-                    }
-                }, SystemClock.uptimeMillis() + 1000);
-            } else if (msg.what == 2) {
-                h.postAtTime(new Runnable() {
-                    @Override
-                    public void run() {
-                        mPullToRefreshView.onHeaderRefreshComplete();
-                    }
-                }, SystemClock.uptimeMillis() + 1000);
-            }
-        }
-    };
 
     private void initIntent() {
         IntentFilter intentFilter = new IntentFilter();
@@ -142,10 +153,7 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Actions.ACTION_UPDATE_FOLLOW_LIST)) {
-                // 请求服务器
-                customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
-                customProgressDialog.show();
-                controller.findAll(AppUtils.getInstance().getUserId());
+                initData();
             }
         }
     }
@@ -177,13 +185,25 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
             customProgressDialog.dismiss();
         if (promptDialog == null || promptDialog.isShowing())
             promptDialog = new PromptDialog(getActivity());
+        if (null != mPullToRefreshView) {
+            mPullToRefreshView.onFooterRefreshComplete();
+            mPullToRefreshView.onHeaderRefreshComplete();
+        }
         String code;
         String message;
         switch (msg.what) {
             case MessageSignConstant.NEWS_FIND_ALL_SUCCESS:
+                pageNumber = msg.getData().getInt("currentPage");
+                isEndPage = msg.getData().getInt("isEndPage");
                 userList = (List<SLUserDetail>) msg.getData().getSerializable("userList");
-                adapter.updateData(userList, true);
-                adapter.notifyDataSetChanged();
+                if (null == userList) {
+                    userList = new ArrayList<>();
+                }
+                if (dataGetType == 0) {
+                    adapter.updateData(userList, true);
+                } else {
+                    adapter.updateData(userList, false);
+                }
                 break;
             case MessageSignConstant.NEWS_FIND_ALL_FAILURE:
                 code = msg.getData().getString("code");

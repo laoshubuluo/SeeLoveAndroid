@@ -22,11 +22,10 @@ public class NewsController {
 
     /**
      * 获取所有动态
-     *
      * @param userId
      */
-    public void findAll(long userId) {
-        NewsFindAllRequest request = new NewsFindAllRequest(handler, context, userId);
+    public void findAll(int pageNumber, int dataGetType, long userId) {
+        NewsFindAllRequest request = new NewsFindAllRequest(handler, context, pageNumber, dataGetType, userId);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 }

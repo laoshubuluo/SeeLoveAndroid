@@ -66,7 +66,7 @@ public class FollowFindAllByFollowedUserRequest extends PostJsonRequest {
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
                 b.putSerializable("userList", (Serializable) info.getUserList());
-                if (null != info && null != info.getUserList() && info.getUserList().size() > 0) {
+                if (null != info && null != info.getUserList() && info.getUserList().size() >= 0) {
                     userDao.updateUserFollowCountByUserId(AppUtils.getInstance().getUserId(), info.getUserList().size());
                 }
                 msg.what = MessageSignConstant.FOLLOW_FIND_ALL_BY_FOLLOWED_USER_SUCCESS;

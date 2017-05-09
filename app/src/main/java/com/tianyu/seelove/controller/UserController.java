@@ -45,8 +45,8 @@ public class UserController {
     /**
      * 获取所有用户
      */
-    public void findAll(int ageStart, int ageEnd, String sex, String cityCode) {
-        UserFindAllRequest request = new UserFindAllRequest(handler, context, ageStart, ageEnd, sex, cityCode);
+    public void findAll(int pageNumber, int dataGetType, int ageStart, int ageEnd, String sex, String cityCode) {
+        UserFindAllRequest request = new UserFindAllRequest(handler, context, pageNumber, dataGetType, ageStart, ageEnd, sex, cityCode);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 

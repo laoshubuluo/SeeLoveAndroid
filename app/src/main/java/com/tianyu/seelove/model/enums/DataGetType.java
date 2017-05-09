@@ -1,22 +1,24 @@
 package com.tianyu.seelove.model.enums;
 
 /**
- * author : L.jinzhu
- * date : 2015/8/12
- * introduce : 数据获取类型
+ * Created by liangjinzhu on 17/4/10.
  */
 public enum DataGetType {
-    PAGE_DOWN("down"),
-    PAGE_UP("up"),
-    UPDATE("update");
+    UP(1),
+    DOWN(2),
+    OTHER(0);
 
-    private String type;
+    private int code;
 
-    DataGetType(String type) {
-        this.type = type;
+    DataGetType(int code) {
+        this.code = code;
     }
 
-    public String getType() {
-        return type;
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public int getCode() {
+        return code;
     }
 }

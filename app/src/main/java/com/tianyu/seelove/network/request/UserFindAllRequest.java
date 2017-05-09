@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
@@ -16,9 +15,7 @@ import com.tianyu.seelove.network.request.base.PostJsonRequest;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
-
 import org.json.JSONObject;
-
 import java.io.Serializable;
 
 /**
@@ -27,14 +24,18 @@ import java.io.Serializable;
  * introduce : 获取所有用户请求request
  */
 public class UserFindAllRequest extends PostJsonRequest {
+    private int pageNumber = 0;
+    private int dataGetType = 0;
     private int ageStart = 0;
     private int ageEnd = 0;
     private String sex;
     private String cityCode;
 
-    public UserFindAllRequest(Handler handler, Context context, int ageStart, int ageEnd, String sex, String cityCode) {
+    public UserFindAllRequest(Handler handler, Context context, int pageNumber, int dataGetType, int ageStart, int ageEnd, String sex, String cityCode) {
         this.handler = handler;
         this.context = context;
+        this.pageNumber = pageNumber;
+        this.dataGetType = dataGetType;
         this.ageStart = ageStart;
         this.ageEnd = ageEnd;
         this.sex = sex;
@@ -43,7 +44,7 @@ public class UserFindAllRequest extends PostJsonRequest {
 
     @Override
     protected String getParamsJson() {
-        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, AppUtils.getInstance().getUserId(), ageStart, ageEnd, sex, cityCode);
+        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, pageNumber, dataGetType, AppUtils.getInstance().getUserId(), ageStart, ageEnd, sex, cityCode);
         RequestInfo requestInfo = new RequestInfo(context, actionInfo);
         return GsonUtil.toJson(requestInfo);
     }
@@ -67,6 +68,8 @@ public class UserFindAllRequest extends PostJsonRequest {
             UserFindAllRspInfo info = GsonUtil.fromJson(response.toString(), UserFindAllRspInfo.class);
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
+                b.putInt("currentPage", info.getCurrentPage());
+                b.putInt("isEndPage", info.getIsEndPage());
                 b.putSerializable("userList", (Serializable) info.getUserDetailList());
                 msg.what = MessageSignConstant.USER_FIND_ALL_SUCCESS;
                 msg.setData(b);
