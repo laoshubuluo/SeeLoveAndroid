@@ -11,36 +11,57 @@ public interface UserDao {
 
     /**
      * 添加用户信息
+     *
      * @param slUser
      */
-    public void addUser(SLUser slUser);
+    void addUser(SLUser slUser);
 
     /**
      * 根据userId获取user信息
+     *
      * @param userId
      * @return
      */
-    public SLUser getUserByUserId(long userId);
+    SLUser getUserByUserId(long userId);
 
     /**
      * 根据userId更新用户信息
+     *
      * @param slUser
      * @return
      */
-    public boolean updateUserByUserId(SLUser slUser);
+    boolean updateUserByUserId(SLUser slUser);
 
     /**
      * 根据userId更新用户头像
+     *
      * @param userId
      * @param headUrl
      * @return
      */
-    public boolean updateUserHeadUrlByUserId(String userId, String headUrl);
+    boolean updateUserHeadUrlByUserId(String userId, String headUrl);
+
+    /**
+     * 根据userId更新关注数
+     * @param userId
+     * @param followCount
+     * @return
+     */
+    boolean updateUserFollowCountByUserId(long userId,int followCount);
+
+    /**
+     * 根据userId更新被关注数
+     * @param userId
+     * @param followedCount
+     * @return
+     */
+    boolean updateUserFollowedCountByUserId(long userId,int followedCount);
 
     /**
      * 根据userId删除用户信息
+     *
      * @param userId
      * @return
      */
-    public boolean deleteUserByUserId(String userId);
+    boolean deleteUserByUserId(String userId);
 }

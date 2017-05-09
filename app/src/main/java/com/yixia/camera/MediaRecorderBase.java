@@ -106,7 +106,7 @@ public abstract class MediaRecorderBase implements Callback, PreviewCallback, IM
 	/** 帧率 */
 	protected int mFrameRate = MIN_FRAME_RATE;
 	/** 摄像头类型（前置/后置），默认后置 */
-	protected int mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+	protected int mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
 	/** 视频码率 */
 	protected int mVideoBitrate = 2048;
 	/** 状态标记 */
@@ -173,6 +173,9 @@ public abstract class MediaRecorderBase implements Callback, PreviewCallback, IM
 	public void switchCamera(int cameraFacingFront) {
 		switch (cameraFacingFront) {
 		case Camera.CameraInfo.CAMERA_FACING_FRONT:
+			mCameraId = cameraFacingFront;
+			stopPreview();
+			startPreview();
 		case Camera.CameraInfo.CAMERA_FACING_BACK:
 			mCameraId = cameraFacingFront;
 			stopPreview();

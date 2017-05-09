@@ -72,7 +72,7 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
         TextView titleView = (TextView) view.findViewById(R.id.titleView);
         ImageView rightView = (ImageView) view.findViewById(R.id.rightBtn);
         titleView.setText(R.string.find);
-        rightView.setVisibility(View.VISIBLE);
+        rightView.setVisibility(View.GONE);
         rightView.setBackgroundResource(R.mipmap.share_btn);
         rightView.setOnClickListener(this);
         mPullToRefreshView = (PullToRefreshView) view.findViewById(R.id.pull_to_refresh_view);

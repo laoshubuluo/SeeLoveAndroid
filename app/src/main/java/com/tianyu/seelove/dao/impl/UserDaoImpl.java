@@ -29,6 +29,10 @@ public class UserDaoImpl implements UserDao {
             "MarriageCode = ?,MarriageName = ?,Introduce = ?,Remark = ?,VideoCount = ?,FollowCount = ?,FollowedCount = ? WHERE UserId = ?";
     // 根据userId更新用户头像headUrl
     public final static String sqlUpdateHeadUrlByUserId = "UPDATE USERINFO SET HeadUrl = ? WHERE UserId = ?";
+    // 根据userId更新FollowCount
+    public final static String sqlUpdateFollowCountByUserId = "UPDATE USERINFO SET FollowCount = ? WHERE UserId = ?";
+    // 根据userId更新FollowedCount
+    public final static String sqlUpdateFollowedCountByUserId = "UPDATE USERINFO SET FollowedCount = ? WHERE UserId = ?";
     // 根据userId查询用户详情
     public final static String sqlSelectUserByUserId = "SELECT * FROM USERINFO WHERE UserId = ?";
     // 根据userId删除当前用户
@@ -147,6 +151,39 @@ public class UserDaoImpl implements UserDao {
             return false;
         }
     }
+
+    @Override
+    public boolean updateUserFollowCountByUserId(long userId, int followCount) {
+        if (StringUtils.isNullOrBlank(String.valueOf(userId)))
+            return false;
+        try {
+            DbConnectionManager.getInstance().getConnection().execSQL(
+                    sqlUpdateFollowCountByUserId,
+                    new String[]{String.valueOf(followCount), String.valueOf(userId)});
+            LogUtil.i("db execute sql success： " + sqlUpdateFollowCountByUserId);
+            return true;
+        } catch (Exception ex) {
+            LogUtil.e("db execute sql error： " + sqlUpdateFollowCountByUserId, ex);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateUserFollowedCountByUserId(long userId, int followedCount) {
+        if (StringUtils.isNullOrBlank(String.valueOf(userId)))
+            return false;
+        try {
+            DbConnectionManager.getInstance().getConnection().execSQL(
+                    sqlUpdateFollowedCountByUserId,
+                    new String[]{String.valueOf(followedCount), String.valueOf(userId)});
+            LogUtil.i("db execute sql success： " + sqlUpdateFollowedCountByUserId);
+            return true;
+        } catch (Exception ex) {
+            LogUtil.e("db execute sql error： " + sqlUpdateFollowedCountByUserId, ex);
+            return false;
+        }
+    }
+
 
     /**
      * 根据uid获取User

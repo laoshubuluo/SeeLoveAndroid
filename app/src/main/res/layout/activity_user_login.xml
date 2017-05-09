@@ -121,14 +121,14 @@
                 android:id="@+id/qqLoginBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/layout_40dp"
                 android:background="@mipmap/login_qq_btn" />
 
             <ImageView
                 android:id="@+id/wechatLoginBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/login_wechat_btn" />
+                android:background="@mipmap/login_wechat_btn"
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
