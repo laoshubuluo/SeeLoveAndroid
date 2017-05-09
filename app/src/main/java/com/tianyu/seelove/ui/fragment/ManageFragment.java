@@ -92,6 +92,7 @@ public class ManageFragment extends BaseFragment {
         controller = new UserController(getActivity(), handler);
         codeController = new SecurityCodeController(getActivity(), handler);
         slUser = userDao.getUserByUserId(AppUtils.getInstance().getUserId());
+        Constant.loginHandler = handler;
     }
 
     @Override
@@ -164,14 +165,15 @@ public class ManageFragment extends BaseFragment {
         } else {
             userLayout.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);
-            ImageLoader.getInstance().displayImage(slUser.getBigImg(), bigImage, ImageLoaderUtil.getDefaultDisplayOptions());
+            ImageLoader.getInstance().displayImage(StringUtils.isNotBlank(slUser.getBigImg()) ? slUser.getBigImg() : slUser.getHeadUrl(),
+                    bigImage, ImageLoaderUtil.getDefaultDisplayOptions());
             ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), headUrl, ImageLoaderUtil.getHeadUrlImageOptions());
             userName.setText(slUser.getNickName());
-            videoCount.setText(slUser.getVideoCount() + "");
             followCount.setText(slUser.getFollowCount() + "");
             followedCount.setText(slUser.getFollowedCount() + "");
             videoInfos.clear();
             videoInfos = videoDao.getVideoListByUserId(AppUtils.getInstance().getUserId());
+            videoCount.setText(videoInfos.size() + "");
             videoGridAdapter.updateData(videoInfos);
             rightView.setVisibility(View.VISIBLE);
         }

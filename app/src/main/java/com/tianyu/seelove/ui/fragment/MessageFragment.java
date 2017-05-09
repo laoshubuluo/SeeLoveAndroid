@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.SessionAdapter;
 import com.tianyu.seelove.common.Actions;
@@ -36,11 +37,13 @@ import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.dialog.SureDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Fragmengt(交流)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
@@ -88,7 +91,9 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         } else {
             view = inflater.inflate(R.layout.fragment_message, container, false);
             initView(view);
-            initData();
+            if (0l != AppUtils.getInstance().getUserId()) {
+                initData();
+            }
         }
         return view;
     }
@@ -252,7 +257,9 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
     public void onResume() {
         super.onResume();
         LogUtil.d("MessageFragment____onResume");
-        sessionAdapter.notifyDataSetChanged();
+        if (null != sessionAdapter) {
+            sessionAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

@@ -9,10 +9,13 @@ import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
 import com.tianyu.seelove.common.WebConstant;
+import com.tianyu.seelove.dao.UserDao;
+import com.tianyu.seelove.dao.impl.UserDaoImpl;
 import com.tianyu.seelove.model.entity.network.request.FollowFindAllActionInfo;
 import com.tianyu.seelove.model.entity.network.request.base.RequestInfo;
 import com.tianyu.seelove.model.entity.network.response.FollowFindAllRspInfo;
 import com.tianyu.seelove.network.request.base.PostJsonRequest;
+import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.GsonUtil;
 import com.tianyu.seelove.utils.LogUtil;
 
@@ -27,11 +30,13 @@ import java.io.Serializable;
  */
 public class FollowFindAllByUserRequest extends PostJsonRequest {
     private long userId;
+    private UserDao userDao;
 
     public FollowFindAllByUserRequest(Handler handler, Context context, long userId) {
         this.handler = handler;
         this.context = context;
         this.userId = userId;
+        userDao = new UserDaoImpl();
     }
 
     @Override
@@ -61,6 +66,9 @@ public class FollowFindAllByUserRequest extends PostJsonRequest {
             //响应正常
             if (ResponseConstant.SUCCESS == info.getStatusCode()) {
                 b.putSerializable("userList", (Serializable) info.getUserList());
+                if (null != info && null != info.getUserList() && info.getUserList().size() > 0) {
+                    userDao.updateUserFollowCountByUserId(AppUtils.getInstance().getUserId(), info.getUserList().size());
+                }
                 msg.what = MessageSignConstant.FOLLOW_FIND_ALL_BY_USER_SUCCESS;
                 msg.setData(b);
                 handler.sendMessage(msg);

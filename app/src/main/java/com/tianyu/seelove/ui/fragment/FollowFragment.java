@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FollowListAdapter;
 import com.tianyu.seelove.common.Actions;
@@ -40,7 +39,7 @@ import java.util.List;
  * @date 2017-03-29 15:15
  */
 public class FollowFragment extends BaseFragment implements PullToRefreshView.OnHeaderRefreshListener,
-        PullToRefreshView.OnFooterRefreshListener{
+        PullToRefreshView.OnFooterRefreshListener {
     private FollowListAdapter adapter;
     private ListView followListView;
     private FollowReciver reciver;
@@ -92,21 +91,23 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
         followListView = (ListView) view.findViewById(R.id.followListView);
         adapter = new FollowListAdapter(getActivity(), userList);
         followListView.setAdapter(adapter);
-        // 请求服务器
-        customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
-        customProgressDialog.show();
-        controller.findAll(AppUtils.getInstance().getUserId());
+        if (0l != AppUtils.getInstance().getUserId()) {
+            // 请求服务器
+            customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
+            customProgressDialog.show();
+            controller.findAll(AppUtils.getInstance().getUserId());
+        }
     }
 
     @Override
     public void onFooterRefresh(PullToRefreshView view) {
-		/* 上拉加载更多 */
+        /* 上拉加载更多 */
         h.sendEmptyMessage(1);
     }
 
     @Override
     public void onHeaderRefresh(PullToRefreshView view) {
-		/* 下拉刷新数据 */
+        /* 下拉刷新数据 */
         h.sendEmptyMessage(2);
     }
 
@@ -127,7 +128,7 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
                     }
                 }, SystemClock.uptimeMillis() + 1000);
             }
-        };
+        }
     };
 
     private void initIntent() {
@@ -152,21 +153,24 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
     @Override
     public void onClick(View view) {
         super.onClick(view);
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.rightBtn: {
-                Intent intent = new Intent();
-                intent.setClass(view.getContext(), VideoRecordActivity.class);
-                view.getContext().startActivity(intent);
+                if (0l != AppUtils.getInstance().getUserId()) {
+                    intent = new Intent();
+                    intent.setClass(view.getContext(), VideoRecordActivity.class);
+                    view.getContext().startActivity(intent);
+                } else {
+                    intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
+                    startActivityForResult(intent, 0);
+                    getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);
+                    Toast.makeText(getActivity(), R.string.login_tips, Toast.LENGTH_LONG).show();
+                }
                 break;
             }
         }
     }
 
-    /**
-     * Handler发送message的逻辑处理方法
-     * @param msg
-     * @return
-     */
     @Override
     public boolean handleMessage(Message msg) {
         if (customProgressDialog != null)

@@ -147,10 +147,14 @@ public class VideoRecordActivity extends BaseActivity implements MediaRecorderBa
     private Handler myHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (!recordedOver) {
-                rb_start.setProgress(mMediaObject.getDuration());
-                myHandler.sendEmptyMessageDelayed(0, 50);
-                tv_hint.setVisibility(View.GONE);
+            try {
+                if (!recordedOver) {
+                    rb_start.setProgress(mMediaObject.getDuration());
+                    myHandler.sendEmptyMessageDelayed(0, 50);
+                    tv_hint.setVisibility(View.GONE);
+                }
+            }catch (Exception ex){
+                ex.printStackTrace();
             }
         }
     };
@@ -183,6 +187,12 @@ public class VideoRecordActivity extends BaseActivity implements MediaRecorderBa
     protected void onPause() {
         super.onPause();
         mMediaRecorder.stopPreview();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMediaRecorder.release();
     }
 
     @Override

@@ -83,7 +83,7 @@ public class UserInfoActivity extends BaseActivity {
         videoGridView = (MyGridView) findViewById(R.id.videoGridView);
         leftBtn.setOnClickListener(this);
         leftBtn.setVisibility(View.VISIBLE);
-        rightBtn.setVisibility(View.VISIBLE);
+        rightBtn.setVisibility(View.GONE);
         rightBtn.setOnClickListener(this);
         rightBtn.setBackgroundResource(R.mipmap.share_btn);
         sendMessage.setOnClickListener(this);
@@ -105,7 +105,8 @@ public class UserInfoActivity extends BaseActivity {
             userDescript.setText(StringUtils.isNotBlank(slUser.getIntroduce()) ? slUser.getIntroduce() : "我是一句话介绍！！");
             cityName.setText(StringUtils.isNotBlank(slUser.getCityName()) ? "/" + slUser.getCityName() : "/北京");
             ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), headImage, ImageLoaderUtil.getHeadUrlImageOptions());
-            ImageLoader.getInstance().displayImage(slUser.getBigImg(), bigImage, ImageLoaderUtil.getSmallImageOptions());
+            ImageLoader.getInstance().displayImage(StringUtils.isNotBlank(slUser.getBigImg()) ? slUser.getBigImg() : slUser.getHeadUrl(),
+                    bigImage, ImageLoaderUtil.getSmallImageOptions());
             if (slVideoList.size() > 0) {
                 videoGridAdapter.updateData(slVideoList);
             }

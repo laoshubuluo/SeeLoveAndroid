@@ -14,7 +14,6 @@ public class TranslateActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        Toast.makeText(getApplicationContext(),"我是透明的",Toast.LENGTH_LONG).show();
         Intent intent;
         // 启动发送消息Service
         intent = IntentManager.createIntent(getApplicationContext(), MessageSendService.class);
