@@ -9,14 +9,19 @@ import com.tianyu.seelove.model.entity.network.request.base.ActionInfo;
  * introduce : 请求实体
  */
 public class UserFindAllActionInfo extends ActionInfo {
+    private int pageNumber;
+    private int dataGetType;
+
     private long userId;
     private int ageStart = 0;
     private int ageEnd = 0;
     private String sex;
     private String cityCode;
 
-    public UserFindAllActionInfo(int actionId, long userId, int ageStart, int ageEnd, String sex, String cityCode) {
+    public UserFindAllActionInfo(int actionId, int pageNumber, int dataGetType, long userId, int ageStart, int ageEnd, String sex, String cityCode) {
         super(actionId);
+        this.pageNumber = pageNumber;
+        this.dataGetType = dataGetType;
         this.userId = userId;
         this.ageStart = ageStart;
         this.ageEnd = ageEnd;
@@ -62,5 +67,21 @@ public class UserFindAllActionInfo extends ActionInfo {
 
     public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public int getDataGetType() {
+        return dataGetType;
+    }
+
+    public void setDataGetType(int dataGetType) {
+        this.dataGetType = dataGetType;
     }
 }
