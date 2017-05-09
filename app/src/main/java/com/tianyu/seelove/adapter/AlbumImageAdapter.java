@@ -24,7 +24,7 @@ public class AlbumImageAdapter extends CommonAdapter<String> {
     public static ArrayList<String> mSelectedImage = new ArrayList<String>();
 
     /**
-     * 文件夹路径
+     * 文件夹路径/
      */
     private String mDirPath;
     private Context context;
