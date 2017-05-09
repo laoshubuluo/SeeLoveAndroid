@@ -1,10 +1,17 @@
 package com.tianyu.seelove.ui.activity.system;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,17 +21,23 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.application.SeeLoveApplication;
 import com.tianyu.seelove.common.Actions;
+import com.tianyu.seelove.common.MessageSignConstant;
+import com.tianyu.seelove.controller.SystemController;
 import com.tianyu.seelove.dao.MessageDao;
 import com.tianyu.seelove.dao.impl.MessageDaoImpl;
 import com.tianyu.seelove.manager.IntentManager;
+import com.tianyu.seelove.model.entity.network.response.NewVersionRspInfo;
 import com.tianyu.seelove.service.MessageSendService;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.ui.fragment.FindFragment;
 import com.tianyu.seelove.ui.fragment.FollowFragment;
 import com.tianyu.seelove.ui.fragment.ManageFragment;
 import com.tianyu.seelove.ui.fragment.MessageFragment;
+import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.RedDotView;
+import com.tianyu.seelove.view.dialog.VersionUpdateDialog;
 
 /**
  * 主页－统一对fragment进行管理
@@ -43,16 +56,19 @@ public class MainActivity extends BaseActivity {
     private MessageDao messageDao;
     private RedDotView redDotView;
     private int unReadCount = 0;
+    private SystemController controller;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        controller = new SystemController(this, handler);
         messageDao = new MessageDaoImpl();
         mTextviewArray = this.getResources().getStringArray(R.array.frag_text);
         initIntent();
         initView();
         initService();
+        updateVersion();
     }
 
     private void initService() {
@@ -122,6 +138,59 @@ public class MainActivity extends BaseActivity {
             redDotView.initView(unReadCount);
         }
         return view;
+    }
+
+    private void updateVersion() {
+        controller.getNewVerison();
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what) {
+            case MessageSignConstant.NEW_VERSION_SUCCESS:
+                final NewVersionRspInfo newVersion = (NewVersionRspInfo) msg.getData().getSerializable("newVersion");
+                if (null != newVersion && StringUtils.isNotBlank(newVersion.getVersionCode())) {
+                    if (Integer.parseInt(SeeLoveApplication.versionCode) < Integer.parseInt(newVersion.getVersionCode())) {
+                        if ("1".equals(newVersion.getIsForced())) {
+                            intoDownloadManager(newVersion.getDownloadUrl());
+                        } else {
+                            final VersionUpdateDialog updateDialog = new VersionUpdateDialog(this);
+                            updateDialog.initData(newVersion.getDes());
+                            updateDialog.getSureTV().setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    updateDialog.dismiss();
+                                    intoDownloadManager(newVersion.getDownloadUrl());
+                                }
+                            });
+                            updateDialog.show();
+                        }
+                    }
+                }
+                break;
+        }
+        return false;
+    }
+
+    @SuppressLint("NewApi")
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    private void intoDownloadManager(String url) {
+        DownloadManager dManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        // 设置下载路径和文件名
+        request.setDestinationInExternalPublicDir("download", "seelove.apk");
+        request.setDescription(getString(R.string.version_update));
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setMimeType("application/vnd.android.package-archive");
+        // 设置为可被媒体扫描器找到
+        request.allowScanningByMediaScanner();
+        // 设置为可见和可管理
+        request.setVisibleInDownloadsUi(true);
+        long refernece = dManager.enqueue(request);
+        // 把当前下载的ID保存起来
+        SharedPreferences sPreferences = getSharedPreferences("downloadplato", 0);
+        sPreferences.edit().putLong("plato", refernece).commit();
     }
 
     @Override

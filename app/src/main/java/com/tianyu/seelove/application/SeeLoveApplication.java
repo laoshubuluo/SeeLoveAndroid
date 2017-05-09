@@ -1,6 +1,9 @@
 package com.tianyu.seelove.application;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.tianyu.seelove.manager.CrashHandlerManager;
@@ -24,6 +27,7 @@ import io.rong.imlib.RongIMClient;
  */
 public class SeeLoveApplication extends Application {
     public static String deviceMode = "";
+    public static String versionCode = "";
     public static String VIDEO_PATH = "/sdcard/SeeLoveRecordedDemo/";
 
     @Override
@@ -49,6 +53,7 @@ public class SeeLoveApplication extends Application {
         // 初始化分享SDK
         ShareSDK.initSDK(this);
         deviceMode = getDeviceModel();
+        versionCode = getVersionCode(this);
         initVCamera();
     }
 
@@ -71,5 +76,18 @@ public class SeeLoveApplication extends Application {
 
     private String getDeviceModel() {
         return android.os.Build.MODEL; // 手机型号
+    }
+
+    public String getVersionCode(Context context){
+        PackageManager packageManager=context.getPackageManager();
+        PackageInfo packageInfo;
+        String versionCode="";
+        try {
+            packageInfo=packageManager.getPackageInfo(context.getPackageName(),0);
+            versionCode=packageInfo.versionCode+"";
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
     }
 }

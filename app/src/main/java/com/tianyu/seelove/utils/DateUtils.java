@@ -27,7 +27,7 @@ public class DateUtils {
         long timeSpan = currentTime - time;
         DecimalFormat decimalFormat = new DecimalFormat("#");
         if (timeSpan < 1000 * 60) {
-            return decimalFormat.format(Math.floor(timeSpan * 1.0 / (1000))) + 1
+            return decimalFormat.format(Math.floor(timeSpan * 1.0 / (1000)))
                     + "秒前";
         } else if (timeSpan < 1000 * 60 * 60) {
             return decimalFormat.format(Math
