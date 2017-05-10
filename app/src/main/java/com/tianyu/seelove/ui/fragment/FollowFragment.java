@@ -23,7 +23,7 @@ import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.model.enums.DataGetType;
 import com.tianyu.seelove.ui.activity.user.UserLoginActivity;
-import com.tianyu.seelove.ui.activity.video.VideoRecordActivity;
+import com.tianyu.seelove.ui.activity.video.VideoImageActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
@@ -32,6 +32,11 @@ import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import java.util.ArrayList;
 import java.util.List;
+
+import mabeijianxi.camera.MediaRecorderActivity;
+import mabeijianxi.camera.model.BaseMediaBitrateConfig;
+import mabeijianxi.camera.model.CBRMode;
+import mabeijianxi.camera.model.MediaRecorderConfig;
 
 /**
  * Fragmengt(动态)
@@ -165,9 +170,24 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
         switch (view.getId()) {
             case R.id.rightBtn: {
                 if (0l != AppUtils.getInstance().getUserId()) {
-                    intent = new Intent();
-                    intent.setClass(view.getContext(), VideoRecordActivity.class);
-                    view.getContext().startActivity(intent);
+                    // 录制设置压缩
+                    BaseMediaBitrateConfig recordMode = null;
+                    recordMode = new CBRMode(166, Integer.valueOf(450));
+                    recordMode.setVelocity("ultrafast");
+                    BaseMediaBitrateConfig compressMode = null;
+                    compressMode = new CBRMode(166, Integer.valueOf(450));
+                    compressMode.setVelocity("ultrafast");
+                    MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+//                        .doH264Compress(compressMode)
+                            .setMediaBitrateConfig(recordMode)
+                            .smallVideoWidth(480)
+                            .smallVideoHeight(600)
+                            .recordTimeMax(8 * 1000)
+                            .maxFrameRate(18)
+                            .captureThumbnailsTime(1)
+                            .recordTimeMin(1 * 1000)
+                            .build();
+                    MediaRecorderActivity.goSmallVideoRecorder(getActivity(), VideoImageActivity.class.getName(), config);
                 } else {
                     intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
                     startActivityForResult(intent, 0);

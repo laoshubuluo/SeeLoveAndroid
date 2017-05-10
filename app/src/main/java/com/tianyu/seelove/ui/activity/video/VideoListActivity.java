@@ -20,6 +20,11 @@ import com.tianyu.seelove.view.dialog.PromptDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import mabeijianxi.camera.MediaRecorderActivity;
+import mabeijianxi.camera.model.BaseMediaBitrateConfig;
+import mabeijianxi.camera.model.CBRMode;
+import mabeijianxi.camera.model.MediaRecorderConfig;
+
 /**
  * 我的视频界面
  * @author shisheng.zhao
@@ -95,9 +100,24 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
                 break;
             }
             case R.id.rightBtn: {
-                Intent intent = new Intent();
-                intent.setClass(view.getContext(), VideoRecordActivity.class);
-                view.getContext().startActivity(intent);
+                // 录制设置压缩
+                BaseMediaBitrateConfig recordMode = null;
+                recordMode = new CBRMode(166, Integer.valueOf(450));
+                recordMode.setVelocity("ultrafast");
+                BaseMediaBitrateConfig compressMode = null;
+                compressMode = new CBRMode(166, Integer.valueOf(450));
+                compressMode.setVelocity("ultrafast");
+                MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+//                        .doH264Compress(compressMode)
+                        .setMediaBitrateConfig(recordMode)
+                        .smallVideoWidth(480)
+                        .smallVideoHeight(600)
+                        .recordTimeMax(8 * 1000)
+                        .maxFrameRate(18)
+                        .captureThumbnailsTime(1)
+                        .recordTimeMin(1 * 1000)
+                        .build();
+                MediaRecorderActivity.goSmallVideoRecorder(this, VideoImageActivity.class.getName(), config);
                 break;
             }
         }

@@ -97,23 +97,12 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"></activity>
         <!--视频录制activity-->
-        <activity
-            android:name=".ui.activity.video.VideoRecordActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"></activity>
         <!--视频编辑activity-->
-        <activity
-            android:name=".ui.activity.video.EditVideoActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"></activity>
         <!--视频播放activity-->
         <activity
             android:name=".ui.activity.video.VideoPlayActivity"
             android:configChanges="screenSize|orientation"
             android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.video.FullVideoActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
         <!-- 单聊Activity-->
         <activity
             android:name=".ui.activity.message.SingleChatActivity"
@@ -131,10 +120,6 @@
             android:name=".ui.activity.message.AlbumImageActivity"
             android:screenOrientation="portrait"></activity>
         <!--发送位置activity-->
-        <activity
-            android:name=".ui.activity.message.MapMessageActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!--发送拍照照片activity-->
         <activity
             android:name=".ui.activity.message.ImageSendActivity"
@@ -194,10 +179,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!--定位-->
-        <activity
-            android:name=".ui.activity.message.PositionActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!-- 发送message service -->
         <service
             android:name=".service.MessageSendService"
@@ -287,5 +268,7 @@
             android:name="UMENG_CHANNEL"
             android:value="Test" />
         <!--友盟key end-->
+        <!--视频播放activity-->
+        <activity android:name="mabeijianxi.camera.MediaRecorderActivity" />
     </application>
 </manifest>

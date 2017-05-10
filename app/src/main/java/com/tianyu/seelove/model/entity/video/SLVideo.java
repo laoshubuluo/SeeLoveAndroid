@@ -10,7 +10,7 @@ public class SLVideo {
     private long videoId; // 短视频id
     private long userId; // 用户id
     private String videoTitle; // 短视频标题
-    private String videoTime; // 短视频时长
+    private String videoTime; // 短视频创建时间
     private String isDefault; // 是否为默认展示短视频 1是;0否
     private String videoImg; // 短视频封皮
     private String videoUrl; // 短视频播放地址

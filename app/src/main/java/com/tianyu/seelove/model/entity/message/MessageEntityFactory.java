@@ -15,8 +15,6 @@ public class MessageEntityFactory {
             return new AudioMessageEntity(message);
         } else if (message.getMessageType() == MessageType.IMAGE) {
             return new ImageMessageEntity(message);
-        } else if (message.getMessageType() == MessageType.LOCATION) {
-            return new LocationMessageEntity(message);
         } else {
             return new TextMessageEntity(message);
         }

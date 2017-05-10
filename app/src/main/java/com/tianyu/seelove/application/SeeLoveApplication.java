@@ -4,24 +4,21 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-
-import com.baidu.mapapi.SDKInitializer;
+import android.os.Environment;
 import com.tianyu.seelove.manager.CrashHandlerManager;
 import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.manager.DirectoryManager;
 import com.tianyu.seelove.manager.RongCloudManager;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
-import com.yixia.camera.VCamera;
-
 import java.io.File;
-
 import cn.sharesdk.framework.ShareSDK;
 import io.rong.imlib.RongIMClient;
+import mabeijianxi.camera.VCamera;
+import mabeijianxi.camera.util.DeviceUtils;
 
 /**
  * 系统初始化application
- *
  * @author shisheng.zhao
  * @date 2016-11-14 18:06:11
  */
@@ -40,8 +37,6 @@ public class SeeLoveApplication extends Application {
         CrashHandlerManager crashHandler = CrashHandlerManager.getInstance();
         crashHandler.init(getApplicationContext());
         Thread.setDefaultUncaughtExceptionHandler(crashHandler);
-        // 注意该方法要再setContentView方法之前实现
-        SDKInitializer.initialize(this);
         // 初始化目录管理
         DirectoryManager.init(this);
         // 初始化本地数据库连接管理
@@ -54,24 +49,26 @@ public class SeeLoveApplication extends Application {
         ShareSDK.initSDK(this);
         deviceMode = getDeviceModel();
         versionCode = getVersionCode(this);
-        initVCamera();
+        initSmallVideo(this);
     }
 
-    /**
-     * 初始化VCamera
-     */
-    private void initVCamera() {
-        VIDEO_PATH += String.valueOf(System.currentTimeMillis());
-        File file = new File(VIDEO_PATH);
-        if (!file.exists()) {
-            file.mkdirs();
+    public static void initSmallVideo(Context context) {
+        // 设置拍摄视频缓存路径
+        File dcim = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        if (DeviceUtils.isZte()) {
+            if (dcim.exists()) {
+                VCamera.setVideoCachePath(dcim + "/mabeijianxi/");
+            } else {
+                VCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
+                        "/sdcard-ext/")
+                        + "/mabeijianxi/");
+            }
+        } else {
+            VCamera.setVideoCachePath(dcim + "/mabeijianxi/");
         }
-        // 设置视频缓存路径
-        VCamera.setVideoCachePath(VIDEO_PATH);
-        // 开启log输出,ffmpeg输出logcat
         VCamera.setDebugMode(true);
-        // 初始化拍摄SDK,必须进行初始化
-        VCamera.initialize(this);
+        VCamera.initialize(context);
     }
 
     private String getDeviceModel() {
