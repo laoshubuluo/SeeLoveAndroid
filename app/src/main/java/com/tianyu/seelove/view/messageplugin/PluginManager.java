@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
@@ -99,7 +100,7 @@ public class PluginManager {
         final List<GridLayout> grids = new ArrayList<GridLayout>();
         while (pluginIterator.hasNext()) {
             // 为了隐藏表情按钮,哈哈
-            if (n == 4 || n == 3) {
+            if (n == 4 || n == 3 || n == 2) {
                 break;
             }
             MessagePlugin plugin = pluginIterator.next();
@@ -148,8 +149,6 @@ public class PluginManager {
                 new ImageMessagePlugin(this));
         pluginMap.put(CameraMessagePlugin.class.getName(),
                 new CameraMessagePlugin(this));
-        pluginMap.put(LocationMessaePlugin.class.getName(),
-                new LocationMessaePlugin(this));
         pluginMap.put(ImojiMessagePlugin.class.getName(), new
                 ImojiMessagePlugin(this));
     }

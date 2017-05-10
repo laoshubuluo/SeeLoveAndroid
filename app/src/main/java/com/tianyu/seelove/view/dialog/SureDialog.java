@@ -29,7 +29,6 @@ public class SureDialog extends Dialog {
         contentTV = (TextView) findViewById(R.id.contentTV);
         sureTV = (TextView) findViewById(R.id.sureTV);
         cancelTV = (TextView) findViewById(R.id.cancelTV);
-        isCheck = (CheckBox) findViewById(R.id.isChexkBox);
         lineView = findViewById(R.id.line_layout);
         cancelTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,9 +73,6 @@ public class SureDialog extends Dialog {
         return cancelTV;
     }
 
-    public CheckBox getIsCheck() {
-        return isCheck;
-    }
 
     public View getLineView() {
         return lineView;

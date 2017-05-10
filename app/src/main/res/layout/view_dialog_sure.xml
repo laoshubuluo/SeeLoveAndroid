@@ -29,15 +29,6 @@
         android:textSize="@dimen/font_16sp"
         android:visibility="gone" />
 
-    <CheckBox
-        android:id="@+id/isChexkBox"
-        style="@style/DialogCheckboxTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_gravity="left"
-        android:layout_margin="5dp"
-        android:visibility="gone" />
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

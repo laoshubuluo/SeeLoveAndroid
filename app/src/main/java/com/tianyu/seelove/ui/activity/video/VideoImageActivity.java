@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,6 +41,8 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import mabeijianxi.camera.MediaRecorderActivity;
+
 /**
  * 选择视频封面功能
  * @author shisheng.zhao
@@ -63,7 +66,9 @@ public class VideoImageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_image);
         controller = new VideoController(this, handler);
-        videoPath = getIntent().getStringExtra("videoPath");
+        Intent intent = getIntent();
+        videoPath = intent.getStringExtra(MediaRecorderActivity.VIDEO_URI);
+//        videoPath = getIntent().getStringExtra("videoPath");
         initView();
         getVideoThumbnail();
         initData();
