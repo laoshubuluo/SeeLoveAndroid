@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FollowListAdapter;
 import com.tianyu.seelove.common.Actions;
+import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.NewsController;
 import com.tianyu.seelove.manager.IntentManager;
@@ -32,7 +33,6 @@ import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import java.util.ArrayList;
 import java.util.List;
-
 import mabeijianxi.camera.MediaRecorderActivity;
 import mabeijianxi.camera.model.BaseMediaBitrateConfig;
 import mabeijianxi.camera.model.CBRMode;
@@ -150,6 +150,7 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
     private void initIntent() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.setPriority(1100);
+        intentFilter.addAction(Actions.ACTION_EXIT_APP);
         intentFilter.addAction(Actions.ACTION_UPDATE_FOLLOW_LIST);
         getActivity().registerReceiver(reciver, intentFilter);
     }
@@ -157,8 +158,17 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
     private class FollowReciver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Actions.ACTION_UPDATE_FOLLOW_LIST)) {
-                initData();
+            if (intent.getAction().equals(Actions.ACTION_UPDATE_FOLLOW_LIST) || intent.getAction().equals(Actions.ACTION_LOGIN_SUCCESS)) {
+                dataGetType = 0;
+                pageNumber = 0;
+                updateData(DataGetType.DOWN);
+            } else if (intent.getAction().equals(Actions.ACTION_EXIT_APP)) {
+                if (null == userList) {
+                    userList = new ArrayList<>();
+                }
+                userList.clear();
+                adapter.updateData(userList, true);
+                // todo shisheng.zhao 引导用户进行登录
             }
         }
     }
@@ -172,20 +182,20 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
                 if (0l != AppUtils.getInstance().getUserId()) {
                     // 录制设置压缩
                     BaseMediaBitrateConfig recordMode = null;
-                    recordMode = new CBRMode(166, Integer.valueOf(450));
-                    recordMode.setVelocity("ultrafast");
+                    recordMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                    recordMode.setVelocity(Constant.velocity);
                     BaseMediaBitrateConfig compressMode = null;
-                    compressMode = new CBRMode(166, Integer.valueOf(450));
-                    compressMode.setVelocity("ultrafast");
+                    compressMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                    compressMode.setVelocity(Constant.velocity);
                     MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
 //                        .doH264Compress(compressMode)
                             .setMediaBitrateConfig(recordMode)
-                            .smallVideoWidth(480)
-                            .smallVideoHeight(600)
-                            .recordTimeMax(8 * 1000)
-                            .maxFrameRate(18)
+                            .smallVideoWidth(Constant.videoWidth)
+                            .smallVideoHeight(Constant.videHeight)
+                            .recordTimeMax(Constant.maxRecordTime)
+                            .maxFrameRate(Constant.maxFrameRate)
                             .captureThumbnailsTime(1)
-                            .recordTimeMin(1 * 1000)
+                            .recordTimeMin(Constant.minRecordTime)
                             .build();
                     MediaRecorderActivity.goSmallVideoRecorder(getActivity(), VideoImageActivity.class.getName(), config);
                 } else {
@@ -292,6 +302,7 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
         LogUtil.d("FollowFragment____onDestroy");
         if (null != reciver) {
             getActivity().unregisterReceiver(reciver);
+            reciver = null;
         }
     }
 

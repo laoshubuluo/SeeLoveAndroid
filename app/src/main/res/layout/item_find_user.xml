@@ -13,7 +13,7 @@
 
         <include
             android:id="@+id/item_video_view"
-            layout="@layout/list_video_item"
+            layout="@layout/find_video_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/layout_200dp" />
 

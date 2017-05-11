@@ -127,6 +127,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
     private void initIntent() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.setPriority(1100);
+        intentFilter.addAction(Actions.ACTION_EXIT_APP);
         intentFilter.addAction(Actions.ACTION_SESSION);
         intentFilter.addAction(Actions.ACTION_CLEAN_USER_SESSION);
         intentFilter.addAction(Actions.CONNECTION_FAILED);
@@ -195,6 +196,16 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
                     sessionAdapter.deleteData(slSession);
                     sessionAdapter.notifyDataSetChanged();
                 }
+            } else if (intent.getAction().equals(Actions.ACTION_EXIT_APP)) {
+                if (null == sessionList) {
+                    sessionList = new ArrayList<>();
+                }
+                sessionList.clear();
+                sessionAdapter = new SessionAdapter(getActivity(), sessionList);
+                messageList.setAdapter(sessionAdapter);
+                // todo shisheng.zhao 引导用户进行登录
+            } else if (intent.getAction().equals(Actions.ACTION_LOGIN_SUCCESS)) {
+                initData();
             }
             if (null != titleView) {
                 if (intent.getAction().equals(Actions.CONNECTION_SUCCESS)) {

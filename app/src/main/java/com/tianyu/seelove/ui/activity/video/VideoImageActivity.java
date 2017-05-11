@@ -3,6 +3,7 @@ package com.tianyu.seelove.ui.activity.video;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
@@ -23,6 +25,7 @@ import com.qiniu.android.utils.UrlSafeBase64;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoImageAdapter;
 import com.tianyu.seelove.common.Actions;
+import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.WebConstant;
 import com.tianyu.seelove.controller.VideoController;
@@ -36,7 +39,9 @@ import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.MyGridView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+
 import org.json.JSONObject;
+
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -45,6 +50,7 @@ import mabeijianxi.camera.MediaRecorderActivity;
 
 /**
  * 选择视频封面功能
+ *
  * @author shisheng.zhao
  * @date 2017-04-25 15:53
  */
@@ -154,6 +160,7 @@ public class VideoImageActivity extends BaseActivity {
 
     /**
      * 上传视频封面
+     *
      * @param imagePath
      */
     private void uploadImageFile(String imagePath) {
@@ -173,16 +180,24 @@ public class VideoImageActivity extends BaseActivity {
                     new UpCompletionHandler() {
                         @Override
                         public void complete(String key, ResponseInfo info, JSONObject response) {
-                            VideoUploadResponse videoUploadResponse = GsonUtil.fromJson(response.toString(), VideoUploadResponse.class);
-                            uploadImageUrl = "http://7xrjck.com1.z0.glb.clouddn.com/" + videoUploadResponse.getKey();
-                            SLVideo slVideo = new SLVideo();
-                            slVideo.setUserId(AppUtils.getInstance().getUserId());
-                            slVideo.setVideoTitle(videoTitle);
-                            slVideo.setIsDefault("0");
-                            slVideo.setVideoTime(String.valueOf(new Date().getTime()));
-                            slVideo.setVideoUrl(uploadVideoUrl);
-                            slVideo.setVideoImg(uploadImageUrl);
-                            controller.create(slVideo);
+                            if (StringUtils.isNotBlank(response.toString())) {
+                                VideoUploadResponse videoUploadResponse = GsonUtil.fromJson(response.toString(), VideoUploadResponse.class);
+                                if (null != videoUploadResponse) {
+                                    uploadImageUrl = Constant.videosNameSpace + videoUploadResponse.getKey();
+                                    SLVideo slVideo = new SLVideo();
+                                    slVideo.setUserId(AppUtils.getInstance().getUserId());
+                                    slVideo.setVideoTitle(videoTitle);
+                                    slVideo.setIsDefault("0");
+                                    slVideo.setVideoTime(String.valueOf(new Date().getTime()));
+                                    slVideo.setVideoUrl(uploadVideoUrl);
+                                    slVideo.setVideoImg(uploadImageUrl);
+                                    controller.create(slVideo);
+                                } else {
+                                    Toast.makeText(VideoImageActivity.this, R.string.upload_faile, Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(VideoImageActivity.this, R.string.upload_faile, Toast.LENGTH_LONG).show();
+                            }
                         }
                     }, null);
 
@@ -208,9 +223,17 @@ public class VideoImageActivity extends BaseActivity {
                     new UpCompletionHandler() {
                         @Override
                         public void complete(String key, ResponseInfo info, JSONObject response) {
-                            VideoUploadResponse videoUploadResponse = GsonUtil.fromJson(response.toString(), VideoUploadResponse.class);
-                            uploadVideoUrl = "http://7xrjck.com1.z0.glb.clouddn.com/" + videoUploadResponse.getKey();
-                            uploadImageFile(imagePath);
+                            if (StringUtils.isNotBlank(response.toString())) {
+                                VideoUploadResponse videoUploadResponse = GsonUtil.fromJson(response.toString(), VideoUploadResponse.class);
+                                if (null != videoUploadResponse) {
+                                    uploadVideoUrl = Constant.videosNameSpace + videoUploadResponse.getKey();
+                                    uploadImageFile(imagePath);
+                                } else {
+                                    Toast.makeText(VideoImageActivity.this, R.string.upload_faile, Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(VideoImageActivity.this, R.string.upload_faile, Toast.LENGTH_LONG).show();
+                            }
                         }
                     }, null);
 

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
+import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.VideoController;
 import com.tianyu.seelove.dao.VideoDao;
@@ -102,20 +103,20 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
             case R.id.rightBtn: {
                 // 录制设置压缩
                 BaseMediaBitrateConfig recordMode = null;
-                recordMode = new CBRMode(166, Integer.valueOf(450));
-                recordMode.setVelocity("ultrafast");
+                recordMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                recordMode.setVelocity(Constant.velocity);
                 BaseMediaBitrateConfig compressMode = null;
-                compressMode = new CBRMode(166, Integer.valueOf(450));
-                compressMode.setVelocity("ultrafast");
+                compressMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                compressMode.setVelocity(Constant.velocity);
                 MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
 //                        .doH264Compress(compressMode)
                         .setMediaBitrateConfig(recordMode)
-                        .smallVideoWidth(480)
-                        .smallVideoHeight(600)
-                        .recordTimeMax(8 * 1000)
-                        .maxFrameRate(18)
+                        .smallVideoWidth(Constant.videoWidth)
+                        .smallVideoHeight(Constant.videHeight)
+                        .recordTimeMax(Constant.maxRecordTime)
+                        .maxFrameRate(Constant.maxFrameRate)
                         .captureThumbnailsTime(1)
-                        .recordTimeMin(1 * 1000)
+                        .recordTimeMin(Constant.minRecordTime)
                         .build();
                 MediaRecorderActivity.goSmallVideoRecorder(this, VideoImageActivity.class.getName(), config);
                 break;
