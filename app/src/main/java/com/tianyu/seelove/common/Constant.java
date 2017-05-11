@@ -46,4 +46,16 @@ public class Constant {
     public static Handler loginHandler;
     //是否进行第三方登录中
     public static boolean loginOpenPlatformIng = false;
+    // 七牛存储
+    public static String videosNameSpace = "http://videos.shiai360.com/";
+
+    // 视频拍摄参数设置
+    public static int cbrBufSize = 166; // CBRMode BufSize 保持不变
+    public static int cbrBitrate = 550; // CBRMode Bitrate 固定码率值(越大越清晰，但是视频大小会增加）
+    public static String velocity = "ultrafast"; // 视频压缩速度，极速压缩
+    public static int videoWidth = 480; // 视频拍摄宽度
+    public static int videHeight = 540; // 视频拍摄高度
+    public static int maxRecordTime = 8 * 1000; // 拍摄视频最长时长
+    public static int minRecordTime = 1 * 1000; // 拍摄视频最短时长
+    public static int maxFrameRate = 18; // 视频拍摄码率
 }

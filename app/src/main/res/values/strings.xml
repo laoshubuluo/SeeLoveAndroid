@@ -63,6 +63,7 @@
     <string name="network_connect_tip4">如果你已接入无线局域网:</string>
     <string name="network_connect_tip5">● 请检查你所连接的无线局域网热点是否已接入互联网或者该热点以允许你的设备访问互联网</string>
     <string name="video_play">播放视频</string>
+    <string name="upload_faile">上传失败!</string>
     <string name="video_see_love">视频表白</string>
     <string name="add_follow">添加关注</string>
     <string name="video_image">设置视频封面</string>

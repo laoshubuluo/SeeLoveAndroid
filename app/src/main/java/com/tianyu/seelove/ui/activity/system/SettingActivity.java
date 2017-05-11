@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.manager.DbConnectionManager;
 import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.manager.RongCloudManager;
@@ -100,5 +101,7 @@ public class SettingActivity extends BaseActivity {
         AppUtils.getInstance().setSexCode("0");
         AppUtils.getInstance().setCityCode("00");
         AppUtils.getInstance().reset();
+        // 发送广播 通知消息,动态界面已退出登录,引导用户进行登录
+        sendBroadcast(new Intent(Actions.ACTION_EXIT_APP));
     }
 }

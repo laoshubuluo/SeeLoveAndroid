@@ -1,7 +1,10 @@
 package com.tianyu.seelove.ui.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -11,8 +14,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FindUserListAdapter;
+import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.manager.IntentManager;
@@ -24,11 +29,13 @@ import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.PullToRefreshView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Fragmengt(发现)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
@@ -42,6 +49,7 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
     private int pageNumber = 0;
     private int dataGetType = 0;
     private int isEndPage = 0;
+    private FindReciver reciver;
 
     @Override
     public void onAttach(Activity activity) {
@@ -53,6 +61,8 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         controller = new UserController(getActivity(), handler);
+        reciver = new FindReciver();
+        initIntent();
         LogUtil.d("FindFragment____onCreate");
     }
 
@@ -96,6 +106,25 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
         dataGetType = 0;
     }
 
+    private void initIntent() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.setPriority(1100);
+        intentFilter.addAction(Actions.ACTION_LOGIN_SUCCESS);
+        intentFilter.addAction(Actions.ACTION_EXIT_APP);
+        getActivity().registerReceiver(reciver, intentFilter);
+    }
+
+    private class FindReciver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Actions.ACTION_EXIT_APP) || intent.getAction().equals(Actions.ACTION_LOGIN_SUCCESS)) {
+                dataGetType = 0;
+                pageNumber = 0;
+                updateData(DataGetType.DOWN);
+            }
+        }
+    }
+
     private void updateData(final DataGetType dataGetType) {
         handler.postDelayed(new Runnable() {
             @Override
@@ -122,6 +151,7 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
 
     /**
      * 下拉刷新
+     *
      * @param view
      */
     @Override
@@ -228,6 +258,10 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (null != reciver) {
+            getActivity().unregisterReceiver(reciver);
+            reciver = null;
+        }
         LogUtil.d("FindFragment____onDestroy");
     }
 

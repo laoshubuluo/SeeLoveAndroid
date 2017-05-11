@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
@@ -48,13 +47,11 @@ import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import com.tianyu.seelove.wxapi.QQEntryActivity;
 import com.tianyu.seelove.wxapi.WXEntryActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Fragmengt(管理)
- *
  * @author shisheng.zhao
  * @date 2017-03-29 15:03
  */

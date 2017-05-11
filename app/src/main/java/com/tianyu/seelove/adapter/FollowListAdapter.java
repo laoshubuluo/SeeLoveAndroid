@@ -71,6 +71,7 @@ public class FollowListAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_follow_view, null);
             viewHolder = new ViewHolder();
             viewHolder.userIcon = (ImageView) convertView.findViewById(R.id.userIcon);
+            viewHolder.bgImage = (ImageView) convertView.findViewById(R.id.bgImage);
             viewHolder.followStatue = (ImageView) convertView.findViewById(R.id.followStatue);
             viewHolder.videoTime = (TextView) convertView.findViewById(R.id.videoTime);
             viewHolder.videoTitle = (TextView) convertView.findViewById(R.id.videoTitle);
@@ -87,6 +88,7 @@ public class FollowListAdapter extends BaseAdapter {
         viewHolder.videoTitle.setText(slUserDetailList.get(position).getDefultVideo().getVideoTitle());
         ImageLoader.getInstance().displayImage(slUserDetailList.get(position).getUser().getHeadUrl(), viewHolder.userIcon, ImageLoaderUtil.getHeadUrlImageOptions());
         ImageLoader.getInstance().displayImage(slUserDetailList.get(position).getDefultVideo().getVideoImg(), viewHolder.videoImg, ImageLoaderUtil.getSmallImageOptions());
+        ImageLoader.getInstance().displayImage(slUserDetailList.get(position).getDefultVideo().getVideoImg(), viewHolder.bgImage, ImageLoaderUtil.getSmallImageOptions());
         viewHolder.userIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,5 +116,6 @@ public class FollowListAdapter extends BaseAdapter {
         public View videoView;
         public ImageView playBtn;
         public ImageView videoImg;
+        public ImageView bgImage;
     }
 }

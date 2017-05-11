@@ -39,12 +39,6 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <!-- 百度地图-->
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
-    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-    <uses-permission android:name="android.permission.MANAGE_LOCATION_POLICY"></uses-permission>
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -196,16 +190,6 @@
             android:name="io.rong.imlib.ipc.RongService"
             android:process=":ipc" />
         <!-- 融云SDK end -->
-
-        <!--百度地图 begin -->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote"></service>
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Y91CBfGd055RQjRa7ZORW2yh" />
-        <!--百度地图 end -->
 
         <!-- 微信开放平台 begin，不可修改类路径 -->
         <activity

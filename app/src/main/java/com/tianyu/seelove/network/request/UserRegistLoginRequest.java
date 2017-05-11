@@ -1,10 +1,12 @@
 package com.tianyu.seelove.network.request;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.tianyu.seelove.common.Actions;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.common.RequestCode;
 import com.tianyu.seelove.common.ResponseConstant;
@@ -133,5 +135,7 @@ public class UserRegistLoginRequest extends PostJsonRequest {
         // 链接融云服务器
         String token = AppUtils.getInstance().getUserToken(); // 当前用户token
         RongCloudManager.getInstance().connect(token);
+        // 发送广播 通知动态刷新数据
+        context.sendBroadcast(new Intent(Actions.ACTION_LOGIN_SUCCESS));
     }
 }
