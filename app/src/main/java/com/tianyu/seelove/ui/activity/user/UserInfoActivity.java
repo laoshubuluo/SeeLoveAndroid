@@ -26,7 +26,6 @@ import com.tianyu.seelove.model.entity.video.SLVideo;
 import com.tianyu.seelove.model.enums.FollowStatus;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
-import com.tianyu.seelove.ui.activity.system.SelectHeadActivity;
 import com.tianyu.seelove.ui.activity.system.ShareActivity;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
@@ -147,7 +146,6 @@ public class UserInfoActivity extends BaseActivity {
                 break;
             }
             case R.id.followBtn: {
-                // TODO shisheng.zhao 需要通过一种方式获得关系状态已关注/未关注
                 if (0l == AppUtils.getInstance().getUserId()) {
                     intent = IntentManager.createIntent(getApplicationContext(), UserLoginActivity.class);
                     startActivityForResult(intent, 0);

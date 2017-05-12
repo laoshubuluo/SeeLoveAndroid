@@ -151,6 +151,7 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.setPriority(1100);
         intentFilter.addAction(Actions.ACTION_EXIT_APP);
+        intentFilter.addAction(Actions.ACTION_LOGIN_SUCCESS);
         intentFilter.addAction(Actions.ACTION_UPDATE_FOLLOW_LIST);
         getActivity().registerReceiver(reciver, intentFilter);
     }
@@ -263,7 +264,7 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
     public void onStart() {
         super.onStart();
         LogUtil.d("FollowFragment____onStart");
-        if (0l == AppUtils.getInstance().getUserId()) {
+        if (0l == AppUtils.getInstance().getUserId()&& !Constant.loginActivityIng) {
             Intent intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
             startActivityForResult(intent, 0);
             getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);
