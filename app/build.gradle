@@ -79,9 +79,6 @@ dependencies {
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/systembartint-1.0.4.jar')
     compile files('libs/Rong_IMLib_v2_4_5.jar')
-    compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/qq/mta-sdk-1.6.2.jar')
-    compile files('libs/qq/open_sdk_r5509.jar')
     compile files('libs/wechat/libammsdk.jar')
     compile files('libs/sharesdk/MobCommons-2016.0406.1915.jar')
     compile files('libs/sharesdk/MobTools-2016.0406.1915.jar')
@@ -93,4 +90,5 @@ dependencies {
     compile files('libs/sharesdk/ShareSDK-Wechat-Moments-2.7.1.jar')
     compile files('libs/qiniu/android-async-http-1.4.6.jar')
     compile files('libs/qiniu/qiniu-android-sdk-7.0.3.jar')
+    compile files('libs/qq/open_sdk_r5788_lite.jar') // QQ基础包,涵盖了QQ登录,分享等功能
 }

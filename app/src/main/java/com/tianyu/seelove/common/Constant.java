@@ -46,6 +46,8 @@ public class Constant {
     public static Handler loginHandler;
     //是否进行第三方登录中
     public static boolean loginOpenPlatformIng = false;
+    //引导登录界面是否存在
+    public static boolean loginActivityIng = false;
     // 七牛存储
     public static String videosNameSpace = "http://videos.shiai360.com/";
 

@@ -112,10 +112,10 @@ public class QQEntryActivity extends BaseActivity {
         @Override
         public void onComplete(final Object response) {
             LogUtil.i("call qq open platform to getUserInfo: success");
+            finish();
             // QQ登录
             UserController controller = new UserController(getApplication(), Constant.loginHandler);
             controller.login4Platform(AccountType.QQ.getCode(), mTencent.getOpenId(), response.toString());
-            finish();
         }
 
         @Override

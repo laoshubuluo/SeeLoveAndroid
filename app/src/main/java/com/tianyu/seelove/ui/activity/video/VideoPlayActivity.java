@@ -1,6 +1,7 @@
 package com.tianyu.seelove.ui.activity.video;
 
 import android.media.MediaPlayer;
+import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -43,6 +44,12 @@ public class VideoPlayActivity extends BaseActivity {
                 vv_play.start();
                 if (customProgressDialog != null)
                     customProgressDialog.dismiss();
+            }
+        });
+        vv_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

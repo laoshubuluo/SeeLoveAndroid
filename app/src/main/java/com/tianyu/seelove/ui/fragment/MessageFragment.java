@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.SessionAdapter;
 import com.tianyu.seelove.common.Actions;
+import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.dao.MessageDao;
 import com.tianyu.seelove.dao.SessionDao;
 import com.tianyu.seelove.dao.UserDao;
@@ -104,6 +105,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         connectLayout = (LinearLayout) view.findViewById(R.id.network_connect_layout);
         titleView.setText(R.string.message);
         messageList.setOnItemClickListener(this);
+        messageList.setOnItemLongClickListener(this);
         connectLayout.setOnClickListener(this);
     }
 
@@ -128,6 +130,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.setPriority(1100);
         intentFilter.addAction(Actions.ACTION_EXIT_APP);
+        intentFilter.addAction(Actions.ACTION_LOGIN_SUCCESS);
         intentFilter.addAction(Actions.ACTION_SESSION);
         intentFilter.addAction(Actions.ACTION_CLEAN_USER_SESSION);
         intentFilter.addAction(Actions.CONNECTION_FAILED);
@@ -178,6 +181,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
                 }
             }
         });
+        sureDialog.show();
         return true;
     }
 
@@ -255,7 +259,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
     public void onStart() {
         super.onStart();
         LogUtil.d("MessageFragment____onStart");
-        if (0l == AppUtils.getInstance().getUserId()) {
+        if (0l == AppUtils.getInstance().getUserId()&& !Constant.loginActivityIng) {
             Intent intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
             startActivityForResult(intent, 0);
             getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);

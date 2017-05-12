@@ -10,13 +10,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.SecurityCodeController;
 import com.tianyu.seelove.controller.UserController;
-import com.tianyu.seelove.model.entity.user.SLUser;
 import com.tianyu.seelove.model.enums.AccountType;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.LogUtil;
@@ -44,8 +42,10 @@ public class UserLoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setCurrentColor("#00000000");
         setContentView(R.layout.activity_user_login);
+        Constant.loginActivityIng = true;
         controller = new UserController(this, handler);
         codeController = new SecurityCodeController(this, handler);
+        Constant.loginHandler = handler;
         initView();
     }
 
@@ -192,6 +192,7 @@ public class UserLoginActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
+        Constant.loginActivityIng = false;
         overridePendingTransition(R.anim.down_in, R.anim.down_out);
     }
 }
