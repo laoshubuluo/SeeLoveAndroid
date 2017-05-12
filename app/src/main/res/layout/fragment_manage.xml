@@ -121,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/login_wechat_btn"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 
@@ -277,7 +277,7 @@
                 android:id="@+id/userInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/layout_45dp"
-                android:layout_marginBottom="@dimen/layout_5dp"
+                android:layout_marginBottom="@dimen/layout_1dp"
                 android:background="@color/white">
 
                 <TextView
@@ -286,6 +286,31 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/layout_15dp"
                     android:text="@string/my_information"
+                    android:textColor="@color/gray_73"
+                    android:textSize="@dimen/font_15sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_15dp"
+                    android:background="@mipmap/arrow_icon" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/settingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_45dp"
+                android:layout_marginBottom="@dimen/layout_5dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/layout_15dp"
+                    android:text="@string/setting"
                     android:textColor="@color/gray_73"
                     android:textSize="@dimen/font_15sp" />
 
@@ -326,6 +351,42 @@
                         android:layout_marginRight="@dimen/layout_15dp"
                         android:background="@mipmap/arrow_icon" />
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/videoEmptyLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/layout_5dp"
+                        android:layout_marginLeft="@dimen/layout_25dp"
+                        android:layout_marginTop="@dimen/layout_5dp"
+                        android:background="@mipmap/error_default" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/layout_20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/video_empty_tips" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/layout_10dp"
+                            android:background="@mipmap/create_video_tip_button" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <com.tianyu.seelove.view.MyGridView
                     android:id="@+id/videoGridView"

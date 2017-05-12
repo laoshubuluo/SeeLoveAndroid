@@ -1,11 +1,12 @@
 package com.tianyu.seelove.ui.activity.video;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.common.Constant;
@@ -18,6 +19,7 @@ import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.view.MyGridView;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ import mabeijianxi.camera.model.MediaRecorderConfig;
 
 /**
  * 我的视频界面
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 22:50
  */
@@ -39,6 +42,7 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
     private List<SLVideo> slVideoList = new ArrayList<>();
     private boolean isShowDelete = false;
     private int currentPosition = 0;
+    private LinearLayout videoEmptyLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +66,21 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
         backView.setOnClickListener(this);
         rightView.setVisibility(View.VISIBLE);
         rightView.setOnClickListener(this);
+        videoEmptyLayout = (LinearLayout) findViewById(R.id.videoEmptyLayout);
         videoGridView = (MyGridView) findViewById(R.id.videoGridView);
         videoGridView.setAdapter(adapter);
+        videoEmptyLayout.setOnClickListener(this);
     }
 
 
     private void initData() {
         slVideoList = videoDao.getVideoListByUserId(AppUtils.getInstance().getUserId());
         adapter.updateData(slVideoList);
+        if (null != slVideoList && slVideoList.size() > 0) {
+            videoEmptyLayout.setVisibility(View.GONE);
+        } else {
+            videoEmptyLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -98,6 +109,27 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
         switch (view.getId()) {
             case R.id.leftBtn: {
                 finish();
+                break;
+            }
+            case R.id.videoEmptyLayout: {
+                // 录制设置压缩
+                BaseMediaBitrateConfig recordMode = null;
+                recordMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                recordMode.setVelocity(Constant.velocity);
+                BaseMediaBitrateConfig compressMode = null;
+                compressMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                compressMode.setVelocity(Constant.velocity);
+                MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+//                        .doH264Compress(compressMode)
+                        .setMediaBitrateConfig(recordMode)
+                        .smallVideoWidth(Constant.videoWidth)
+                        .smallVideoHeight(Constant.videHeight)
+                        .recordTimeMax(Constant.maxRecordTime)
+                        .maxFrameRate(Constant.maxFrameRate)
+                        .captureThumbnailsTime(1)
+                        .recordTimeMin(Constant.minRecordTime)
+                        .build();
+                MediaRecorderActivity.goSmallVideoRecorder(this, VideoImageActivity.class.getName(), config);
                 break;
             }
             case R.id.rightBtn: {
@@ -143,6 +175,9 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
                 new VideoDaoImpl().deleteVideoByVideoId(slVideoList.get(currentPosition).getVideoId());
                 slVideoList.remove(currentPosition);
                 adapter.notifyDataSetChanged();
+                if (slVideoList.size() <= 0) {
+                    videoEmptyLayout.setVisibility(View.VISIBLE);
+                }
                 break;
             case MessageSignConstant.VIDEO_DELETE_FAILURE:
                 code = msg.getData().getString("code");

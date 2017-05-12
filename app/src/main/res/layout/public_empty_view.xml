@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/root_layout">
+
+    <LinearLayout
+        android:id="@+id/errorLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@mipmap/error_default" />
+
+        <TextView
+            android:id="@+id/errorContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/layout_15dp"
+            android:text="还没有和其他童鞋打过招呼！"
+            android:textColor="@color/gray_73"
+            android:layout_marginLeft="@dimen/layout_30dp"
+            android:layout_marginRight="@dimen/layout_30dp"
+            android:gravity="center"
+            android:textSize="@dimen/font_15sp" />
+    </LinearLayout>
+</RelativeLayout>

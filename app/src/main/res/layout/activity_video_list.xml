@@ -11,15 +11,57 @@
         android:layout_height="wrap_content"
         android:scrollbars="none">
 
-        <com.tianyu.seelove.view.MyGridView
-            android:id="@+id/videoGridView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:gravity="center"
-            android:horizontalSpacing="@dimen/layout_10dp"
-            android:numColumns="3"
-            android:padding="@dimen/layout_10dp"
-            android:verticalSpacing="@dimen/layout_10dp" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/videoEmptyLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_5dp"
+                    android:layout_marginLeft="@dimen/layout_25dp"
+                    android:layout_marginTop="@dimen/layout_15dp"
+                    android:background="@mipmap/error_default" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/layout_20dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/layout_15dp"
+                        android:background="@mipmap/video_empty_tips" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/layout_10dp"
+                        android:background="@mipmap/create_video_tip_button" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.tianyu.seelove.view.MyGridView
+                android:id="@+id/videoGridView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:horizontalSpacing="@dimen/layout_10dp"
+                android:numColumns="3"
+                android:padding="@dimen/layout_10dp"
+                android:verticalSpacing="@dimen/layout_10dp" />
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>
