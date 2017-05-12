@@ -62,6 +62,8 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
     private ListView messageList;
     private LinearLayout connectLayout;
     private boolean isNewAdd = true;
+    private View emptyView;
+    private TextView errorContent;
 
     @Override
     public void onAttach(Activity activity) {
@@ -77,6 +79,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         userDao = new UserDaoImpl();
         messageDao = new MessageDaoImpl();
         reciver = new SessionReciver();
+        sessionAdapter = new SessionAdapter(getActivity(), sessionList);
         initIntent();
     }
 
@@ -103,6 +106,9 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         titleView = (TextView) view.findViewById(R.id.titleView);
         messageList = (ListView) view.findViewById(R.id.messageList);
         connectLayout = (LinearLayout) view.findViewById(R.id.network_connect_layout);
+        emptyView = view.findViewById(R.id.emptyLayout);
+        errorContent = (TextView) emptyView.findViewById(R.id.errorContent);
+        emptyView.setVisibility(View.GONE);
         titleView.setText(R.string.message);
         messageList.setOnItemClickListener(this);
         messageList.setOnItemLongClickListener(this);
@@ -112,18 +118,23 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
     private void initData() {
         sessionList = new ArrayList<>();
         tempSessionList = sessionDao.getLatestSessions(1000);
-        for (SLSession slSession : tempSessionList) {
-            if (SessionType.CHAT.equals(slSession.getSessionType())) {
-                SLUser slUser = userDao.getUserByUserId(slSession.getTargetId());
-                if (null != slUser) {
-                    slSession.setSessionIcon(slUser.getHeadUrl());
-                    slSession.setSessionName(slUser.getNickName());
+        if (tempSessionList.size() > 0) {
+            for (SLSession slSession : tempSessionList) {
+                if (SessionType.CHAT.equals(slSession.getSessionType())) {
+                    SLUser slUser = userDao.getUserByUserId(slSession.getTargetId());
+                    if (null != slUser) {
+                        slSession.setSessionIcon(slUser.getHeadUrl());
+                        slSession.setSessionName(slUser.getNickName());
+                    }
                 }
+                sessionList.add(slSession);
             }
-            sessionList.add(slSession);
+            sessionAdapter = new SessionAdapter(getActivity(), sessionList);
+            messageList.setAdapter(sessionAdapter);
+        } else {
+            emptyView.setVisibility(View.VISIBLE);
+            errorContent.setText(R.string.message_no_data);
         }
-        sessionAdapter = new SessionAdapter(getActivity(), sessionList);
-        messageList.setAdapter(sessionAdapter);
     }
 
     private void initIntent() {
@@ -175,6 +186,10 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
                     messageDao.cleanSingalChatMessage(AppUtils.getInstance().getUserId(), slSession.getTargetId());
                     sessionDao.deleteSession(slSession.getTargetId());
                     sessionAdapter.deleteData(slSession);
+                    if (sessionAdapter.getSessionsSize() <= 0) {
+                        emptyView.setVisibility(View.VISIBLE);
+                        errorContent.setText(R.string.message_no_data);
+                    }
                     // 发送广播通知MainActivity重新设置tab数字标签
                     getActivity().sendBroadcast(new Intent(Actions.MESSAGE_READ_CHANGE));
                     sureDialog.dismiss();
@@ -247,6 +262,10 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
             }
         }
         sessionAdapter.addDataSession(slSession, isNewAdd);
+        if (sessionAdapter.getSessionsSize() <= 0) {
+            emptyView.setVisibility(View.VISIBLE);
+            errorContent.setText(R.string.message_no_data);
+        }
     }
 
     @Override
@@ -259,7 +278,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
     public void onStart() {
         super.onStart();
         LogUtil.d("MessageFragment____onStart");
-        if (0l == AppUtils.getInstance().getUserId()&& !Constant.loginActivityIng) {
+        if (0l == AppUtils.getInstance().getUserId() && !Constant.loginActivityIng) {
             Intent intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
             startActivityForResult(intent, 0);
             getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);

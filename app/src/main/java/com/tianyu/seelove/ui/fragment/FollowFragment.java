@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FollowListAdapter;
 import com.tianyu.seelove.common.Actions;
@@ -31,8 +33,10 @@ import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.PullToRefreshView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import mabeijianxi.camera.MediaRecorderActivity;
 import mabeijianxi.camera.model.BaseMediaBitrateConfig;
 import mabeijianxi.camera.model.CBRMode;
@@ -40,6 +44,7 @@ import mabeijianxi.camera.model.MediaRecorderConfig;
 
 /**
  * Fragmengt(动态)
+ *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
@@ -55,6 +60,9 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
     private int pageNumber = 0;
     private int dataGetType = 0;
     private int isEndPage = 0;
+    private View emptyView;
+    private TextView errorContent;
+    private boolean isError = false;
 
     @Override
     public void onAttach(Activity activity) {
@@ -97,8 +105,14 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
         mPullToRefreshView.setOnFooterRefreshListener(this);
         mPullToRefreshView.setOnHeaderRefreshListener(this);
         followListView = (ListView) view.findViewById(R.id.followListView);
+        emptyView = view.findViewById(R.id.emptyLayout);
+        LinearLayout errorLayout = (LinearLayout) emptyView.findViewById(R.id.errorLayout);
+        errorContent = (TextView) emptyView.findViewById(R.id.errorContent);
+        errorLayout.setOnClickListener(this);
+        emptyView.setVisibility(View.GONE);
         adapter = new FollowListAdapter(getActivity(), userList);
         followListView.setAdapter(adapter);
+        followListView.setVisibility(View.VISIBLE);
         if (0l != AppUtils.getInstance().getUserId()) {
             initData();
         }
@@ -123,6 +137,7 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
 
     /**
      * 上拉加载更多
+     *
      * @param view
      */
     @Override
@@ -132,12 +147,13 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
             updateData(DataGetType.DOWN);
         } else if (isEndPage == 1) {
             mPullToRefreshView.onFooterRefreshComplete();
-            Toast.makeText(getActivity(), "没有下一页了!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.no_next_page_data, Toast.LENGTH_LONG).show();
         }
     }
 
     /**
      * 下拉刷新
+     *
      * @param view
      */
     @Override
@@ -169,7 +185,6 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
                 }
                 userList.clear();
                 adapter.updateData(userList, true);
-                // todo shisheng.zhao 引导用户进行登录
             }
         }
     }
@@ -207,6 +222,39 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
                 }
                 break;
             }
+            case R.id.errorLayout: {
+                if (isError) { // 更新数据
+                    initData();
+                } else { // 引导用户去发布视频
+                    if (0l == AppUtils.getInstance().getUserId() && !Constant.loginActivityIng) {
+                        intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
+                        startActivityForResult(intent, 0);
+                        getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);
+                        Toast.makeText(getActivity(), R.string.login_tips, Toast.LENGTH_LONG).show();
+                        return;
+                    } else {
+                        // 录制设置压缩
+                        BaseMediaBitrateConfig recordMode = null;
+                        recordMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                        recordMode.setVelocity(Constant.velocity);
+                        BaseMediaBitrateConfig compressMode = null;
+                        compressMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                        compressMode.setVelocity(Constant.velocity);
+                        MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+//                        .doH264Compress(compressMode)
+                                .setMediaBitrateConfig(recordMode)
+                                .smallVideoWidth(Constant.videoWidth)
+                                .smallVideoHeight(Constant.videHeight)
+                                .recordTimeMax(Constant.maxRecordTime)
+                                .maxFrameRate(Constant.maxFrameRate)
+                                .captureThumbnailsTime(1)
+                                .recordTimeMin(Constant.minRecordTime)
+                                .build();
+                        MediaRecorderActivity.goSmallVideoRecorder(getActivity(), VideoImageActivity.class.getName(), config);
+                    }
+                }
+                break;
+            }
         }
     }
 
@@ -230,6 +278,15 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
                 if (null == userList) {
                     userList = new ArrayList<>();
                 }
+                if (userList.size() <= 0) {
+                    isError = false;
+                    followListView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                    errorContent.setText(R.string.follow_no_data);
+                } else {
+                    followListView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
                 if (dataGetType == 0) {
                     adapter.updateData(userList, true);
                 } else {
@@ -241,6 +298,15 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
                 message = msg.getData().getString("message");
                 promptDialog.initData(getString(R.string.find_all_failure), message);
                 promptDialog.show();
+                if (userList.size() <= 0) {
+                    isError = true;
+                    emptyView.setVisibility(View.VISIBLE);
+                    followListView.setVisibility(View.GONE);
+                    errorContent.setText(R.string.user_find_all_failure);
+                } else {
+                    followListView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
                 break;
             case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
                 promptDialog.initData("", msg.getData().getString("message"));
@@ -249,6 +315,15 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
             case MessageSignConstant.UNKNOWN_ERROR:
                 promptDialog.initData("", getString(R.string.unknown_error));
                 promptDialog.show();
+                if (userList.size() <= 0) {
+                    isError = true;
+                    emptyView.setVisibility(View.VISIBLE);
+                    followListView.setVisibility(View.GONE);
+                    errorContent.setText(R.string.unknown_error);
+                } else {
+                    followListView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
                 break;
         }
         return false;
@@ -264,7 +339,7 @@ public class FollowFragment extends BaseFragment implements PullToRefreshView.On
     public void onStart() {
         super.onStart();
         LogUtil.d("FollowFragment____onStart");
-        if (0l == AppUtils.getInstance().getUserId()&& !Constant.loginActivityIng) {
+        if (0l == AppUtils.getInstance().getUserId() && !Constant.loginActivityIng) {
             Intent intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
             startActivityForResult(intent, 0);
             getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);

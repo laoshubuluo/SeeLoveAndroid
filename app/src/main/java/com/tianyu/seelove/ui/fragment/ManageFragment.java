@@ -36,6 +36,7 @@ import com.tianyu.seelove.ui.activity.system.SelectHeadActivity;
 import com.tianyu.seelove.ui.activity.system.SettingActivity;
 import com.tianyu.seelove.ui.activity.user.FollowUserListActivity;
 import com.tianyu.seelove.ui.activity.user.MyInfoActivity;
+import com.tianyu.seelove.ui.activity.video.VideoImageActivity;
 import com.tianyu.seelove.ui.activity.video.VideoListActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
 import com.tianyu.seelove.utils.AppUtils;
@@ -49,6 +50,10 @@ import com.tianyu.seelove.wxapi.QQEntryActivity;
 import com.tianyu.seelove.wxapi.WXEntryActivity;
 import java.util.ArrayList;
 import java.util.List;
+import mabeijianxi.camera.MediaRecorderActivity;
+import mabeijianxi.camera.model.BaseMediaBitrateConfig;
+import mabeijianxi.camera.model.CBRMode;
+import mabeijianxi.camera.model.MediaRecorderConfig;
 
 /**
  * Fragmengt(管理)
@@ -73,6 +78,7 @@ public class ManageFragment extends BaseFragment {
     private TextView getCodeBtn;
     private TimeCount time;//倒计时
     private String filePath = "";
+    private LinearLayout videoEmptyLayout;
 
     @Override
     public void onAttach(Activity activity) {
@@ -113,7 +119,7 @@ public class ManageFragment extends BaseFragment {
         titleView = (TextView) view.findViewById(R.id.titleView);
         rightView = (ImageView) view.findViewById(R.id.rightBtn);
         rightView.setVisibility(View.VISIBLE);
-        rightView.setBackgroundResource(R.mipmap.setting_icon);
+        rightView.setBackgroundResource(R.mipmap.create_video_cion);
         rightView.setOnClickListener(this);
         loginLayout = (LinearLayout) view.findViewById(R.id.loginLayout);
         userLayout = (LinearLayout) view.findViewById(R.id.userLayout);
@@ -127,12 +133,16 @@ public class ManageFragment extends BaseFragment {
         followCount = (TextView) view.findViewById(R.id.followCount);
         followedCount = (TextView) view.findViewById(R.id.followedCount);
         RelativeLayout userInfoLayout = (RelativeLayout) view.findViewById(R.id.userInfoLayout);
+        RelativeLayout settingLayout = (RelativeLayout) view.findViewById(R.id.settingLayout);
         LinearLayout videoItemLayout = (LinearLayout) view.findViewById(R.id.videoItemLayout);
+        videoEmptyLayout = (LinearLayout) view.findViewById(R.id.videoEmptyLayout);
         userInfoLayout.setOnClickListener(this);
         videoLayout.setOnClickListener(this);
         followLayout.setOnClickListener(this);
         followedLayout.setOnClickListener(this);
         videoItemLayout.setOnClickListener(this);
+        videoEmptyLayout.setOnClickListener(this);
+        settingLayout.setOnClickListener(this);
         titleView.setText(R.string.manager);
         videoGridView = (MyGridView) view.findViewById(R.id.videoGridView);
         videoGridAdapter = new VideoGridAdapter(getActivity());
@@ -173,6 +183,11 @@ public class ManageFragment extends BaseFragment {
             videoCount.setText(videoInfos.size() + "");
             videoGridAdapter.updateData(videoInfos);
             rightView.setVisibility(View.VISIBLE);
+            if (videoInfos.size() > 0) {
+                videoEmptyLayout.setVisibility(View.GONE);
+            } else {
+                videoEmptyLayout.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -183,6 +198,27 @@ public class ManageFragment extends BaseFragment {
         String verifyCode = codeEdit.getText().toString().trim();
         switch (view.getId()) {
             case R.id.rightBtn: {
+                // 录制设置压缩
+                BaseMediaBitrateConfig recordMode = null;
+                recordMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                recordMode.setVelocity(Constant.velocity);
+                BaseMediaBitrateConfig compressMode = null;
+                compressMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                compressMode.setVelocity(Constant.velocity);
+                MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+//                        .doH264Compress(compressMode)
+                        .setMediaBitrateConfig(recordMode)
+                        .smallVideoWidth(Constant.videoWidth)
+                        .smallVideoHeight(Constant.videHeight)
+                        .recordTimeMax(Constant.maxRecordTime)
+                        .maxFrameRate(Constant.maxFrameRate)
+                        .captureThumbnailsTime(1)
+                        .recordTimeMin(Constant.minRecordTime)
+                        .build();
+                MediaRecorderActivity.goSmallVideoRecorder(getActivity(), VideoImageActivity.class.getName(), config);
+                break;
+            }
+            case R.id.settingLayout: {
                 intent = new Intent();
                 intent.setClass(view.getContext(), SettingActivity.class);
                 startActivity(intent);
@@ -219,6 +255,27 @@ public class ManageFragment extends BaseFragment {
                 intent = new Intent();
                 intent.setClass(view.getContext(), VideoListActivity.class);
                 startActivity(intent);
+                break;
+            }
+            case R.id.videoEmptyLayout: {
+                // 录制设置压缩
+                BaseMediaBitrateConfig recordMode = null;
+                recordMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                recordMode.setVelocity(Constant.velocity);
+                BaseMediaBitrateConfig compressMode = null;
+                compressMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                compressMode.setVelocity(Constant.velocity);
+                MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+//                        .doH264Compress(compressMode)
+                        .setMediaBitrateConfig(recordMode)
+                        .smallVideoWidth(Constant.videoWidth)
+                        .smallVideoHeight(Constant.videHeight)
+                        .recordTimeMax(Constant.maxRecordTime)
+                        .maxFrameRate(Constant.maxFrameRate)
+                        .captureThumbnailsTime(1)
+                        .recordTimeMin(Constant.minRecordTime)
+                        .build();
+                MediaRecorderActivity.goSmallVideoRecorder(getActivity(), VideoImageActivity.class.getName(), config);
                 break;
             }
             case R.id.qqLoginBtn: {

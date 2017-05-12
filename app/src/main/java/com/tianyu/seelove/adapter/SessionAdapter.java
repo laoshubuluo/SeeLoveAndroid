@@ -27,7 +27,7 @@ import java.util.List;
  * @date 2017-03-31 17:52
  */
 public class SessionAdapter extends BaseAdapter {
-    private List<SLSession> sessions;
+    public List<SLSession> sessions;
     private LayoutInflater inflater;
     private Context mContext;
 
@@ -141,5 +141,9 @@ public class SessionAdapter extends BaseAdapter {
         TextView message_tv_time;
         TextView message_tv_content;
         RedDotView redDotView;
+    }
+
+    public int getSessionsSize() {
+        return sessions.size();
     }
 }

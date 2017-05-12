@@ -12,30 +12,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.FindUserListAdapter;
 import com.tianyu.seelove.common.Actions;
+import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.UserController;
 import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.user.SLUserDetail;
 import com.tianyu.seelove.model.enums.DataGetType;
 import com.tianyu.seelove.ui.activity.system.ShareActivity;
+import com.tianyu.seelove.ui.activity.user.UserLoginActivity;
+import com.tianyu.seelove.ui.activity.video.VideoImageActivity;
 import com.tianyu.seelove.ui.fragment.base.BaseFragment;
+import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.LogUtil;
 import com.tianyu.seelove.view.PullToRefreshView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
-
 import java.util.ArrayList;
 import java.util.List;
+import mabeijianxi.camera.MediaRecorderActivity;
+import mabeijianxi.camera.model.BaseMediaBitrateConfig;
+import mabeijianxi.camera.model.CBRMode;
+import mabeijianxi.camera.model.MediaRecorderConfig;
 
 /**
  * Fragmengt(发现)
- *
  * @author shisheng.zhao
  * @date 2017-03-29 15:15
  */
@@ -50,6 +56,9 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
     private int dataGetType = 0;
     private int isEndPage = 0;
     private FindReciver reciver;
+    private View emptyView;
+    private TextView errorContent;
+    private boolean isError = false;
 
     @Override
     public void onAttach(Activity activity) {
@@ -90,11 +99,17 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
         rightView.setBackgroundResource(R.mipmap.share_btn);
         rightView.setOnClickListener(this);
         mPullToRefreshView = (PullToRefreshView) view.findViewById(R.id.pull_to_refresh_view);
+        emptyView = view.findViewById(R.id.emptyLayout);
+        LinearLayout errorLayout = (LinearLayout) emptyView.findViewById(R.id.errorLayout);
+        errorContent = (TextView) emptyView.findViewById(R.id.errorContent);
+        errorLayout.setOnClickListener(this);
+        emptyView.setVisibility(View.GONE);
         mPullToRefreshView.setOnFooterRefreshListener(this);
         mPullToRefreshView.setOnHeaderRefreshListener(this);
         userGridView = (GridView) view.findViewById(R.id.userGridView);
         mAdapter = new FindUserListAdapter(getActivity(), userList);
         userGridView.setAdapter(mAdapter);
+        userGridView.setVisibility(View.VISIBLE);
         initData();
     }
 
@@ -145,13 +160,12 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
             updateData(DataGetType.DOWN);
         } else if (isEndPage == 1) {
             mPullToRefreshView.onFooterRefreshComplete();
-            Toast.makeText(getActivity(), "没有下一页了!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.no_next_page_data, Toast.LENGTH_LONG).show();
         }
     }
 
     /**
      * 下拉刷新
-     *
      * @param view
      */
     @Override
@@ -170,6 +184,39 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);
                 break;
+            case R.id.errorLayout: {
+                if (isError) { // 更新数据
+                    initData();
+                } else { // 引导用户去发布视频
+                    if (0l == AppUtils.getInstance().getUserId() && !Constant.loginActivityIng) {
+                        intent = IntentManager.createIntent(getActivity(), UserLoginActivity.class);
+                        startActivityForResult(intent, 0);
+                        getActivity().overridePendingTransition(R.anim.up_in, R.anim.up_out);
+                        Toast.makeText(getActivity(), R.string.login_tips, Toast.LENGTH_LONG).show();
+                        return;
+                    } else {
+                        // 录制设置压缩
+                        BaseMediaBitrateConfig recordMode = null;
+                        recordMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                        recordMode.setVelocity(Constant.velocity);
+                        BaseMediaBitrateConfig compressMode = null;
+                        compressMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                        compressMode.setVelocity(Constant.velocity);
+                        MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+//                        .doH264Compress(compressMode)
+                                .setMediaBitrateConfig(recordMode)
+                                .smallVideoWidth(Constant.videoWidth)
+                                .smallVideoHeight(Constant.videHeight)
+                                .recordTimeMax(Constant.maxRecordTime)
+                                .maxFrameRate(Constant.maxFrameRate)
+                                .captureThumbnailsTime(1)
+                                .recordTimeMin(Constant.minRecordTime)
+                                .build();
+                        MediaRecorderActivity.goSmallVideoRecorder(getActivity(), VideoImageActivity.class.getName(), config);
+                    }
+                }
+                break;
+            }
             default:
                 break;
         }
@@ -195,6 +242,15 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
                 if (null == userList) {
                     userList = new ArrayList<>();
                 }
+                if (userList.size() <= 0) {
+                    isError = false;
+                    userGridView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                    errorContent.setText(R.string.find_no_data);
+                } else {
+                    userGridView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
                 if (dataGetType == 0) {
                     mAdapter.updateData(userList, true);
                 } else {
@@ -206,6 +262,15 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
                 message = msg.getData().getString("message");
                 promptDialog.initData(getString(R.string.user_find_all_failure), message);
                 promptDialog.show();
+                if (userList.size() <= 0) {
+                    isError = true;
+                    emptyView.setVisibility(View.VISIBLE);
+                    userGridView.setVisibility(View.GONE);
+                    errorContent.setText(R.string.user_find_all_failure);
+                } else {
+                    userGridView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
                 break;
             case MessageSignConstant.SERVER_OR_NETWORK_ERROR:
                 promptDialog.initData("", msg.getData().getString("message"));
@@ -214,6 +279,15 @@ public class FindFragment extends BaseFragment implements PullToRefreshView.OnHe
             case MessageSignConstant.UNKNOWN_ERROR:
                 promptDialog.initData("", getString(R.string.unknown_error));
                 promptDialog.show();
+                if (userList.size() <= 0) {
+                    isError = true;
+                    emptyView.setVisibility(View.VISIBLE);
+                    userGridView.setVisibility(View.GONE);
+                    errorContent.setText(R.string.unknown_error);
+                } else {
+                    userGridView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
                 break;
         }
         return false;

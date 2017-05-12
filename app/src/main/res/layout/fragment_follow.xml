@@ -16,5 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none" />
+
+        <include
+            android:id="@+id/emptyLayout"
+            layout="@layout/public_empty_view"></include>
     </com.tianyu.seelove.view.PullToRefreshView>
 </LinearLayout>
