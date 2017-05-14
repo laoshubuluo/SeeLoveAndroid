@@ -64,6 +64,7 @@ public class SLUser implements Serializable {
     }
 
     public String getNickName() {
+        nickName = StringUtils.isNullOrBlank(nickName) ? "" : nickName;
         return nickName;
     }
 
