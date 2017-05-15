@@ -22,7 +22,7 @@ import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import com.tianyu.seelove.wxapi.QQEntryActivity;
-import com.tianyu.seelove.wxapi.WXEntryActivity;
+//import com.tianyu.seelove.wxapi.WXEntryActivity;
 
 /**
  * @author shisheng.zhao
@@ -83,12 +83,12 @@ public class UserLoginActivity extends BaseActivity {
                 break;
             }
             case R.id.wechatLoginBtn: {
-                customProgressDialog = new CustomProgressDialog(UserLoginActivity.this, getString(R.string.loading));
-                customProgressDialog.show();
-                intent = new Intent(UserLoginActivity.this, WXEntryActivity.class);
-                startActivityForResult(intent, 0);
-                wechatLogin.setClickable(false);
-                Constant.loginOpenPlatformIng = true;
+//                customProgressDialog = new CustomProgressDialog(UserLoginActivity.this, getString(R.string.loading));
+//                customProgressDialog.show();
+//                intent = new Intent(UserLoginActivity.this, WXEntryActivity.class);
+//                startActivityForResult(intent, 0);
+//                wechatLogin.setClickable(false);
+//                Constant.loginOpenPlatformIng = true;
                 break;
             }
             case R.id.loginBtn: {

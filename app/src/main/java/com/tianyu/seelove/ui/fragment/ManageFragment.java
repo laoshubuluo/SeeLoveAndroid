@@ -47,7 +47,7 @@ import com.tianyu.seelove.view.MyGridView;
 import com.tianyu.seelove.view.dialog.CustomProgressDialog;
 import com.tianyu.seelove.view.dialog.PromptDialog;
 import com.tianyu.seelove.wxapi.QQEntryActivity;
-import com.tianyu.seelove.wxapi.WXEntryActivity;
+//import com.tianyu.seelove.wxapi.WXEntryActivity;
 import java.util.ArrayList;
 import java.util.List;
 import mabeijianxi.camera.MediaRecorderActivity;
@@ -288,12 +288,12 @@ public class ManageFragment extends BaseFragment {
                 break;
             }
             case R.id.wechatLoginBtn: {
-                customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
-                customProgressDialog.show();
-                intent = new Intent(getActivity(), WXEntryActivity.class);
-                startActivityForResult(intent, 0);
-                wechatLogin.setClickable(false);
-                Constant.loginOpenPlatformIng = true;
+//                customProgressDialog = new CustomProgressDialog(getActivity(), getString(R.string.loading));
+//                customProgressDialog.show();
+//                intent = new Intent(getActivity(), WXEntryActivity.class);
+//                startActivityForResult(intent, 0);
+//                wechatLogin.setClickable(false);
+//                Constant.loginOpenPlatformIng = true;
                 break;
             }
             case R.id.loginBtn: {

@@ -12,7 +12,6 @@ import com.tianyu.seelove.manager.RongCloudManager;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import java.io.File;
-import cn.sharesdk.framework.ShareSDK;
 import io.rong.imlib.RongIMClient;
 import mabeijianxi.camera.VCamera;
 import mabeijianxi.camera.util.DeviceUtils;
@@ -45,8 +44,6 @@ public class SeeLoveApplication extends Application {
         // 初始化融云SDK
         RongIMClient.init(this);
         RongCloudManager.getInstance().init(this);
-        // 初始化分享SDK
-        ShareSDK.initSDK(this);
         deviceMode = getDeviceModel();
         versionCode = getVersionCode(this);
         initSmallVideo(this);
@@ -58,14 +55,14 @@ public class SeeLoveApplication extends Application {
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         if (DeviceUtils.isZte()) {
             if (dcim.exists()) {
-                VCamera.setVideoCachePath(dcim + "/mabeijianxi/");
+                VCamera.setVideoCachePath(dcim + "/seelove/");
             } else {
                 VCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
                         "/sdcard-ext/")
-                        + "/mabeijianxi/");
+                        + "/seelove/");
             }
         } else {
-            VCamera.setVideoCachePath(dcim + "/mabeijianxi/");
+            VCamera.setVideoCachePath(dcim + "/seelove/");
         }
         VCamera.setDebugMode(true);
         VCamera.initialize(context);
