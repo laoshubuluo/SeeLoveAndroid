@@ -226,6 +226,8 @@
             android:value="Test" />
         <!--友盟key end-->
         <!--视频播放activity-->
-        <activity android:name="mabeijianxi.camera.MediaRecorderActivity" />
+        <activity
+            android:name="mabeijianxi.camera.MediaRecorderActivity"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>
