@@ -177,10 +177,10 @@
             android:name=".service.MessageSendService"
             android:enabled="true" />
 
-        <!-- 融云SDK begin 测试环境：8luwapkv8tr4l 生产环境：pgyu6atqyr7fu-->
+        <!-- 融云SDK begin 测试环境：8luwapkv8tr4l 生产环境：8brlm7uf8jdq3-->
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
-            android:value="8luwapkv8tr4l" />
+            android:value="8brlm7uf8jdq3" />
         <receiver
             android:name="io.rong.imlib.HeartbeatReceiver"
             android:process=":ipc" />
