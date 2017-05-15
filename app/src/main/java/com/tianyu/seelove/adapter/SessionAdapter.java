@@ -18,6 +18,8 @@ import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.ListSortUtil;
 import com.tianyu.seelove.utils.TextUtils;
 import com.tianyu.seelove.view.RedDotView;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,6 +36,9 @@ public class SessionAdapter extends BaseAdapter {
     public SessionAdapter(Context mContext, List<SLSession> sessions) {
         super();
         this.mContext = mContext;
+        if (null == sessions) {
+            sessions = new ArrayList<>();
+        }
         this.sessions = sessions;
         this.inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
