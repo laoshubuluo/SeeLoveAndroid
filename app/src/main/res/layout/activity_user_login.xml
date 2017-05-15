@@ -32,14 +32,16 @@
             android:id="@+id/phoneEdit"
             android:layout_width="@dimen/layout_260dp"
             android:layout_height="@dimen/layout_40dp"
-            android:layout_marginTop="@dimen/layout_20dp"
+            android:layout_marginTop="@dimen/layout_40dp"
             android:background="@null"
-            android:hint="@string/phone_number_hint" />
+            android:hint="@string/phone_number_hint"
+            android:textColor="@color/gray_73"
+            android:textSize="@dimen/font_14sp" />
 
         <View
             android:layout_width="@dimen/layout_260dp"
-            android:layout_height="@dimen/layout_1dp"
-            android:background="@color/gray_73"></View>
+            android:layout_height="@dimen/layout_0.5dp"
+            android:background="@color/gray_aa"></View>
 
         <RelativeLayout
             android:layout_width="@dimen/layout_260dp"
@@ -52,7 +54,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="@string/get_code" />
+                android:text="@string/get_code"
+                android:textColor="@color/gray_aa"
+                android:textSize="@dimen/font_12sp" />
 
             <EditText
                 android:id="@+id/codeEdit"
@@ -61,13 +65,15 @@
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/getCodeBtn"
                 android:background="@null"
-                android:hint="@string/code_number_hint" />
+                android:hint="@string/code_number_hint"
+                android:textColor="@color/gray_73"
+                android:textSize="@dimen/font_14sp" />
         </RelativeLayout>
 
         <View
             android:layout_width="@dimen/layout_260dp"
-            android:layout_height="@dimen/layout_1dp"
-            android:background="@color/gray_73"></View>
+            android:layout_height="@dimen/layout_0.5dp"
+            android:background="@color/gray_aa"></View>
 
         <Button
             android:id="@+id/loginBtn"
@@ -91,23 +97,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="其他设计帐号登录"
+                android:text="@string/other_login_method"
                 android:textColor="@color/gray_73"
                 android:textSize="@dimen/font_8sp" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_1dp"
+                android:layout_height="@dimen/layout_0.5dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/login_tips"
-                android:background="@color/gray_73"></View>
+                android:background="@color/gray_aa"></View>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_1dp"
+                android:layout_height="@dimen/layout_0.5dp"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/login_tips"
-                android:background="@color/gray_73"></View>
+                android:background="@color/gray_aa"></View>
         </RelativeLayout>
 
         <LinearLayout
@@ -128,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/login_wechat_btn"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

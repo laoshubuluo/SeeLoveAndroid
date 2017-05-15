@@ -43,6 +43,7 @@
     <string name="find_no_data">还没有小伙伴哦，发布短视屏马上入驻吧~~</string>
     <string name="message_no_data">还没有和其他童鞋打过招呼~快去找小伙伴high聊吧~~</string>
     <string name="no_next_page_data">没有下一页了～～</string>
+    <string name="other_login_method">其他第三方帐号登录</string>
     <!--消息-->
     <string name="send">发送</string>
     <string name="send_message">发送消息</string>
