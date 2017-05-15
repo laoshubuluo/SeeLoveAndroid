@@ -56,7 +56,7 @@ public class Constant {
     public static int cbrBitrate = 600; // CBRMode Bitrate 固定码率值(越大越清晰，但是视频大小会增加）
     public static String velocity = "ultrafast"; // 视频压缩速度，极速压缩
     public static int videoWidth = 480; // 视频拍摄宽度
-    public static int videHeight = 720; // 视频拍摄高度
+    public static int videHeight = 600; // 视频拍摄高度
     public static int maxRecordTime = 8 * 1000; // 拍摄视频最长时长
     public static int minRecordTime = 1 * 1000; // 拍摄视频最短时长
     public static int maxFrameRate = 18; // 视频拍摄码率
