@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.view.KeyEvent;
@@ -35,9 +36,12 @@ import com.tianyu.seelove.ui.fragment.FindFragment;
 import com.tianyu.seelove.ui.fragment.FollowFragment;
 import com.tianyu.seelove.ui.fragment.ManageFragment;
 import com.tianyu.seelove.ui.fragment.MessageFragment;
+import com.tianyu.seelove.utils.FileUtil;
+import com.tianyu.seelove.utils.NetworkUtil;
 import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.RedDotView;
 import com.tianyu.seelove.view.dialog.VersionUpdateDialog;
+import java.io.File;
 
 /**
  * 主页－统一对fragment进行管理
@@ -57,6 +61,8 @@ public class MainActivity extends BaseActivity {
     private RedDotView redDotView;
     private int unReadCount = 0;
     private SystemController controller;
+    private BroadcastReceiver broadcastReceiver;
+    DownloadManager dManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -149,9 +155,16 @@ public class MainActivity extends BaseActivity {
         switch (msg.what) {
             case MessageSignConstant.NEW_VERSION_SUCCESS:
                 final NewVersionRspInfo newVersion = (NewVersionRspInfo) msg.getData().getSerializable("newVersion");
+                newVersion.setIsForced("1");
+                newVersion.setVersionCode("2");
                 if (null != newVersion && StringUtils.isNotBlank(newVersion.getVersionCode())) {
                     if (Integer.parseInt(SeeLoveApplication.versionCode) < Integer.parseInt(newVersion.getVersionCode())) {
-                        if ("1".equals(newVersion.getIsForced())) {
+                        if ("1".equals(newVersion.getIsForced()) && NetworkUtil.isWifiConnected(this)) {
+                            try {
+                                FileUtil.delAllFile("sdcard/updateDownload/");
+                            }catch (Exception ex){
+                                ex.printStackTrace();
+                            }
                             intoDownloadManager(newVersion.getDownloadUrl());
                         } else {
                             final VersionUpdateDialog updateDialog = new VersionUpdateDialog(this);
@@ -160,6 +173,11 @@ public class MainActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     updateDialog.dismiss();
+                                    try {
+                                        FileUtil.delAllFile("sdcard/updateDownload/");
+                                    }catch (Exception ex){
+                                        ex.printStackTrace();
+                                    }
                                     intoDownloadManager(newVersion.getDownloadUrl());
                                 }
                             });
@@ -175,11 +193,11 @@ public class MainActivity extends BaseActivity {
     @SuppressLint("NewApi")
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     private void intoDownloadManager(String url) {
-        DownloadManager dManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        dManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         // 设置下载路径和文件名
-        request.setDestinationInExternalPublicDir("download", "seelove.apk");
+        request.setDestinationInExternalPublicDir("updateDownload", "seelove.apk");
         request.setDescription(getString(R.string.version_update));
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setMimeType("application/vnd.android.package-archive");
@@ -191,6 +209,26 @@ public class MainActivity extends BaseActivity {
         // 把当前下载的ID保存起来
         SharedPreferences sPreferences = getSharedPreferences("downloadplato", 0);
         sPreferences.edit().putLong("plato", refernece).commit();
+        listener(refernece);
+    }
+
+    private void listener(final long Id) {
+        // 注册广播监听系统的下载完成事件。
+        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                long ID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (ID == Id) {
+                    Intent dintent = new Intent(Intent.ACTION_VIEW);
+                    dintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    dintent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/updateDownload/seelove.apk")),
+                            "application/vnd.android.package-archive");
+                    startActivity(dintent);
+                }
+            }
+        };
+        registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
@@ -211,6 +249,9 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         if (null != receiver) {
             unregisterReceiver(receiver);
+        }
+        if (null != broadcastReceiver) {
+            unregisterReceiver(broadcastReceiver);
         }
     }
 }
