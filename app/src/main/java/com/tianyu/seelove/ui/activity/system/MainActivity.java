@@ -157,13 +157,15 @@ public class MainActivity extends BaseActivity {
                 final NewVersionRspInfo newVersion = (NewVersionRspInfo) msg.getData().getSerializable("newVersion");
                 if (null != newVersion && StringUtils.isNotBlank(newVersion.getVersionCode())) {
                     if (Integer.parseInt(SeeLoveApplication.versionCode) < Integer.parseInt(newVersion.getVersionCode())) {
-                        if ("1".equals(newVersion.getIsForced()) && NetworkUtil.isWifiConnected(this)) {
-                            try {
-                                FileUtil.delAllFile("sdcard/updateDownload/");
-                            }catch (Exception ex){
-                                ex.printStackTrace();
+                        if ("1".equals(newVersion.getIsForced())) {
+                            if (NetworkUtil.isWifiConnection(this)) {
+                                try {
+                                    FileUtil.delAllFile("sdcard/updateDownload/");
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                                intoDownloadManager(newVersion.getDownloadUrl());
                             }
-                            intoDownloadManager(newVersion.getDownloadUrl());
                         } else {
                             final VersionUpdateDialog updateDialog = new VersionUpdateDialog(this);
                             updateDialog.initData(newVersion.getDes());

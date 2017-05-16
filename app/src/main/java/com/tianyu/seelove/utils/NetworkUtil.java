@@ -27,14 +27,13 @@ public class NetworkUtil {
         return false;
     }
 
-    // 判断WIFI网络是否可用
-    public static boolean isWifiConnected(Context context) {
-        if (context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mWiFiNetworkInfo = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            if (mWiFiNetworkInfo != null) {
-                return mWiFiNetworkInfo.isAvailable();
-            }
+    public static boolean isWifiConnection(Context context) {
+        ConnectivityManager mCm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo.State mState = mCm.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                .getState();
+        if (NetworkInfo.State.CONNECTED == mState) {
+            return true;
         }
         return false;
     }
