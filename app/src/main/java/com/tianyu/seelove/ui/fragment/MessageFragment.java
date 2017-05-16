@@ -112,6 +112,7 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         titleView.setText(R.string.message);
         messageList.setOnItemClickListener(this);
         messageList.setOnItemLongClickListener(this);
+        messageList.setVisibility(View.VISIBLE);
         connectLayout.setOnClickListener(this);
     }
 
@@ -131,7 +132,10 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
             }
             sessionAdapter = new SessionAdapter(getActivity(), sessionList);
             messageList.setAdapter(sessionAdapter);
+            messageList.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
         } else {
+            messageList.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
             errorContent.setText(R.string.message_no_data);
         }
@@ -187,8 +191,12 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
                     sessionDao.deleteSession(slSession.getTargetId());
                     sessionAdapter.deleteData(slSession);
                     if (sessionAdapter.getSessionsSize() <= 0) {
+                        messageList.setVisibility(View.GONE);
                         emptyView.setVisibility(View.VISIBLE);
                         errorContent.setText(R.string.message_no_data);
+                    } else {
+                        messageList.setVisibility(View.VISIBLE);
+                        emptyView.setVisibility(View.GONE);
                     }
                     // 发送广播通知MainActivity重新设置tab数字标签
                     getActivity().sendBroadcast(new Intent(Actions.MESSAGE_READ_CHANGE));
@@ -262,9 +270,12 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         }
         sessionAdapter.addDataSession(slSession, isNewAdd);
         if (sessionAdapter.getSessionsSize() <= 0) {
+            messageList.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
             errorContent.setText(R.string.message_no_data);
         } else {
+            messageList.setAdapter(sessionAdapter);
+            messageList.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
     }
