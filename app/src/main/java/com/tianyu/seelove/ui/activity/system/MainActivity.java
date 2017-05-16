@@ -155,8 +155,6 @@ public class MainActivity extends BaseActivity {
         switch (msg.what) {
             case MessageSignConstant.NEW_VERSION_SUCCESS:
                 final NewVersionRspInfo newVersion = (NewVersionRspInfo) msg.getData().getSerializable("newVersion");
-                newVersion.setIsForced("1");
-                newVersion.setVersionCode("2");
                 if (null != newVersion && StringUtils.isNotBlank(newVersion.getVersionCode())) {
                     if (Integer.parseInt(SeeLoveApplication.versionCode) < Integer.parseInt(newVersion.getVersionCode())) {
                         if ("1".equals(newVersion.getIsForced()) && NetworkUtil.isWifiConnected(this)) {
