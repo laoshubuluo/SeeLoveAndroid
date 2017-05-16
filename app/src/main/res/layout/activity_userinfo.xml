@@ -45,10 +45,15 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_130dp"
+                    android:layout_gravity="bottom"
+                    android:background="@mipmap/user_top_bg" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@mipmap/user_top_bg">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -117,8 +122,8 @@
                             android:layout_marginLeft="@dimen/layout_40dp"
                             android:layout_marginRight="@dimen/layout_40dp"
                             android:layout_marginTop="@dimen/layout_3dp"
-                            android:maxLines="2"
                             android:ellipsize="end"
+                            android:maxLines="2"
                             android:textColor="@color/red_7a"
                             android:textSize="@dimen/font_12sp" />
                     </LinearLayout>
@@ -141,6 +146,42 @@
                     android:text="@string/video_see_love"
                     android:textColor="@color/gray_73"
                     android:textSize="@dimen/font_15sp" />
+
+                <LinearLayout
+                    android:id="@+id/videoEmptyLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/layout_5dp"
+                        android:layout_marginLeft="@dimen/layout_25dp"
+                        android:layout_marginTop="@dimen/layout_5dp"
+                        android:background="@mipmap/error_default" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/layout_20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/video_empty_tips" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/layout_10dp"
+                            android:background="@mipmap/create_video_tip_button" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <com.tianyu.seelove.view.MyGridView
                     android:id="@+id/videoGridView"

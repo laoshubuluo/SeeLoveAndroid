@@ -222,7 +222,6 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
                 sessionList.clear();
                 sessionAdapter = new SessionAdapter(getActivity(), sessionList);
                 messageList.setAdapter(sessionAdapter);
-                // todo shisheng.zhao 引导用户进行登录
             } else if (intent.getAction().equals(Actions.ACTION_LOGIN_SUCCESS)) {
                 initData();
             }
@@ -265,6 +264,8 @@ public class MessageFragment extends BaseFragment implements AdapterView.OnItemC
         if (sessionAdapter.getSessionsSize() <= 0) {
             emptyView.setVisibility(View.VISIBLE);
             errorContent.setText(R.string.message_no_data);
+        } else {
+            emptyView.setVisibility(View.GONE);
         }
     }
 
