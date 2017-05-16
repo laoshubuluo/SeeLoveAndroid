@@ -37,7 +37,7 @@
     <string name="phone_is_null">手机号不能为空!</string>
     <string name="code_is_null">验证码为空!</string>
     <string name="video_title_is_null">请输入简要视频介绍!</string>
-    <string name="login_tips">未登录,请登录之后在操作!</string>
+    <string name="login_tips">未登录,请登录之后再操作!</string>
     <string name="login_success">登录成功!</string>
     <string name="follow_no_data">还没有动态信息哦，发布短视屏马上入驻吧~~</string>
     <string name="find_no_data">还没有小伙伴哦，发布短视屏马上入驻吧~~</string>

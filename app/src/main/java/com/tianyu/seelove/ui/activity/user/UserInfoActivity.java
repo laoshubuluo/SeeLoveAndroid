@@ -6,6 +6,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
+import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
 import com.tianyu.seelove.controller.FollowController;
 import com.tianyu.seelove.controller.UserController;
@@ -27,6 +29,7 @@ import com.tianyu.seelove.model.enums.FollowStatus;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.ui.activity.message.SingleChatActivity;
 import com.tianyu.seelove.ui.activity.system.ShareActivity;
+import com.tianyu.seelove.ui.activity.video.VideoImageActivity;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.utils.ImageLoaderUtil;
 import com.tianyu.seelove.utils.StringUtils;
@@ -36,6 +39,11 @@ import com.tianyu.seelove.view.dialog.PromptDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import mabeijianxi.camera.MediaRecorderActivity;
+import mabeijianxi.camera.model.BaseMediaBitrateConfig;
+import mabeijianxi.camera.model.CBRMode;
+import mabeijianxi.camera.model.MediaRecorderConfig;
 
 /**
  * 个人信息界面
@@ -56,6 +64,7 @@ public class UserInfoActivity extends BaseActivity {
     private SLUserDetail slUserDetail;
     List<SLVideo> slVideoList = new ArrayList<>();
     int followStatus = 0;
+    private LinearLayout videoEmptyLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +90,13 @@ public class UserInfoActivity extends BaseActivity {
         userAge = (TextView) findViewById(R.id.userAge);
         cityName = (TextView) findViewById(R.id.cityName);
         userDescript = (TextView) findViewById(R.id.userDescript);
+        videoEmptyLayout = (LinearLayout) findViewById(R.id.videoEmptyLayout);
         videoGridView = (MyGridView) findViewById(R.id.videoGridView);
         leftBtn.setOnClickListener(this);
         leftBtn.setVisibility(View.VISIBLE);
         rightBtn.setVisibility(View.GONE);
         rightBtn.setOnClickListener(this);
+        videoEmptyLayout.setOnClickListener(this);
         rightBtn.setBackgroundResource(R.mipmap.share_btn);
         sendMessage.setOnClickListener(this);
         followBtn.setOnClickListener(this);
@@ -103,7 +114,7 @@ public class UserInfoActivity extends BaseActivity {
             titleView.setText(slUser.getNickName());
             userName.setText(slUser.getNickName());
             userAge.setText(slUser.getAge() + "岁");
-            userDescript.setText(StringUtils.isNotBlank(slUser.getIntroduce()) ? slUser.getIntroduce() : "我是一句话介绍！！");
+            userDescript.setText(StringUtils.isNotBlank(slUser.getIntroduce()) ? slUser.getIntroduce() : "这位童鞋很懒，什么都没留下～～");
             cityName.setText(StringUtils.isNotBlank(slUser.getCityName()) ? "/" + slUser.getCityName() : "/北京");
             ImageLoader.getInstance().displayImage(slUser.getHeadUrl(), headImage, ImageLoaderUtil.getHeadUrlImageOptions());
             ImageLoader.getInstance().displayImage(StringUtils.isNotBlank(slUser.getBigImg()) ? slUser.getBigImg() : slUser.getHeadUrl(),
@@ -137,6 +148,27 @@ public class UserInfoActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.leftBtn: {
                 finish();
+                break;
+            }
+            case R.id.videoEmptyLayout: {
+                // 录制设置压缩
+                BaseMediaBitrateConfig recordMode = null;
+                recordMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                recordMode.setVelocity(Constant.velocity);
+                BaseMediaBitrateConfig compressMode = null;
+                compressMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                compressMode.setVelocity(Constant.velocity);
+                MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+//                        .doH264Compress(compressMode)
+                        .setMediaBitrateConfig(recordMode)
+                        .smallVideoWidth(Constant.videoWidth)
+                        .smallVideoHeight(Constant.videHeight)
+                        .recordTimeMax(Constant.maxRecordTime)
+                        .maxFrameRate(Constant.maxFrameRate)
+                        .captureThumbnailsTime(1)
+                        .recordTimeMin(Constant.minRecordTime)
+                        .build();
+                MediaRecorderActivity.goSmallVideoRecorder(UserInfoActivity.this, VideoImageActivity.class.getName(), config);
                 break;
             }
             case R.id.rightBtn: {
@@ -206,6 +238,11 @@ public class UserInfoActivity extends BaseActivity {
                     followStatus = slUserDetail.getFollowStatus();
                 }
                 initData();
+                if (slVideoList.size() > 0) {
+                    videoEmptyLayout.setVisibility(View.GONE);
+                } else {
+                    videoEmptyLayout.setVisibility(View.VISIBLE);
+                }
                 break;
             case MessageSignConstant.USER_FIND_DETAIL_FAILURE:
                 code = msg.getData().getString("code");
