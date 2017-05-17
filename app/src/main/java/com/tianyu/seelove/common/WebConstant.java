@@ -7,9 +7,9 @@ package com.tianyu.seelove.common;
  */
 public class WebConstant {
     // 测试环境地址（勿删除）
-    public static String BASE_URL = "http://test.shiai360.com";
+//    public static String BASE_URL = "http://test.shiai360.com";
     // 生产环境地址（!!!此地址只有版本升级时才可使用！！！勿删除）
-//    public static String BASE_URL = "http://real.shiai360.com";
+    public static String BASE_URL = "http://real.shiai360.com";
 
     // 本地地址（勿删除）
 //     public static String BASE_URL = "http://192.168.0.168:8080/seelove/request";

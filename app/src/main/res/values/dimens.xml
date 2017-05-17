@@ -47,6 +47,8 @@
     <dimen name="layout_280dp">280dp</dimen>
     <dimen name="layout_300dp">300dp</dimen>
     <dimen name="layout_240dp">340dp</dimen>
+    <dimen name="layout_480dp">480dp</dimen>
+    <dimen name="layout_600dp">600dp</dimen>
     <dimen name="dp100">100dp</dimen>
     <dimen name="dp5">5dp</dimen>
     <dimen name="dp3">3dp</dimen>
