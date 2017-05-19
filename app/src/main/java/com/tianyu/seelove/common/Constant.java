@@ -60,4 +60,7 @@ public class Constant {
     public static int maxRecordTime = 8 * 1000; // 拍摄视频最长时长
     public static int minRecordTime = 1 * 1000; // 拍摄视频最短时长
     public static int maxFrameRate = 18; // 视频拍摄码率
+
+    // 视频名称列表
+    public static String[] videoNames = {"爱情观", "工作介绍", "全身照", "身材特写", "才艺展示"};// 默认的，如果从服务器获取失败，则使用默认的
 }

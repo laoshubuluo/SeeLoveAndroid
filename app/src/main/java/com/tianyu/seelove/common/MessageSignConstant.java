@@ -50,5 +50,4 @@ public class MessageSignConstant {
 
     public static final int NEW_VERSION_SUCCESS = 1119;
     public static final int NEW_VERSION_FAILURE = 1120;
-
 }

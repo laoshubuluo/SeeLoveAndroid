@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.application.SeeLoveApplication;
 import com.tianyu.seelove.common.Actions;
@@ -41,10 +42,12 @@ import com.tianyu.seelove.utils.NetworkUtil;
 import com.tianyu.seelove.utils.StringUtils;
 import com.tianyu.seelove.view.RedDotView;
 import com.tianyu.seelove.view.dialog.VersionUpdateDialog;
+
 import java.io.File;
 
 /**
  * 主页－统一对fragment进行管理
+ *
  * @author shisheng.zhao
  * @date 2017-03-28 16:27
  */
@@ -74,6 +77,7 @@ public class MainActivity extends BaseActivity {
         initIntent();
         initView();
         initService();
+        getSystemConfig();
         updateVersion();
     }
 
@@ -150,6 +154,10 @@ public class MainActivity extends BaseActivity {
         controller.getNewVerison();
     }
 
+    private void getSystemConfig() {
+        controller.getVideoNames();
+    }
+
     @Override
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
@@ -175,7 +183,7 @@ public class MainActivity extends BaseActivity {
                                     updateDialog.dismiss();
                                     try {
                                         FileUtil.delAllFile("sdcard/updateDownload/");
-                                    }catch (Exception ex){
+                                    } catch (Exception ex) {
                                         ex.printStackTrace();
                                     }
                                     intoDownloadManager(newVersion.getDownloadUrl());

@@ -9,6 +9,7 @@ import com.tianyu.seelove.network.request.FollowFindAllByFollowedUserRequest;
 import com.tianyu.seelove.network.request.FollowFindAllByUserRequest;
 import com.tianyu.seelove.network.request.FollowRequest;
 import com.tianyu.seelove.network.request.NewVersionRequest;
+import com.tianyu.seelove.network.request.VideoNamesRequest;
 
 /**
  * author : L.jinzhu
@@ -29,6 +30,14 @@ public class SystemController {
      */
     public void getNewVerison() {
         NewVersionRequest request = new NewVersionRequest(handler, context);
+        VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
+    }
+
+    /**
+     * 视频名称列表
+     */
+    public void getVideoNames() {
+        VideoNamesRequest request = new VideoNamesRequest(handler, context);
         VolleyManager.getInstance(context).add2RequestQueue(request.getRequest());
     }
 }
