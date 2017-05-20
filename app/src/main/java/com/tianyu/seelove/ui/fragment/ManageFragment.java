@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.adapter.SignGridAdapter;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.common.ActivityResultConstant;
 import com.tianyu.seelove.common.Constant;
@@ -69,7 +70,7 @@ public class ManageFragment extends BaseFragment {
     private ImageView bigImage, headUrl, rightView;
     private ImageView qqLogin, wechatLogin;
     private TextView titleView, userName, videoCount, followCount, followedCount;
-    private MyGridView videoGridView;
+    private MyGridView videoGridView, signGridView;
     private LinearLayout loginLayout, userLayout;
     private EditText phoneEdit, codeEdit;
     private UserDao userDao;
@@ -79,6 +80,7 @@ public class ManageFragment extends BaseFragment {
     private TimeCount time;//倒计时
     private String filePath = "";
     private LinearLayout videoEmptyLayout;
+    private SignGridAdapter signGridAdapter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -145,6 +147,7 @@ public class ManageFragment extends BaseFragment {
         settingLayout.setOnClickListener(this);
         titleView.setText(R.string.manager);
         videoGridView = (MyGridView) view.findViewById(R.id.videoGridView);
+        signGridView = (MyGridView) view.findViewById(R.id.signGridView);
         videoGridAdapter = new VideoGridAdapter(getActivity());
         videoGridAdapter.updateData(new ArrayList<SLVideo>());
         videoGridView.setAdapter(videoGridAdapter);
@@ -187,6 +190,8 @@ public class ManageFragment extends BaseFragment {
                 videoEmptyLayout.setVisibility(View.GONE);
             } else {
                 videoEmptyLayout.setVisibility(View.VISIBLE);
+                signGridAdapter = new SignGridAdapter(getActivity(), Constant.videoNames,1);
+                signGridView.setAdapter(signGridAdapter);
             }
         }
     }

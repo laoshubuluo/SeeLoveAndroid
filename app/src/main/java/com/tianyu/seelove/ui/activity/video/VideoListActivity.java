@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.tianyu.seelove.R;
+import com.tianyu.seelove.adapter.SignGridAdapter;
 import com.tianyu.seelove.adapter.VideoGridAdapter;
 import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
@@ -19,10 +19,8 @@ import com.tianyu.seelove.ui.activity.base.BaseActivity;
 import com.tianyu.seelove.utils.AppUtils;
 import com.tianyu.seelove.view.MyGridView;
 import com.tianyu.seelove.view.dialog.PromptDialog;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import mabeijianxi.camera.MediaRecorderActivity;
 import mabeijianxi.camera.model.BaseMediaBitrateConfig;
 import mabeijianxi.camera.model.CBRMode;
@@ -30,19 +28,19 @@ import mabeijianxi.camera.model.MediaRecorderConfig;
 
 /**
  * 我的视频界面
- *
  * @author shisheng.zhao
  * @date 2017-03-29 22:50
  */
 public class VideoListActivity extends BaseActivity implements VideoGridAdapter.ShowDeleteSignListener, VideoGridAdapter.DeleteListener {
     private VideoController controller;
     private VideoDao videoDao;
-    private MyGridView videoGridView;
+    private MyGridView videoGridView, signGridView;
     private VideoGridAdapter adapter;
     private List<SLVideo> slVideoList = new ArrayList<>();
     private boolean isShowDelete = false;
     private int currentPosition = 0;
     private LinearLayout videoEmptyLayout;
+    private SignGridAdapter signGridAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +66,7 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
         rightView.setOnClickListener(this);
         videoEmptyLayout = (LinearLayout) findViewById(R.id.videoEmptyLayout);
         videoGridView = (MyGridView) findViewById(R.id.videoGridView);
+        signGridView = (MyGridView) findViewById(R.id.signGridView);
         videoGridView.setAdapter(adapter);
         videoEmptyLayout.setOnClickListener(this);
     }
@@ -79,6 +78,8 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
         if (null != slVideoList && slVideoList.size() > 0) {
             videoEmptyLayout.setVisibility(View.GONE);
         } else {
+            signGridAdapter = new SignGridAdapter(this, Constant.videoNames,1);
+            signGridView.setAdapter(signGridAdapter);
             videoEmptyLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -176,6 +177,8 @@ public class VideoListActivity extends BaseActivity implements VideoGridAdapter.
                 slVideoList.remove(currentPosition);
                 adapter.notifyDataSetChanged();
                 if (slVideoList.size() <= 0) {
+                    signGridAdapter = new SignGridAdapter(this, Constant.videoNames, 1);
+                    signGridView.setAdapter(signGridAdapter);
                     videoEmptyLayout.setVisibility(View.VISIBLE);
                 }
                 break;

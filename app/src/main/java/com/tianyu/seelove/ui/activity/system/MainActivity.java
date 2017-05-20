@@ -21,11 +21,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tianyu.seelove.R;
 import com.tianyu.seelove.application.SeeLoveApplication;
 import com.tianyu.seelove.common.Actions;
+import com.tianyu.seelove.common.Constant;
 import com.tianyu.seelove.common.MessageSignConstant;
+import com.tianyu.seelove.common.VideoActions;
 import com.tianyu.seelove.controller.SystemController;
 import com.tianyu.seelove.dao.MessageDao;
 import com.tianyu.seelove.dao.impl.MessageDaoImpl;
@@ -33,6 +36,7 @@ import com.tianyu.seelove.manager.IntentManager;
 import com.tianyu.seelove.model.entity.network.response.NewVersionRspInfo;
 import com.tianyu.seelove.service.MessageSendService;
 import com.tianyu.seelove.ui.activity.base.BaseActivity;
+import com.tianyu.seelove.ui.activity.video.VideoImageActivity;
 import com.tianyu.seelove.ui.fragment.FindFragment;
 import com.tianyu.seelove.ui.fragment.FollowFragment;
 import com.tianyu.seelove.ui.fragment.ManageFragment;
@@ -44,6 +48,11 @@ import com.tianyu.seelove.view.RedDotView;
 import com.tianyu.seelove.view.dialog.VersionUpdateDialog;
 
 import java.io.File;
+
+import mabeijianxi.camera.MediaRecorderActivity;
+import mabeijianxi.camera.model.BaseMediaBitrateConfig;
+import mabeijianxi.camera.model.CBRMode;
+import mabeijianxi.camera.model.MediaRecorderConfig;
 
 /**
  * 主页－统一对fragment进行管理
@@ -91,6 +100,7 @@ public class MainActivity extends BaseActivity {
     private void initIntent() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Actions.MESSAGE_READ_CHANGE);
+        intentFilter.addAction(VideoActions.ACTION_VIDEO_RECORD);
         registerReceiver(receiver, intentFilter);
     }
 
@@ -102,6 +112,26 @@ public class MainActivity extends BaseActivity {
             if (action.equals(Actions.MESSAGE_READ_CHANGE)) {
                 unReadCount = messageDao.getAllUnReadMessageCount();
                 redDotView.initView(unReadCount);
+            }
+            if (action.equals(VideoActions.ACTION_VIDEO_RECORD)) {
+                // 录制设置压缩
+                BaseMediaBitrateConfig recordMode = null;
+                recordMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                recordMode.setVelocity(Constant.velocity);
+                BaseMediaBitrateConfig compressMode = null;
+                compressMode = new CBRMode(Constant.cbrBufSize, Constant.cbrBitrate);
+                compressMode.setVelocity(Constant.velocity);
+                MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+//                        .doH264Compress(compressMode)
+                        .setMediaBitrateConfig(recordMode)
+                        .smallVideoWidth(Constant.videoWidth)
+                        .smallVideoHeight(Constant.videHeight)
+                        .recordTimeMax(Constant.maxRecordTime)
+                        .maxFrameRate(Constant.maxFrameRate)
+                        .captureThumbnailsTime(1)
+                        .recordTimeMin(Constant.minRecordTime)
+                        .build();
+                MediaRecorderActivity.goSmallVideoRecorder(MainActivity.this, VideoImageActivity.class.getName(), config);
             }
         }
     };
