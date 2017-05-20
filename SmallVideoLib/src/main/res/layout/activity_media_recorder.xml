@@ -75,6 +75,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <com.tianyu.seelove.view.MyGridView
+            android:id="@+id/signGridView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numColumns="3"
+            android:background="@color/translate_half"/>
+
         <!-- camera_bottom_bg -->
         <RelativeLayout
             android:id="@+id/bottom_layout"

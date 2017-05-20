@@ -3,6 +3,7 @@
     <color name="color_381902">#222222</color>
     <color name="transparent2">#50000000</color>
     <color name="transparent">#00000000</color>
+    <color name="translate_half">#a0000000</color>//半透明
     <color name="camera_progress_three">#24ff00</color>
     <color name="camera_bg">#2c2c2c</color>
     <color name="camera_progress_split">#005084</color>

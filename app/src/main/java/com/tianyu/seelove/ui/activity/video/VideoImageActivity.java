@@ -1,13 +1,7 @@
 package com.tianyu.seelove.ui.activity.video;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +38,11 @@ import com.tianyu.seelove.view.dialog.PromptDialog;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -52,7 +51,6 @@ import mabeijianxi.camera.MediaRecorderActivity;
 
 /**
  * 选择视频封面功能
- *
  * @author shisheng.zhao
  * @date 2017-04-25 15:53
  */
@@ -97,6 +95,7 @@ public class VideoImageActivity extends BaseActivity {
     }
 
     private void initData() {
+        editVideoTitle.setText(Constant.videoTitle);
         adapter = new VideoImageAdapter(this, bitmapList);
         videoGridView.setAdapter(adapter);
         adapter.changeState(0);
@@ -280,6 +279,8 @@ public class VideoImageActivity extends BaseActivity {
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
                 deleteAllFiles(new File(dcim + "/seelove/"));
                 // 发送广播 通知动态刷新数据
+                Constant.selectIndex = 0;
+                Constant.videoTitle = "";
                 sendBroadcast(new Intent(Actions.ACTION_UPDATE_FOLLOW_LIST));
                 Toast.makeText(this, "发布成功！", Toast.LENGTH_SHORT).show();
                 finish();
